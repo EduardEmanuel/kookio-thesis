@@ -1,21 +1,42 @@
 # kookio-thesis
+
 Kookio: A Modular Full-Stack Gastronomic Service Built on the PAN Architecture (Prisma – Analog – Nx)
 
-## Academic Program:
+> 📁 This repository contains only the academic thesis associated with the [Kookio application](https://github.com/EduardEmanuel/kookio), including:
+
+> - LaTeX sources
+> - Compilation scripts
+> - University assets (logos, styles)
+
+## 📦 Prerequisites
+
+| Tool | Purpose | How to Install |
+|------|---------|----------------|
+| **XeLaTeX** (via TeX Live, MacTeX, or MikTeX) | Compile thesis in LaTeX | See below |
+
+### 📌 XeLaTeX Note
+
+To compile the thesis using LaTeX + Unicode fonts:
+
+- **macOS:** `brew install --cask mactex`
+- **Ubuntu/Debian:** `sudo apt install texlive-xetex texlive-fonts-recommended texlive-latex-extra`
+- **Windows:** install [MikTeX](https://miktex.org/download) and enable `xetex` + `biblatex` in the package manager.
+
+## 🎓 Academic Program
 
 Bachelor’s Thesis – Computer Science
 Faculty of Mathematics and Computer Science
 University of Bucharest
 
-## Author:
+## ✍️ Author
 
 Eduard - Emanuel Dinea
 
-## Supervisor:
+## 🧑‍🏫 Supervisor
 
 Lect. Dr. Mihai Cherciu
 
-## Thesis Abstract:
+## 📄 Thesis Abstract
 
 This thesis presents the design and implementation of Kookio, an interactive gastronomic web platform developed using a modern, modular, and type-safe full-stack architecture referred to as PAN—composed of Prisma for data access, Analog for Angular SSR capabilities, and Nx for scalable project orchestration in a monorepo context.
 
