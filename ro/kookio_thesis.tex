@@ -1,0 +1,201 @@
+% main.tex starts here
+\documentclass[12pt]{report}
+
+% ------------------------------------------------------------------
+% Engine & page header
+% ------------------------------------------------------------------
+\PassOptionsToPackage{hyphens}{url}
+\setlength{\headheight}{15pt}
+
+% ------------------------------------------------------------------
+% Fonts & verbatim environments (LuaLaTeX)
+% ------------------------------------------------------------------
+\usepackage{fontspec}
+
+\setmonofont[
+  Scale=MatchLowercase,
+  Ligatures=TeX
+]{Latin Modern Mono}
+
+\usepackage{fvextra}
+\fvset{breaksymbolleft={},breaksymbolsep=0pt}
+
+\newfontfamily\TreeMono{FreeMono}[Scale=MatchLowercase]
+
+\DefineVerbatimEnvironment{TreeVerb}{Verbatim}{
+  breaklines=true,
+  breakanywhere=false,
+  obeytabs=true,
+  tabsize=2,
+  showtabs=false,
+  showspaces=false,
+  breaksymbolleft={},
+  breaksymbolsep=0pt,
+  fontsize=\footnotesize,
+  formatcom=\TreeMono
+}
+
+% ------------------------------------------------------------------
+% Language & quotations
+% ------------------------------------------------------------------
+\usepackage{polyglossia}
+\setmainlanguage{romanian}
+\usepackage{csquotes}
+
+% ------------------------------------------------------------------
+% Mathematics
+% ------------------------------------------------------------------
+\usepackage{amsmath,amssymb}
+\usepackage{unicode-math}
+\usepackage{mathtools}
+
+% ------------------------------------------------------------------
+% Layout & microtypography
+% ------------------------------------------------------------------
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{microtype}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.5em}
+
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+% ------------------------------------------------------------------
+% Graphics
+% ------------------------------------------------------------------
+\usepackage{graphicx}
+\graphicspath{{../images/}}
+\usepackage{float}
+\usepackage{subcaption}
+
+% ------------------------------------------------------------------
+% URLs & hyperlinks
+% ------------------------------------------------------------------
+\usepackage{xurl}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  pdfborder={0 0 0}
+}
+\renewcommand*\UrlFont{\ttfamily}
+
+\def\UrlBreaks{\do\/\do.\do?\do&\do=\do\_\do-\do\#}
+\def\UrlBigBreaks{\do\/}
+\Urlmuskip=0mu plus 3mu
+
+\apptocmd{\biburlsetup}{%
+  \def\UrlBreaks{\do\/\do.\do?\do&\do=\do\_\do-\do\#}%
+  \def\UrlBigBreaks{\do\/}%
+  \Urlmuskip=0mu plus 3mu\relax
+  \setcounter{biburlnumpenalty}{9000}%
+  \setcounter{biburlucpenalty}{9000}%
+  \setcounter{biburllcpenalty}{9000}%
+}{}{}
+
+\DeclareUrlCommand\codepath{\urlstyle{tt}}
+
+% ------------------------------------------------------------------
+% Bibliography
+% ------------------------------------------------------------------
+\usepackage[
+  backend=biber,
+  style=numeric,
+  sorting=nyt,
+  maxcitenames=2,
+  maxbibnames=99,
+  url=true,
+  doi=true
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+% ------------------------------------------------------------------
+% Listings
+% ------------------------------------------------------------------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  breakatwhitespace=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  upquote=true,
+  frame=none,
+  literate=
+    {ă}{{\u{a}}}1 {â}{{\^a}}1 {î}{{\^\i}}1
+    {ș}{{\textcommabelow{s}}}1 {ț}{{\textcommabelow{t}}}1
+    {Ă}{{\u{A}}}1 {Â}{{\^A}}1 {Î}{{\^I}}1
+    {Ș}{{\textcommabelow{S}}}1 {Ț}{{\textcommabelow{T}}}1
+}
+
+% ------------------------------------------------------------------
+% Tables
+% ------------------------------------------------------------------
+\usepackage{ragged2e}
+\usepackage{tabularx,booktabs,array,makecell}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{6pt}
+\renewcommand\theadfont{\normalsize\bfseries}
+
+% ------------------------------------------------------------------
+% Headers & appendices
+% ------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+
+\usepackage[toc,page]{appendix}
+
+% ------------------------------------------------------------------
+% Metadata
+% ------------------------------------------------------------------
+\newcommand{\studentname}{Absolvent: Eduard - Emanuel Dinea}
+\newcommand{\teachername}{Coordonator științific: Lect. dr. Mihai Cherciu}
+\newcommand{\releasedate}{București, iulie 2026}
+\newcommand{\thesistitle}{Serviciu gastronomic online cu aplicații directe acasă}
+\newcommand{\thesissubtitle}{Kookio}
+\newcommand{\thesis}{Lucrare de licență}
+\newcommand{\domainname}{SPECIALIZAREA INFORMATICĂ}
+\newcommand{\facultyname}{FACULTATEA DE MATEMATICĂ ȘI INFORMATICĂ}
+\newcommand{\universityname}{UNIVERSITATEA DIN BUCUREȘTI}
+
+% ------------------------------------------------------------------
+% Reference helpers
+% ------------------------------------------------------------------
+\newcommand{\secref}[1]{Secțiunea~\ref{#1}}
+\newcommand{\figref}[1]{Figura~\ref{#1}}
+\newcommand{\tabref}[1]{Tabelul~\ref{#1}}
+\newcommand{\lstref}[1]{Lista~\ref{#1}}
+\newcommand{\chapref}[1]{Capitolul~\ref{#1}}
+
+% ------------------------------------------------------------------
+% Document body
+% ------------------------------------------------------------------
+\begin{document}
+
+\input{0-title.tex}
+\input{0-abstract.tex}
+
+\tableofcontents
+\clearpage
+
+\input{1-introducere.tex}
+\input{2-preliminarii.tex}
+\input{1-implementare.tex}
+\input{3-concluzii.tex}
+
+\begin{appendices}
+\input{anexa-latex.tex}
+\end{appendices}
+
+\printbibliography
+\end{document}
+% main.tex ends here

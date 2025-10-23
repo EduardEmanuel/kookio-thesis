@@ -1,0 +1,28 @@
+% 2-preliminarii.tex starts here
+\chapter{Preliminarii}\label{ch:prelim}
+
+% Context paragraph kept short and points to the Manifest appendix.
+\section*{Contextul tehnologic}
+Proiectul \textit{Kookio} se bazează pe arhitectura unitară \textbf{PAN} (Prisma–Analog–Nx), care integrează fluxul complet de dezvoltare \texttt{TypeScript} de la interfață până la bazele de date. Această arhitectură facilitează modularitatea, testarea automată și extinderea sistemului. O prezentare detaliată a manifestului, a avantajelor comparative și a direcțiilor de evoluție este centralizată în \textbf{Anexa~\ref{ch:appendix-manifest}}.
+
+% Core technologies with compact but precise phrasing + authoritative citations.
+\section*{Tehnologii fundamentale}
+\begin{itemize}
+  \item \textbf{Analog} — meta-framework pentru \textit{Angular}, oferă randare pe server (SSR), rutare pe bază de fișiere și integrare nativă cu Nitro/tRPC pentru definirea de API-uri\cite{analog,nitro}. Componentele folosesc modelul de reactivitate \textit{Signals} al \textit{Angular}\cite{angular_signals}.
+  \item \textbf{Angular} — framework modern ce susține \textit{standalone components} și \textit{Signals} pentru gestionarea stării în mod predictibil și performant\cite{angular_signals}.
+  \item \textbf{Prisma} — ORM type-safe pentru PostgreSQL, cu migrații și generator de client TypeScript, alături de generatoare pentru validări (Zod)\cite{prisma,prisma_zod_generator}. Persistența se bazează pe mecanismele \textit{ACID} ale \textit{PostgreSQL}\cite{postgresql}.
+  \item \textbf{tRPC} — comunicare end-to-end \textit{type-safe} între client și server, cu rutare, context și inferență de tipuri pe întreg lanțul aplicației\cite{trpc}.
+  \item \textbf{Nx} — orchestrator monorepo care coordonează aplicații și biblioteci, oferind \textit{affected runs}, cache distribuit și graful de proiect pentru optimizări de build și test\cite{nx}.
+  \item \textbf{Testare} — \textit{Vitest} pentru testare unitară rapidă\cite{vitest} și \textit{Playwright} pentru testare end-to-end\cite{playwright}.
+\end{itemize}
+
+% Design principles referencing the same authoritative sources once, to avoid redundancy.
+\section*{Principii arhitecturale}
+\begin{itemize}
+  \item \textbf{Separarea responsabilităților} — interfață (Analog/Angular), logică de domeniu (tRPC + modele), acces la date (Prisma)\cite{analog,angular_signals,trpc,prisma}.
+  \item \textbf{Type-safety end-to-end} — contracte de tipuri partajate între client și server (tRPC) și validări derivate din modele (Prisma $\rightarrow$ Zod)\cite{trpc,prisma,prisma_zod_generator,zod}.
+  \item \textbf{Modularitate monorepo} — organizare pe aplicații și librării, reguli de dependență, execuții afectate și cache incremental (Nx)\cite{nx}.
+  \item \textbf{Randare hibridă și API-uri} — SSR prin Analog, rute server și integrare cu mediile de execuție prin Nitro\cite{analog,nitro}.
+  \item \textbf{Observabilitate și configurare} — logare centralizată (Pino) și protecție la configurări incomplete (\texttt{dotenv-safe})\cite{pino,dotenv_safe}.
+\end{itemize}
+% 2-preliminarii.tex ends here

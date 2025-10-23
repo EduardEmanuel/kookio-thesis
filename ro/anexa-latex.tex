@@ -1,0 +1,72 @@
+% anexa-latex.tex starts here
+\chapter{Anexă: Redactarea lucrării în \LaTeX}\label{ch:appendix-latex}
+
+\section{Instrumente pentru redactare}
+Lucrarea a fost redactată cu motorul \texttt{LuaLaTeX}, folosind fonturi Unicode și pachetul
+\texttt{biblatex} pentru gestionarea bibliografiei. Structura este modulară, fiecare capitol
+fiind un fișier separat (\texttt{.tex}) compilat prin scripturile automate de build.
+Imaginile sunt salvate în \texttt{images/}, iar citările se realizează cu \verb|\cite{}|.
+
+\section{Compatibilitate multiplatformă}
+Există scripturi automate pentru Linux (\texttt{build.sh}), Windows (\texttt{build.bat})
+și PowerShell (\texttt{build.ps1}) care generează PDF-ul în directorul \texttt{dist/}
+și afișează eventualele erori de compilare.
+
+\vspace{0.5em}
+\noindent\textit{Notă:} Mediul \texttt{TreeVerb} utilizează fontul \texttt{FreeMono} pentru suport complet al caracterelor Unicode de tip box-drawing (U+2500–U+257F).
+
+% ----------------------------------------------------------
+% Include non-cited but relevant sources to keep bibliography complete
+% ----------------------------------------------------------
+% These sources are foundational to the broader PAN architecture
+% but were not cited directly in the main chapters (e.g., roadmap tools).
+\nocite{vite,cockroachdb,redis,firebase_auth,json_schema}
+
+% --- PAN Architecture Manifest ---
+
+\chapter{Kookio: Manifest Arhitectural PAN (Prisma – Analog – Nx)}\label{ch:appendix-manifest}
+
+\section{Viziune generală}
+\textbf{Kookio} este o aplicație full-stack dezvoltată în \texttt{TypeScript}, bazată pe arhitectura
+\textbf{PAN} — un cadru scalabil care integrează \textbf{Prisma} pentru acces la date,
+\textbf{Analog} pentru randare hibridă și \textbf{Nx} pentru orchestrare monorepo.
+Această abordare reprezintă o alternativă la stack-uri consacrate (JAMstack, MEAN),
+fiind adaptată ecosistemului \texttt{Angular} și cerințelor enterprise.
+
+\section{Componentele arhitecturii}
+\begin{itemize}
+  \item \textbf{Prisma} – ORM cu suport pentru PostgreSQL și extensii NewSQL (CockroachDB).
+  \item \textbf{Analog} – meta-framework pentru Angular cu SSR, Signals și tRPC.
+  \item \textbf{Nx} – orchestrator modular care optimizează build-urile și testele.
+\end{itemize}
+
+\section{Structura fizică a proiectului}
+Structura completă a monorepo-ului este ilustrată în \textbf{§~\ref{subsec:monorepo-struct}} din capitolul~\ref{ch:impl}.
+
+\section{Avantaje comparative}
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{} Y Y Y Y @{}}
+    \toprule
+    \thead{Caracteristică} & \thead{JAMstack} & \thead{MEAN} & \thead{PAN (Kookio)} \\
+    \midrule
+    SSR / Hybrid Rendering  & Parțial (Next.js) & Nu & Da (Analog SSR) \\
+    Type-safety end-to-end  & Parțial           & Nu (Mongo/JS) & Da (TS + Prisma + Angular) \\
+    Structurare modulară    & Slabă             & Medie         & Excelentă (Nx + libs) \\
+    Acces la date           & Headless CMS/REST & REST/Mongoose & ORM modern (Prisma) \\
+    Adaptabilitate monorepo & Nu                & Nu            & Da \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Comparație între arhitectura PAN și alte stack-uri moderne}
+  \label{tab:pan-adv}
+\end{table}
+
+\section{Direcții de viitor}
+Direcțiile de dezvoltare planificate sunt detaliate în capitolul \textbf{§~\ref{sec:roadmap}}.
+
+\section{Concluzie}
+Arhitectura \textbf{PAN} sintetizează cele mai bune practici moderne din ecosistemul \texttt{TypeScript},
+oferind o experiență unificată full-stack și o bază solidă pentru aplicații educaționale,
+alimentare sau de lifestyle, precum viziunea \textit{Kookio}.
+% anexa-latex.tex ends here

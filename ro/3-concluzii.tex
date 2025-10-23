@@ -1,0 +1,15 @@
+% 3-concluzii.tex starts here
+\chapter{Concluzii}\label{ch:concl}
+Lucrarea demonstrează că arhitectura \textbf{PAN} permite o integrare coerentă a front-end-ului Angular (via Analog), a stratului API (Nitro + tRPC) și a persistenței (Prisma/PostgreSQL), sub orchestrarea \textbf{Nx}. Implementarea \textit{Kookio} confirmă beneficii de productivitate (tipare re-utilizabile, \textit{type-safety} end-to-end), scalabilitate (monorepo, cache, „affected runs”) și fiabilitate (validări Zod, logger comun).
+
+Avantajele comparative sunt sintetizate în \tabref{tab:pan-adv}, iar justificarea arhitecturală detaliată este centralizată în \chapref{ch:appendix-manifest}. În ansamblu, abordarea PAN oferă o bază solidă pentru produse web moderne, extensibile și ușor de întreținut.
+
+\section*{Direcții viitoare}\label{sec:roadmap}
+\begin{itemize}
+\item CockroachDB și Redis pentru scalare orizontală și reducerea latențelor.
+\item Autentificare Firebase Auth și politici de autorizare bazate pe roluri.
+\item Export de JSON Schema pentru interoperabilitate cu parteneri.
+\item Consolidarea E2E (Playwright) în pipeline „affected”.
+\item Microserviciu AI pentru recomandări personalizate (Nitro $\rightarrow$ Analog).
+\end{itemize}
+% 3-concluzii.tex ends here

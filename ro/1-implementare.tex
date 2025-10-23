@@ -1,0 +1,31 @@
+% 1-implementare.tex starts here
+\chapter{Implementare}\label{ch:impl}
+
+\section{Prezentare generală}
+Aplicația \textit{Kookio} a fost dezvoltată conform arhitecturii \textbf{PAN} descrise în 
+\textbf{Anexa~\ref{ch:appendix-manifest}}. Aceasta integrează tehnologii moderne din ecosistemul
+\texttt{TypeScript} pentru a asigura un flux end-to-end unitar între frontend și backend.
+În cele ce urmează sunt prezentate componentele interne ale sistemului, fluxurile principale și
+mecanismele de automatizare.
+
+\section{Arhitectura sistemului}
+\subsection{Structura monorepo-ului Nx}\label{subsec:monorepo-struct}
+\vspace{0.3cm}
+\begin{TreeVerb}
+kookio/
+├── web/                        # aplicația Analog
+│   │                             (frontend + server SSR)
+│   └── src/
+│       ├── app/                # componente Angular, pagini, servicii
+│       └── server/             # rute Nitro, tRPC și handler-e API
+├── libs/
+│   ├── data-access/prisma/     # schema Prisma, migrare,
+│   │                             client, validări Zod
+│   └── shared/                 # mock-uri și utilitare comune
+└── nx.json, package.json, etc. # configurarea monorepo-ului Nx
+\end{TreeVerb}
+\vspace{0.3cm}
+\subsection{Flux aplicație end-to-end}\label{subsec:e2e-flow}
+Fluxul aplicației urmează schema: \textit{Analog (UI/SSR)} → \textit{tRPC (API type-safe)} → \textit{Prisma (bază de date)} → \textit{Nx (orchestrare)}.
+Acest flux permite un lanț complet de tipuri, logare unitară și construcție incrementală a proiectului.
+% 1-implementare.tex ends here
