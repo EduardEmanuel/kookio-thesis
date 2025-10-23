@@ -1,0 +1,21 @@
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.run.xml
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.bcf
+*.blg
+*.bbl
+
+# LaTeX temporary or generated folders
+latex.out/
+_build/
+
+# Ignore all PDFs, excepts those from ```dist/``` folder
+*.pdf
+!dist/*.pdf
