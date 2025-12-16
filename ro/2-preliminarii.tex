@@ -1,28 +1,119 @@
 % 2-preliminarii.tex starts here
 \chapter{Preliminarii}\label{ch:prelim}
 
-% Context paragraph kept short and points to the Manifest appendix.
 \section*{Contextul tehnologic}
-Proiectul \textit{Kookio} se bazează pe arhitectura unitară \textbf{PAN} (Prisma–Analog–Nx), care integrează fluxul complet de dezvoltare \texttt{TypeScript} de la interfață până la bazele de date. Această arhitectură facilitează modularitatea, testarea automată și extinderea sistemului. O prezentare detaliată a manifestului, a avantajelor comparative și a direcțiilor de evoluție este centralizată în \textbf{Anexa~\ref{ch:appendix-manifest}}.
+Proiectul \textit{Kookio} se bazează pe arhitectura unitară \textbf{PAN} (Prisma–Analog–Nx), care integrează fluxul complet de dezvoltare \texttt{TypeScript} de la interfață până la bazele de date.
+Această arhitectură facilitează modularitatea, testarea automată și extinderea sistemului, fiind susținută de instrumente moderne pentru orchestrare, randare hibridă și persistență tipizată \cite{nx,analog,prisma}.
+O prezentare detaliată a manifestului, a avantajelor comparative și a direcțiilor de evoluție este centralizată în \textbf{Anexa~\ref{ch:appendix-manifest}}.
 
-% Core technologies with compact but precise phrasing + authoritative citations.
-\section*{Tehnologii fundamentale}
+\section{Preliminarii}
+
+\subsection{Arhitecturi web moderne}
+
+Aplicațiile web moderne au evoluat semnificativ față de modelul clasic client--server, în care browserul funcționa exclusiv ca un consumator de API-uri REST.
+Cerințele actuale privind performanța, experiența utilizatorului și optimizarea pentru motoarele de căutare au condus la apariția unor arhitecturi hibride, care combină randarea pe client cu randarea pe server \cite{analog,nitro}.
+
+Printre aceste abordări se numără:
 \begin{itemize}
-  \item \textbf{Analog} — meta-framework pentru \textit{Angular}, oferă randare pe server (SSR), rutare pe bază de fișiere și integrare nativă cu Nitro/tRPC pentru definirea de API-uri\cite{analog,nitro}. Componentele folosesc modelul de reactivitate \textit{Signals} al \textit{Angular}\cite{angular_signals}.
-  \item \textbf{Angular} — framework modern ce susține \textit{standalone components} și \textit{Signals} pentru gestionarea stării în mod predictibil și performant\cite{angular_signals}.
-  \item \textbf{Prisma} — ORM type-safe pentru PostgreSQL, cu migrații și generator de client TypeScript, alături de generatoare pentru validări (Zod)\cite{prisma,prisma_zod_generator}. Persistența se bazează pe mecanismele \textit{ACID} ale \textit{PostgreSQL}\cite{postgresql}.
-  \item \textbf{tRPC} — comunicare end-to-end \textit{type-safe} între client și server, cu rutare, context și inferență de tipuri pe întreg lanțul aplicației\cite{trpc}.
-  \item \textbf{Nx} — orchestrator monorepo care coordonează aplicații și biblioteci, oferind \textit{affected runs}, cache distribuit și graful de proiect pentru optimizări de build și test\cite{nx}.
-  \item \textbf{Testare} — \textit{Vitest} pentru testare unitară rapidă\cite{vitest} și \textit{Playwright} pentru testare end-to-end\cite{playwright}.
+  \item \textbf{Client-Side Rendering (CSR)}, unde aplicația este randată integral în browser;
+  \item \textbf{Server-Side Rendering (SSR)}, unde conținutul HTML este generat pe server pentru fiecare cerere;
+  \item \textbf{Static Site Generation (SSG)}, unde paginile sunt generate la build-time;
+  \item \textbf{arhitecturi hibride}, care combină aceste tehnici în funcție de tipul conținutului.
 \end{itemize}
 
-% Design principles referencing the same authoritative sources once, to avoid redundancy.
-\section*{Principii arhitecturale}
+În contextul proiectului Kookio, este adoptată o arhitectură full-stack modernă, care integrează frontend-ul și backend-ul într-un flux unitar de dezvoltare, permițând partajarea tipurilor și a logicii de validare între straturi \cite{trpc}.
+Această abordare reduce complexitatea integrării și crește coerența aplicației.
+
+\subsection{Angular și randare server-side}
+
+Angular este un framework matur pentru dezvoltarea aplicațiilor web, bazat pe TypeScript și orientat către arhitecturi scalabile \cite{angular_signals}.
+În mod tradițional, Angular a fost utilizat predominant în scenarii de tip client-side rendering, însă versiunile recente extind semnificativ suportul pentru randare server-side.
+
+În cadrul proiectului Kookio, Angular este utilizat împreună cu Analog, un meta-framework care adaugă suport nativ pentru:
 \begin{itemize}
-  \item \textbf{Separarea responsabilităților} — interfață (Analog/Angular), logică de domeniu (tRPC + modele), acces la date (Prisma)\cite{analog,angular_signals,trpc,prisma}.
-  \item \textbf{Type-safety end-to-end} — contracte de tipuri partajate între client și server (tRPC) și validări derivate din modele (Prisma $\rightarrow$ Zod)\cite{trpc,prisma,prisma_zod_generator,zod}.
-  \item \textbf{Modularitate monorepo} — organizare pe aplicații și librării, reguli de dependență, execuții afectate și cache incremental (Nx)\cite{nx}.
-  \item \textbf{Randare hibridă și API-uri} — SSR prin Analog, rute server și integrare cu mediile de execuție prin Nitro\cite{analog,nitro}.
-  \item \textbf{Observabilitate și configurare} — logare centralizată (Pino) și protecție la configurări incomplete (\texttt{dotenv-safe})\cite{pino,dotenv_safe}.
+  \item Server-Side Rendering (SSR),
+  \item rutare bazată pe fișiere,
+  \item integrarea logicii de server în aceeași aplicație \cite{analog}.
 \end{itemize}
+
+Randarea server-side permite generarea conținutului HTML direct pe server, îmbunătățind timpul de afișare inițială și compatibilitatea cu motoarele de căutare \cite{nitro}.
+Această caracteristică este esențială pentru aplicații orientate către conținut, precum Kookio, unde lizibilitatea inițială și performanța percepută sunt importante.
+
+Analog facilitează această abordare fără a separa artificial frontend-ul și backend-ul, păstrând o bază de cod unificată și coerentă.
+
+\subsection{Monorepo și orchestrare cu Nx}
+
+Proiectul este organizat sub forma unui monorepo, utilizând instrumentul Nx.
+Abordarea monorepo permite gestionarea mai multor aplicații și biblioteci într-un singur repository, cu reguli explicite de dependență și caching la nivel de task \cite{nx}.
+
+În cadrul proiectului Kookio, această structură facilitează separarea clară între:
+\begin{itemize}
+  \item aplicația web (frontend și server-side logic),
+  \item stratul de acces la date (Prisma Client),
+  \item validarea și contractele de date (Zod),
+  \item utilitare și date mock partajate.
+\end{itemize}
+
+Nx oferă avantaje importante precum:
+\begin{itemize}
+  \item execuția incrementală a task-urilor (build, test, lint),
+  \item cache local și determinism al build-urilor,
+  \item izolare logică între proiecte prin reguli de boundary \cite{nx}.
+\end{itemize}
+
+Această abordare este deosebit de potrivită pentru aplicații full-stack moderne, unde frontend-ul și backend-ul evoluează în paralel și partajează tipuri și contracte comune.
+
+\subsection{tRPC și partajarea tipurilor}
+
+Pentru comunicarea între client și server, proiectul utilizează tRPC, un framework care permite definirea endpoint-urilor API într-un mod complet tipat, fără a necesita generarea manuală de clienți sau specificații intermediare \cite{trpc}.
+
+În această arhitectură, procedurile tRPC sunt definite pe server și consumate direct în aplicația Angular, beneficiind de:
+\begin{itemize}
+  \item inferență completă a tipurilor TypeScript,
+  \item validare automată a input-urilor prin Zod \cite{zod},
+  \item eliminarea discrepanțelor dintre contractele client și server.
+\end{itemize}
+
+Această abordare reduce semnificativ erorile de integrare și accelerează dezvoltarea, fiind adecvată în special aplicațiilor full-stack TypeScript.
+
+\subsection{Persistență: Prisma și CockroachDB}
+
+Stratul de persistență este construit folosind Prisma ca ORM și CockroachDB ca sistem de gestiune a bazei de date \cite{prisma,cockroachdb}.
+CockroachDB este un sistem NewSQL distribuit, compatibil cu protocolul PostgreSQL, care oferă consistență tranzacțională și scalabilitate orizontală \cite{postgresql}.
+
+Prisma este utilizat pentru:
+\begin{itemize}
+  \item definirea schemei bazei de date într-un limbaj declarativ,
+  \item generarea automată a clientului TypeScript,
+  \item gestionarea migrațiilor între versiuni ale schemei.
+\end{itemize}
+
+Alegerea acestei combinații permite proiectului să rămână compatibil cu un ecosistem SQL matur, dar și pregătit pentru scenarii de scalare viitoare, fără modificări semnificative ale codului aplicației.
+
+\subsection{Testare automată: Vitest și Playwright}
+
+Testarea automată reprezintă un element esențial în dezvoltarea aplicațiilor moderne, asigurând corectitudinea funcțională și stabilitatea în timp.
+În cadrul proiectului Kookio sunt utilizate două tipuri complementare de testare: teste unitare și teste end-to-end.
+
+Pentru testarea unitară și de integrare este utilizat Vitest, un framework de testare rapid, compatibil cu ecosistemul Vite și TypeScript \cite{vitest,vite}.
+Vitest permite testarea componentelor Angular, a utilitarelor și a logicii de business într-un mediu izolat, cu suport pentru mocking și rulare incrementală.
+
+Testarea end-to-end este realizată cu ajutorul Playwright, care permite simularea interacțiunilor reale ale utilizatorului în browser \cite{playwright}.
+Acest tip de testare validează fluxurile critice ale aplicației, precum încărcarea paginilor, interacțiunea cu formularul și comunicarea cu API-ul server-side.
+
+Combinarea celor două abordări oferă o acoperire echilibrată:
+\begin{itemize}
+  \item Vitest validează corectitudinea logicii interne,
+  \item Playwright verifică comportamentul aplicației din perspectiva utilizatorului final.
+\end{itemize}
+
+Această strategie contribuie la creșterea încrederii în stabilitatea aplicației și facilitează evoluția incrementală a codului.
+
+\subsection{Managementul configurației și mediilor}
+
+Variabilele de mediu sunt gestionate centralizat în platforma de deployment Vercel, care acționează ca sursă unică de adevăr pentru configurația aplicației.
+Această abordare permite separarea clară a mediilor (dezvoltare, testare, producție) și reduce riscul expunerii accidentale a secretelor \cite{vercel_cli}.
+
+Pentru rularea locală, Vercel CLI este utilizat pentru a sincroniza temporar variabilele de mediu active prin comanda \texttt{vercel env pull}.
+Astfel, mediul local rămâne aliniat cu mediul de deploy, fără a necesita fișiere \texttt{.env} persistente în repository.
 % 2-preliminarii.tex ends here

@@ -2,14 +2,26 @@
 \chapter{Introducere}\label{ch:intro}
 
 \section*{Motivație}
-În contextul vieții moderne, tot mai multe persoane caută soluții eficiente pentru organizarea meselor zilnice. Aplicațiile gastronomice devin tot mai relevante atunci când oferă recomandări personalizate, gestionare a ingredientelor și integrare cu surse externe de date. Proiectul \textit{Kookio} răspunde acestor nevoi printr-o arhitectură modernă PAN, care valorifică progresul tehnologic din ecosistemul TypeScript și permite dezvoltarea unei aplicații scalabile, testabile și ușor de întreținut.
+În contextul vieții moderne, tot mai multe persoane caută soluții digitale care să simplifice organizarea meselor zilnice și gestionarea ingredientelor disponibile în gospodărie.
+Lipsa unei evidențe clare a ingredientelor conduce frecvent la achiziții redundante și la risipă alimentară, fenomen cu impact atât economic, cât și social.
+
+În același timp, aplicațiile web moderne se confruntă cu provocări tehnice semnificative, precum performanța la încărcare, coerența dintre frontend și backend și mentenanța pe termen lung a codului.
+Aceste provocări devin mai accentuate în aplicațiile full-stack, unde integrarea deficitară a straturilor conduce la creșterea complexității și a costurilor de dezvoltare.
+
+Proiectul \textit{Kookio} abordează aceste probleme prin adoptarea unei arhitecturi web moderne, bazate pe ecosistemul \texttt{TypeScript}, care integrează frontend-ul, backend-ul și stratul de persistență într-un flux unitar de dezvoltare.
+În acest context, este analizată arhitectura \textbf{PAN (Prisma--Analog--Nx)} ca model pentru realizarea unor aplicații web full-stack coerente, extensibile și ușor de testat.
 
 \section*{Scopul lucrării}
-Lucrarea urmărește dezvoltarea unei aplicații web complete care să permită utilizatorilor:
+Scopul acestei lucrări este proiectarea și implementarea unei aplicații web full-stack care permite gestionarea inventarului de ingrediente pentru utilizatori casnici, servind drept studiu de caz pentru evaluarea arhitecturii PAN și pentru explorarea impactului acesteia asupra dezvoltării aplicațiilor moderne.
+
+În acest sens, lucrarea își propune:
 \begin{itemize}
-\item gestionarea ingredientelor personale,
-\item descoperirea de rețete în funcție de preferințe și disponibilitate,
-\item localizarea furnizorilor pentru produsele lipsă.
+  \item realizarea unui sistem de gestiune a ingredientelor, cu persistență într-o bază de date relațională;
+  \item integrarea frontend-ului și backend-ului într-un flux de dezvoltare unitar, cu partajarea tipurilor și a validărilor;
+  \item analiza beneficiilor arhitecturii PAN în ceea ce privește modularitatea, productivitatea și mentenanța;
+  \item validarea implementării prin testare automată unitară, de integrare și end-to-end.
 \end{itemize}
-Prin urmare, \textit{Kookio} propune o abordare end-to-end, de la interfață la baza de date, fundamentată pe principiile arhitecturii PAN. Pentru detalii de implementare, vezi \chapref{ch:impl}.
+
+Aplicația este concepută ca un produs minim viabil (MVP), care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi, contribuind astfel la reducerea risipei alimentare.
+Detaliile privind implementarea sunt prezentate în \chapref{ch:impl}.
 % 1-introducere.tex ends here
