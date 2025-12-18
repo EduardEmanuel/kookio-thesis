@@ -1,25 +1,30 @@
 % 3-concluzii.tex starts here
 \chapter{Concluzii}\label{ch:concl}
 
-Lucrarea de față a avut ca obiectiv proiectarea și implementarea unei aplicații web full-stack moderne, care să demonstreze integrarea coerentă a tehnologiilor actuale din ecosistemul TypeScript într-o arhitectură unitară.
+Lucrarea de față a avut ca obiectiv proiectarea și implementarea unei aplicații web full-stack moderne, menită să demonstreze integrarea coerentă a tehnologiilor actuale din ecosistemul TypeScript într-o arhitectură unitară.
 Proiectul \textit{Kookio} a fost conceput atât ca aplicație funcțională, cât și ca studiu de caz pentru analiza arhitecturilor web hibride utilizate în contexte reale.
 
-Prin adoptarea arhitecturii \textbf{PAN} (Prisma--Analog--Nx), aplicația reușește să asigure un flux end-to-end tipizat, de la interfața utilizatorului până la nivelul de persistență al datelor.
-Această abordare reduce discrepanțele dintre frontend și backend, elimină duplicarea contractelor de date și facilitează dezvoltarea incrementală a funcționalităților, poziționând arhitectura PAN ca un model viabil pentru aplicații web full-stack moderne.
+Adoptarea arhitecturii \textbf{PAN} (Prisma--Analog--Nx) a permis realizarea unui flux end-to-end tipizat, de la interfața utilizatorului până la nivelul de persistență al datelor.
+Această abordare reduce discrepanțele dintre frontend și backend, elimină duplicarea contractelor de date și facilitează dezvoltarea incrementală a funcționalităților.
+În acest context, arhitectura PAN se conturează ca un model viabil pentru aplicații web full-stack moderne.
 
-Utilizarea \textbf{Angular} împreună cu \textbf{Analog} a permis implementarea unei aplicații cu randare server-side și hidratare client-side, îmbunătățind performanța percepută și compatibilitatea cu motoarele de căutare.
-Integrarea logicii de server în aceeași aplicație cu interfața utilizatorului a simplificat arhitectura generală și a redus necesitatea unui backend separat, fără a compromite separarea responsabilităților.
+Utilizarea \textbf{Angular} împreună cu \textbf{Analog} a permis implementarea unei aplicații cu randare server-side și hidratare client-side.
+Această combinație îmbunătățește performanța percepută și compatibilitatea cu motoarele de căutare.
+Integrarea logicii de server în aceeași aplicație cu interfața utilizatorului simplifică arhitectura generală și reduce necesitatea unui backend separat, fără a compromite separarea responsabilităților.
 
-Pentru accesul la date, combinația dintre \textbf{Prisma} și \textbf{CockroachDB} oferă un model de persistență robust, compatibil cu standardele SQL, dar pregătit pentru scenarii de scalare viitoare.
-Definirea declarativă a schemei bazei de date și generarea automată a clientului TypeScript contribuie la creșterea siguranței, lizibilității și mentenabilității codului.
+Pentru accesul la date, combinația dintre \textbf{Prisma} și \textbf{CockroachDB} oferă un model de persistență robust, compatibil cu standardele SQL și pregătit pentru scenarii de scalare viitoare.
+Definirea declarativă a schemei bazei de date, alături de generarea automată a clientului TypeScript, contribuie la creșterea siguranței, lizibilității și mentenabilității codului.
 
 Procesul de testare a evidențiat importanța combinării mai multor niveluri de validare.
-Testele unitare și de integrare realizate cu \textbf{Vitest} asigură corectitudinea logicii interne, în timp ce testele end-to-end cu \textbf{Playwright} validează funcționarea aplicației din perspectiva utilizatorului final, inclusiv în contextul randării server-side.
+Testele unitare și de integrare realizate cu \textbf{Vitest} asigură corectitudinea logicii interne a aplicației.
+În completare, testele end-to-end cu \textbf{Playwright} validează funcționarea sistemului din perspectiva utilizatorului final, inclusiv în contextul randării server-side.
 
-Din punct de vedere al obiectivelor inițiale, proiectul îndeplinește cerințele funcționale ale unui MVP (Minimum Viable Product), oferind funcționalități de bază pentru gestionarea ingredientelor și demonstrând fezabilitatea arhitecturii propuse.
-Structura modulară a monorepo-ului și utilizarea Nx permit extinderea ulterioară a aplicației fără modificări structurale majore.
+Din punctul de vedere al obiectivelor inițiale, proiectul îndeplinește cerințele funcționale ale unui MVP (Minimum Viable Product).
+Aplicația oferă funcționalități de bază pentru gestionarea ingredientelor și demonstrează fezabilitatea arhitecturii propuse.
+Structura modulară a monorepo-ului și utilizarea instrumentului Nx permit extinderea ulterioară a aplicației fără modificări structurale majore.
 
-În concluzie, aplicația \textit{Kookio} demonstrează că arhitectura PAN poate fi utilizată ca model coerent pentru dezvoltarea aplicațiilor web full-stack moderne, oferind atât valoare practică, cât și un cadru solid pentru analiză academică și dezvoltare ulterioară.
+În ansamblu, studiul realizat prin aplicația \textit{Kookio} arată că arhitectura PAN poate fi utilizată ca model coerent pentru dezvoltarea aplicațiilor web full-stack moderne.
+Aceasta oferă atât valoare practică, cât și un cadru solid pentru analiză academică și dezvoltare ulterioară.
 
 \section*{Direcții viitoare}\label{sec:roadmap}
 

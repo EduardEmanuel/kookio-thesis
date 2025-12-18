@@ -3,25 +3,29 @@
 
 \section*{Motivație}
 În contextul vieții moderne, tot mai multe persoane caută soluții digitale care să simplifice organizarea meselor zilnice și gestionarea ingredientelor disponibile în gospodărie.
-Lipsa unei evidențe clare a ingredientelor conduce frecvent la achiziții redundante și la risipă alimentară, fenomen cu impact atât economic, cât și social.
+Lipsa unei evidențe clare a ingredientelor conduce frecvent la achiziții redundante și, implicit, la risipă alimentară, fenomen cu impact atât economic, cât și social.
 
-În același timp, aplicațiile web moderne se confruntă cu provocări tehnice semnificative, precum performanța la încărcare, coerența dintre frontend și backend și mentenanța pe termen lung a codului.
-Aceste provocări devin mai accentuate în aplicațiile full-stack, unde integrarea deficitară a straturilor conduce la creșterea complexității și a costurilor de dezvoltare.
+În paralel, aplicațiile web moderne se confruntă cu provocări tehnice semnificative.
+Printre acestea se numără performanța la încărcare, coerența dintre frontend și backend, precum și mentenanța pe termen lung a codului.
+Aceste dificultăți devin mai accentuate în aplicațiile full-stack, unde o integrare deficitară a straturilor conduce la creșterea complexității și a costurilor de dezvoltare.
 
-Proiectul \textit{Kookio} abordează aceste probleme prin adoptarea unei arhitecturi web moderne, bazate pe ecosistemul \texttt{TypeScript}, care integrează frontend-ul, backend-ul și stratul de persistență într-un flux unitar de dezvoltare.
+Proiectul \textit{Kookio} abordează aceste probleme prin adoptarea unei arhitecturi web moderne, bazate pe ecosistemul \texttt{TypeScript}.
+Această arhitectură integrează frontend-ul, backend-ul și stratul de persistență într-un flux unitar de dezvoltare.
 În acest context, este analizată arhitectura \textbf{PAN (Prisma--Analog--Nx)} ca model pentru realizarea unor aplicații web full-stack coerente, extensibile și ușor de testat.
 
 \section*{Scopul lucrării}
-Scopul acestei lucrări este proiectarea și implementarea unei aplicații web full-stack care permite gestionarea inventarului de ingrediente pentru utilizatori casnici, servind drept studiu de caz pentru evaluarea arhitecturii PAN și pentru explorarea impactului acesteia asupra dezvoltării aplicațiilor moderne.
+Scopul acestei lucrări este proiectarea și implementarea unei aplicații web full-stack care permite gestionarea inventarului de ingrediente pentru utilizatori casnici.
+Aplicația servește drept studiu de caz pentru evaluarea arhitecturii PAN și pentru analiza impactului acesteia asupra dezvoltării aplicațiilor web moderne.
 
 În acest sens, lucrarea își propune:
 \begin{itemize}
   \item realizarea unui sistem de gestiune a ingredientelor, cu persistență într-o bază de date relațională;
-  \item integrarea frontend-ului și backend-ului într-un flux de dezvoltare unitar, cu partajarea tipurilor și a validărilor;
-  \item analiza beneficiilor arhitecturii PAN în ceea ce privește modularitatea, productivitatea și mentenanța;
+  \item integrarea frontend-ului și backend-ului într-un flux de dezvoltare unitar, cu partajarea tipurilor și a mecanismelor de validare;
+  \item analiza beneficiilor arhitecturii PAN în ceea ce privește modularitatea, productivitatea și mentenanța aplicației;
   \item validarea implementării prin testare automată unitară, de integrare și end-to-end.
 \end{itemize}
 
-Aplicația este concepută ca un produs minim viabil (MVP), care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi, contribuind astfel la reducerea risipei alimentare.
+Aplicația este concepută ca un produs minim viabil (MVP), care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi.
+Prin aceste extensii, aplicația poate contribui indirect la reducerea risipei alimentare.
 Detaliile privind implementarea sunt prezentate în \chapref{ch:impl}.
 % 1-introducere.tex ends here
