@@ -148,17 +148,29 @@
 % Headers & appendices
 % ------------------------------------------------------------------
 \usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[R]{\thepage}
 
-\usepackage[toc,page]{appendix}
+\pagestyle{fancy} 
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\usepackage[toc]{appendix}
 
 % ------------------------------------------------------------------
 % Metadata
 % ------------------------------------------------------------------
 \newcommand{\studentname}{Absolvent: Eduard - Emanuel Dinea}
-\newcommand{\teachername}{Coordonator științific: Lect. dr. Mihai Cherciu}
+\newcommand{\teachername}{Coordonator științific: -}
 \newcommand{\releasedate}{București, iulie 2026}
 \newcommand{\thesistitle}{Arhitectura PAN ca model pentru aplicații web full-stack}
 \newcommand{\thesissubtitle}{Studiu de caz privind reducerea risipei alimentare}
@@ -182,10 +194,18 @@
 \begin{document}
 
 \input{0-title.tex}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
 \input{0-abstract.tex}
 
 \tableofcontents
 \clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 \input{1-introducere.tex}
 \input{2-preliminarii.tex}
@@ -193,9 +213,10 @@
 \input{3-concluzii.tex}
 
 \begin{appendices}
-\input{anexa-latex.tex}
-\end{appendices}
 
+\input{4-anexe.tex}
+
+\end{appendices}
 \printbibliography
 \end{document}
 % main.tex ends here
