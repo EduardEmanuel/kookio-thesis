@@ -2,18 +2,14 @@
 \chapter{Anexă: Redactarea lucrării în \LaTeX}\label{ch:appendix-latex}
 
 \section{Instrumente pentru redactare}
-Lucrarea a fost redactată cu motorul \texttt{LuaLaTeX}, folosind fonturi Unicode și pachetul
-\texttt{biblatex} pentru gestionarea bibliografiei. Structura este modulară, fiecare capitol
-fiind un fișier separat (\texttt{.tex}) compilat prin scripturile automate de build.
+Lucrarea a fost redactată cu motorul \gls{lualatex}, folosind fonturi \gls{unicode} și pachetul \gls{biblatex} pentru gestionarea bibliografiei. Structura este modulară, fiecare capitol fiind un fișier separat (\texttt{.tex}) compilat prin scripturi automate de \gls{build}.
 Imaginile sunt salvate în \texttt{images/}, iar citările se realizează cu \verb|\cite{}|.
 
 \section{Compatibilitate multiplatformă}
-Există scripturi automate pentru Linux (\texttt{build.sh}), Windows (\texttt{build.bat})
-și PowerShell (\texttt{build.ps1}) care generează PDF-ul în directorul \texttt{dist/}
-și afișează eventualele erori de compilare.
+Există scripturi automate pentru \gls{linux} (\texttt{build.sh}), \gls{windows} (\texttt{build.bat}) și \gls{powershell} (\texttt{build.ps1}) care generează \acrfull{pdf} în directorul \texttt{dist/} și afișează eventualele erori de compilare.
 
 \vspace{0.5em}
-\noindent\textit{Notă:} Mediul \texttt{TreeVerb} utilizează fontul \texttt{FreeMono} pentru suport complet al caracterelor Unicode de tip box-drawing (U+2500–U+257F).
+\noindent\textit{Notă:} Mediul \gls{treeverb} utilizează fontul \gls{freemono} pentru suport complet al caracterelor \gls{unicode} de tip box-drawing (U+2500–U+257F).
 
 % ----------------------------------------------------------
 % Include non-cited but relevant sources to keep bibliography complete
@@ -22,24 +18,24 @@ Există scripturi automate pentru Linux (\texttt{build.sh}), Windows (\texttt{bu
 % but were not cited directly in the main chapters (e.g., roadmap tools).
 \nocite{vite,cockroachdb,redis,firebase_auth,json_schema}
 
-\chapter{Kookio: Manifest Arhitectural PAN (Prisma – Analog – Nx)}\label{ch:appendix-manifest}
+\chapter{\texorpdfstring{\gls{kookio}: Manifest Arhitectural \acrfull{pan}}{Kookio: Manifest Arhitectural PAN}}\label{ch:appendix-manifest}
 
 \section{Viziune generală}
-\textbf{Kookio} este o aplicație full-stack dezvoltată în \texttt{TypeScript}, bazată pe arhitectura
-\textbf{PAN} — un cadru scalabil care integrează \textbf{Prisma} pentru acces la date,
-\textbf{Analog} pentru randare hibridă și \textbf{Nx} pentru orchestrare monorepo.
-Această abordare reprezintă o alternativă la stack-uri consacrate (JAMstack, MEAN),
-fiind adaptată ecosistemului \texttt{Angular} și cerințelor enterprise.
+\textbf{\gls{kookio}} este o aplicație \gls{fullstack} dezvoltată în \gls{typescript}, bazată pe arhitectura
+\textbf{\gls{pan}} — un cadru scalabil care integrează \textbf{\gls{prisma}} pentru acces la date,
+\textbf{\gls{analog}} pentru \gls{randarehibrida} și \textbf{\gls{nx}} pentru orchestrare \gls{monorepo}.
+Această abordare reprezintă o alternativă la stack-uri consacrate (\gls{jamstack}, \gls{mean}),
+fiind adaptată ecosistemului \gls{angular} și cerințelor enterprise.
 
 \section{Componentele arhitecturii}
 \begin{itemize}
-  \item \textbf{Prisma} – ORM cu suport pentru PostgreSQL și extensii NewSQL (CockroachDB).
-  \item \textbf{Analog} – meta-framework pentru Angular cu SSR, Signals și tRPC.
-  \item \textbf{Nx} – orchestrator modular care optimizează build-urile și testele.
+  \item \textbf{\gls{prisma}} – \gls{orm} cu suport pentru \gls{postgresql} și extensii \gls{newsql} (\gls{cockroachdb}).
+  \item \textbf{\gls{analog}} – meta-framework pentru \gls{angular} cu \acrfull{ssr}, \gls{signals} și \acrfull{trpc}, urmate de \gls{hydration} în client.
+  \item \textbf{\gls{nx}} – orchestrator modular care optimizează \gls{build}-urile și testele în context \gls{monorepo}.
 \end{itemize}
 
 \section{Structura fizică a proiectului}
-Structura completă a monorepo-ului este ilustrată în \textbf{§~\ref{subsec:monorepo-struct}} din capitolul~\ref{ch:impl}.
+Structura completă a \gls{monorepo}-ului este ilustrată în \textbf{§~\ref{subsec:monorepo-struct}} din capitolul~\ref{ch:impl}.
 
 \section{Avantaje comparative}
 \begin{table}[H]
@@ -47,16 +43,16 @@ Structura completă a monorepo-ului este ilustrată în \textbf{§~\ref{subsec:m
   \small
   \begin{tabularx}{\linewidth}{@{} Y Y Y Y @{}}
     \toprule
-    \thead{Caracteristică} & \thead{JAMstack} & \thead{MEAN} & \thead{PAN (Kookio)} \\
+    \thead{Caracteristică} & \thead{\gls{jamstack}} & \thead{\gls{mean}} & \thead{\gls{pan} (\gls{kookio})} \\
     \midrule
-    SSR / Hybrid Rendering  & Parțial (Next.js) & Nu & Da (Analog SSR) \\
-    Type-safety end-to-end  & Parțial           & Nu (Mongo/JS) & Da (TS + Prisma + Angular) \\
-    Structurare modulară    & Slabă             & Medie         & Excelentă (Nx + libs) \\
-    Acces la date           & Headless CMS/REST & REST/Mongoose & ORM modern (Prisma) \\
-    Adaptabilitate monorepo & Nu                & Nu            & Da \\
+    \acrshort{ssr} / \gls{randarehibrida}  & Parțial (\gls{nextjs}) & Nu & Da (\gls{analog} + \acrshort{ssr}) \\
+    Type-safety end-to-end       & Parțial                 & Nu (Mongo/JS) & Da (\gls{typescript} + \gls{prisma} + \gls{angular}) \\
+    Structurare modulară         & Slabă                   & Medie         & Excelentă (\gls{nx} + biblioteci) \\
+    Acces la date                & Headless \acrshort{cms}/\acrshort{rest} & \acrshort{rest}/\gls{mongoose} & \gls{orm} modern (\gls{prisma}) \\
+    Adaptabilitate \gls{monorepo} & Nu                      & Nu            & Da \\
     \bottomrule
   \end{tabularx}
-  \caption{Comparație între arhitectura PAN și alte stack-uri moderne}
+  \caption{Comparație între arhitectura \gls{pan} și alte stack-uri moderne}
   \label{tab:pan-adv}
 \end{table}
 
@@ -64,6 +60,6 @@ Structura completă a monorepo-ului este ilustrată în \textbf{§~\ref{subsec:m
 Direcțiile viitoare de dezvoltare sunt prezentate în \textbf{§~\ref{sec:roadmap}}, unde sunt discutate extensiile funcționale și tehnice ale aplicației.
 
 \section{Concluzie}
-Arhitectura \textbf{PAN} sintetizează cele mai bune practici moderne din ecosistemul \texttt{TypeScript}, oferind o experiență unificată full-stack și o bază solidă pentru aplicații educaționale, alimentare sau de lifestyle, precum viziunea \textit{Kookio}.
-\textbf{PAN} nu reprezintă un standard formal, ci un model arhitectural derivat din integrarea unor tehnologii mature, validat prin implementarea aplicației \textit{Kookio}.
+Arhitectura \textbf{\gls{pan}} sintetizează cele mai bune practici moderne din ecosistemul \gls{typescript}, oferind o experiență unificată \gls{fullstack} și o bază solidă pentru aplicații educaționale, alimentare sau de lifestyle, precum viziunea \textit{\gls{kookio}}.
+\textbf{\gls{pan}} nu reprezintă un standard formal, ci un model arhitectural derivat din integrarea unor tehnologii mature, validat prin implementarea aplicației \textit{\gls{kookio}}.
 % anexa-latex.tex ends here

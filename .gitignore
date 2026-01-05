@@ -11,6 +11,13 @@
 *.bcf
 *.blg
 *.bbl
+*.glo
+*.ist
+*.gls-abr
+*.gls
+*.glo-abr
+*.glg-abr
+*.glg
 
 # LaTeX temporary or generated folders
 latex.out/
@@ -19,3 +26,6 @@ _build/
 # Ignore all PDFs, excepts those from ```dist/``` folder
 *.pdf
 !dist/*.pdf
+
+# Ignore resources under the ```ignored/``` folder
+ignored/

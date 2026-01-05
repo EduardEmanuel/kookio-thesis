@@ -3,14 +3,14 @@
 
 \section{Prezentare generală a implementării}
 
-Aplicația \textit{Kookio} este implementată conform arhitecturii \textbf{PAN}, descrisă în Anexa~\ref{ch:appendix-manifest}.
+Aplicația \textit{\gls{kookio}} este implementată conform arhitecturii \textbf{\gls{pan}}, descrisă în Anexa~\ref{ch:appendix-manifest}.
 Această secțiune prezintă structura concretă a proiectului, organizarea codului și fluxurile principale de execuție, din perspectiva implementării efective.
 
 \subsection{Structura monorepo-ului Nx}\label{subsec:monorepo-struct}
 \vspace{0.3cm}
 \begin{TreeVerb}
 kookio/
-├── web/                        # aplicație Analog SSR Angular 20
+├── web/                        # aplicație Analog SSR (Angular 20)
 │                                 cu client tRPC și module funcționale
 ├── web-e2e/                    # suită de teste Playwright pentru
 │                                 aplicația web
@@ -31,154 +31,152 @@ kookio/
 ├── package.json                # manifestul principal al proiectului
 ├── tsconfig.base.json          # configurația de bază TypeScript
 ├── vercel.json                 # configurația proiectului Vercel
-└── vitest.workspace.ts         # configurația Vitest la nivel de
-                                  workspace
+└── vitest.workspace.ts         # configurația Vitest la nivel de workspace
 \end{TreeVerb}
 \vspace{0.3cm}
 
-Această organizare permite separarea clară a responsabilităților între aplicația web, testele end-to-end și bibliotecile reutilizabile, facilitând dezvoltarea incrementală și testarea independentă a componentelor \cite{nx}.
+Această organizare permite separarea clară a responsabilităților între aplicația \gls{web}, \gls{e2e} și \glspl{library} reutilizabile, facilitând dezvoltarea incrementală și testarea independentă a componentelor \cite{nx}.
 
-\subsection{Fluxul aplicației end-to-end}\label{subsec:e2e-flow}
+\subsection{Fluxul aplicației cap-coadă}\label{subsec:e2e-flow}
 
-În implementarea aplicației Kookio, fluxul principal de date urmează traseul:
-\textit{Analog (UI și SSR)} → \textit{tRPC (API type-safe)} → \textit{Prisma (acces la date)} \cite{analog,trpc,prisma}.
-
-Această structură permite propagarea tipurilor între client și server și integrarea directă a logicii de business în cadrul rutelor server-side \cite{trpc}.
+În implementarea aplicației \textit{\gls{kookio}}, fluxul principal de date urmează traseul:
+\textit{\Gls{analog} (\acrshort{ui} și \acrfull{ssr})} \(\rightarrow\) \textit{\acrfull{trpc} (\acrshort{api} type-safe)} \(\rightarrow\) \textit{\gls{prisma} (acces la date)} \cite{analog,trpc,prisma}.
+Această structură permite propagarea tipurilor \gls{typescript} între client și server și integrarea directă a logicii de business în cadrul rutelor server-side \cite{trpc}.
 
 \section{Implementarea aplicației}
 
-Acest capitol descrie implementarea practică a aplicației Kookio, evidențiind modul în care conceptele prezentate în capitolele anterioare sunt transpuse într-un sistem funcțional.
+Acest capitol descrie implementarea practică a aplicației \textit{\gls{kookio}}, evidențiind modul în care conceptele prezentate în capitolele anterioare sunt transpuse într-un sistem funcțional.
 Sunt analizate structura proiectului, organizarea codului, fluxurile de date și deciziile tehnice care au stat la baza realizării aplicației.
 
 \subsection{Arhitecturi web moderne}
 
-Aplicarea practică a arhitecturilor web moderne presupune alegerea unei strategii de randare adaptate tipului de conținut și cerințelor de performanță.
-În proiectul \textit{Kookio}, randarea este abordată \textbf{hibrid}, combinând randarea server-side cu generarea de pagini statice acolo unde este posibil \cite{analog,nitro}.
+Aplicarea practică a arhitecturilor \gls{web} moderne presupune alegerea unei strategii de \gls{randare} adaptate tipului de conținut și cerințelor de performanță.
+În proiectul \textit{\gls{kookio}}, etapa de \gls{randare} este abordată \textbf{hibrid}, combinând \acrfull{ssr} cu \acrfull{ssg} acolo unde este posibil \cite{analog,nitro}.
 
 \begin{itemize}
-  \item \textbf{SSR (Server-Side Rendering)} este utilizat pentru paginile dinamice, unde conținutul trebuie livrat rapid și în mod consistent indiferent de dispozitiv, serverul generând HTML-ul inițial \cite{analog,nitro}.
-  \item \textbf{SSG (Static Site Generation / prerender)} este utilizat pentru rute stabile, care pot fi pre-generate la build-time (de exemplu pagini informative), reducând costul de execuție la runtime \cite{analog}.
-  \item \textbf{CSR} rămâne relevant prin faptul că, după încărcarea inițială, interfața funcționează ca o aplicație interactivă în browser, iar actualizările sunt realizate fără reîncărcarea completă a paginii.
+  \item \textbf{\acrfull{ssr}} este utilizat pentru paginile dinamice, unde conținutul trebuie livrat rapid și în mod consistent indiferent de dispozitiv, serverul generând \acrshort{html}-ul inițial \cite{analog,nitro}.
+  \item \textbf{\acrfull{ssg}} (prerender) este utilizat pentru rute stabile, care pot fi pre-generate la \gls{buildtime} (de exemplu pagini informative), reducând costul de execuție la runtime \cite{analog}.
+  \item \textbf{\acrfull{csr}} rămâne relevant prin faptul că, după încărcarea inițială, interfața funcționează ca o aplicație interactivă în browser, iar actualizările sunt realizate fără reîncărcarea completă a paginii.
 \end{itemize}
 
-Această combinație permite un compromis eficient între performanță, flexibilitate și experiența utilizatorului, fără a separa artificial aplicația în proiecte distincte de frontend și backend \cite{analog,nitro}.
+Această combinație permite un compromis eficient între performanță, flexibilitate și experiența utilizatorului, fără a separa artificial aplicația în proiecte distincte de \gls{frontend} și \gls{backend} \cite{analog,nitro}.
 
 \subsection{Structura proiectului și organizarea codului}
 
-Aplicația Kookio este implementată într-un monorepo gestionat cu Nx, care permite organizarea coerentă a aplicațiilor și bibliotecilor reutilizabile \cite{nx}.
+Aplicația \textit{\gls{kookio}} este implementată într-un \gls{monorepo} gestionat cu \gls{nx}, care permite organizarea coerentă a aplicațiilor și \glspl{library} reutilizabile \cite{nx}.
 Această abordare facilitează separarea responsabilităților și încurajează reutilizarea codului, menținând în același timp un control centralizat asupra configurațiilor și dependențelor.
 
 Structura principală a proiectului este împărțită în:
 \begin{itemize}
-  \item o aplicație web principală, responsabilă de interfața utilizator și logica server-side;
-  \item biblioteci de acces la date, care conțin schema bazei de date și codul asociat ORM-ului \cite{prisma};
-  \item biblioteci partajate, utilizate pentru utilitare și date mock.
+  \item o aplicație \gls{web} principală, responsabilă de \acrshort{ui} și logica server-side;
+  \item \glspl{library} de acces la date, care conțin schema bazei de date și codul asociat \acrfull{orm} \cite{prisma};
+  \item \glspl{library} partajate, utilizate pentru utilitare și date \textit{mock}.
 \end{itemize}
 
 Această organizare permite dezvoltarea incrementală a aplicației și extinderea facilă a funcționalităților, fără a introduce dependențe circulare sau redundanță \cite{nx}.
 
 \subsection{Angular și randare server-side}
 
-În cadrul proiectului \textit{Kookio}, interfața este construită cu Angular, iar suportul pentru randare server-side este obținut prin meta-framework-ul \textbf{Analog}, care rulează peste runtime-ul \textbf{Nitro} \cite{analog,nitro}.
-Această integrare permite ca aplicația să livreze HTML inițial generat pe server, iar ulterior să devină complet interactivă în browser.
+În cadrul proiectului \textit{\gls{kookio}}, interfața este construită cu \gls{angular}, iar suportul pentru \acrlong{ssr} este obținut prin meta-framework-ul \textbf{\gls{analog}}, care rulează peste runtime-ul \textbf{\gls{nitro}} \cite{analog,nitro}.
+Această integrare permite ca aplicația să livreze \acrshort{html} inițial generat pe server, iar ulterior să devină complet interactivă în browser.
 
 Fluxul de execuție este compus din două etape:
 \begin{itemize}
-  \item \textbf{Randare pe server (SSR)}: la accesarea unei rute, serverul generează HTML-ul inițial și îl trimite către client, reducând timpul până la primul conținut vizibil și îmbunătățind compatibilitatea cu motoarele de căutare \cite{analog,nitro}.
-  \item \textbf{Activarea interfeței în client}: după încărcare, codul Angular rulează în browser și preia controlul asupra interfeței, permițând interacțiuni dinamice și apeluri către API fără reîncărcări complete.
+  \item \textbf{\Acrfull{ssr}}: la accesarea unei rute, serverul generează \acrshort{html}-ul inițial și îl trimite către client, reducând timpul până la primul conținut vizibil și îmbunătățind compatibilitatea cu motoarele de căutare \cite{analog,nitro}.
+  \item \textbf{Activarea interfeței în client}: după încărcare, codul \gls{angular} rulează în browser și preia controlul asupra interfeței, permițând interacțiuni dinamice și apeluri către \acrshort{api} fără reîncărcări complete.
 \end{itemize}
 
-Un avantaj important al acestei abordări este faptul că rutele de aplicație și rutele de tip API coexistă în același proiect (ex.: endpoint-uri de tip tRPC și rute auxiliare precum \texttt{/api/v1/health}), permițând implementarea unui sistem full-stack coerent, cu acces la baza de date realizat exclusiv pe server \cite{analog,nitro,trpc}.
+Un avantaj important al acestei abordări este faptul că rutele de aplicație și rutele de tip \acrshort{api} coexistă în același proiect (ex.: \glspl{endpoint} de tip \acrshort{trpc} și rute auxiliare precum \texttt{/api/health}), permițând implementarea unui sistem full-stack coerent, cu acces la baza de date realizat exclusiv pe server \cite{analog,nitro,trpc}.
 
 \subsection{Gestionarea datelor cu Prisma și CockroachDB}
 
-Persistența datelor este realizată cu ajutorul Prisma ORM, configurat pentru a utiliza CockroachDB prin protocolul PostgreSQL \cite{prisma,cockroachdb,postgresql}.
-Prisma oferă un model declarativ pentru definirea structurii bazei de date, precum și un client tipizat pentru interogarea acesteia din aplicație \cite{prisma}.
+Persistența datelor este realizată cu ajutorul \gls{prisma}, configurat pentru a utiliza \gls{cockroachdb} prin protocolul \gls{postgresql} \cite{prisma,cockroachdb,postgresql}.
+\Gls{prisma} oferă un model declarativ pentru definirea structurii bazei de date, precum și un client tipizat pentru interogarea acesteia din aplicație \cite{prisma}.
 
-Schema bazei de date este definită într-un fișier central, din care Prisma generează automat:
+Schema bazei de date este definită într-un fișier central, din care \gls{prisma} generează automat:
 \begin{itemize}
   \item structura tabelelor și a relațiilor,
   \item clientul de acces la date,
-  \item tipuri TypeScript asociate modelelor \cite{prisma}.
+  \item tipuri \gls{typescript} asociate modelelor \cite{prisma}.
 \end{itemize}
 
 Pentru modelul \texttt{Ingredient}, este utilizată o constrângere de unicitate compusă, care asigură faptul că un utilizator nu poate avea ingrediente duplicate cu același nume.
-Această regulă este exprimată direct în schema Prisma și este aplicată automat la nivelul bazei de date \cite{prisma}.
+Această regulă este exprimată direct în schema \gls{prisma} și este aplicată automat la nivelul bazei de date \cite{prisma}.
 
-\subsection{Comunicarea client--server cu tRPC}
+\subsection{Comunicarea client–server cu tRPC}
 
-Pentru comunicarea dintre client și server este utilizat tRPC, un framework care permite definirea API-urilor tipizate fără a introduce un strat suplimentar de serializare manuală \cite{trpc}.
-Prin această abordare, tipurile sunt partajate între frontend și backend, eliminând discrepanțele dintre contractele de date \cite{trpc}.
+Pentru comunicarea dintre client și server este utilizat \acrfull{trpc}, un framework care permite definirea \acrshort{api}-urilor tipizate fără a introduce un strat suplimentar de serializare manuală \cite{trpc}.
+Prin această abordare, tipurile sunt partajate între \gls{frontend} și \gls{backend}, eliminând discrepanțele dintre contractele de date \cite{trpc}.
 
-Routerele tRPC sunt definite pe server și expun operații precum:
+Routerele \acrshort{trpc} sunt definite pe server și expun operații precum:
 \begin{itemize}
   \item crearea unui ingredient,
   \item listarea ingredientelor,
   \item actualizarea și ștergerea acestora.
 \end{itemize}
 
-Clientul Angular consumă aceste operații direct, beneficiind de verificare statică a tipurilor și de autocompletare în timpul dezvoltării \cite{trpc}.
+Clientul \gls{angular} consumă aceste operații direct, beneficiind de verificare statică a tipurilor și de autocompletare în timpul dezvoltării \cite{trpc}.
 Această integrare reduce semnificativ riscul de erori la rulare și crește productivitatea dezvoltatorului.
 
 \subsection{Randare server-side și integrarea backend-ului}
 
-Aplicația utilizează randare server-side prin Analog, care rulează peste infrastructura Nitro \cite{analog,nitro}.
-Această abordare permite definirea rutelor API și a logicii de server direct în cadrul aplicației web, fără a necesita un backend separat \cite{nitro}.
+Aplicația utilizează \acrlong{ssr} prin \gls{analog}, care rulează peste infrastructura \gls{nitro} \cite{analog,nitro}.
+Această abordare permite definirea rutelor \acrshort{api} și a logicii de server direct în cadrul aplicației \gls{web}, fără a necesita un \gls{backend} separat \cite{nitro}.
 
-Rutele server-side includ atât endpoint-uri de tip API, cât și handler-e pentru tRPC \cite{trpc,nitro}.
-Prin această integrare, aplicația poate executa interogări către baza de date direct pe server, în contextul fiecărei cereri HTTP \cite{prisma}.
+Rutele server-side includ atât \glspl{endpoint} de tip \acrshort{api}, cât și \glspl{handler} pentru \acrshort{trpc} \cite{trpc,nitro}.
+Prin această integrare, aplicația poate executa interogări către baza de date direct pe server, în contextul fiecărei cereri \acrshort{http} \cite{prisma}.
 
 Această arhitectură reduce latența percepută de utilizator și permite un control mai bun asupra fluxului de date și al securității aplicației.
 
-\subsection{Logare și observabilitate}
+\subsection{Jurnalizare și observabilitate}
 
-Pentru monitorizarea comportamentului aplicației și facilitarea depanării, \textit{Kookio} utilizează un mecanism de logare unitar, disponibil atât în context server-side, cât și în execuția locală.
+Pentru monitorizarea comportamentului aplicației și facilitarea depanării, \textit{\gls{kookio}} utilizează un mecanism de \gls{logging} unitar, disponibil atât în context server-side, cât și în execuția locală, în sprijinul \gls{observability}.
 
-Logarea este realizată cu ajutorul bibliotecii \textbf{Pino} \cite{pino}, un logger performant pentru aplicații Node.js, ales pentru consumul redus de resurse și integrarea facilă în medii server-side moderne.
+Jurnalizarea este realizată cu ajutorul bibliotecii \textbf{\gls{pino}} \cite{pino}, un jurnal performant pentru aplicații Node.js, ales pentru consumul redus de resurse și integrarea facilă în medii server-side moderne.
 Această abordare permite înregistrarea coerentă a evenimentelor relevante din fluxul de execuție, fără a afecta semnificativ performanța aplicației.
 
 \subsection{Fluxul de execuție al unei cereri}\label{subsec:request-flow}
 
-Pentru a înțelege integrarea completă a componentelor prezentate anterior, este utilă analiza fluxului de execuție al unei cereri tipice în aplicația \textit{Kookio}, de la inițierea acesteia în browser până la accesul la datele persistente.
+Pentru a înțelege integrarea completă a componentelor prezentate anterior, este utilă analiza fluxului de execuție al unei cereri tipice în aplicația \textit{\gls{kookio}}, de la inițierea acesteia în browser până la accesul la datele persistente.
 
-Atunci când un utilizator accesează o rută a aplicației, cererea HTTP este preluată de runtime-ul server-side furnizat de Analog, bazat pe infrastructura \textbf{Nitro} \cite{analog,nitro}.
-În acest stadiu, aplicația Angular este executată pe server, iar structura inițială a paginii este randată sub formă de HTML \cite{analog}.
+Atunci când un utilizator accesează o rută a aplicației, cererea \acrshort{http} este preluată de runtime-ul server-side furnizat de \gls{analog}, bazat pe infrastructura \textbf{\gls{nitro}} \cite{analog,nitro}.
+În acest stadiu, aplicația \gls{angular} este executată pe server, iar structura inițială a paginii este randată sub formă de \acrshort{html} \cite{analog}.
 
-În timpul randării server-side, componentele Angular pot declanșa apeluri către proceduri \textbf{tRPC}, definite în stratul server-side al aplicației \cite{trpc}.
-Aceste proceduri reprezintă punctul de intrare pentru logica de business și realizează validarea datelor de intrare prin scheme Zod, generate din modelul Prisma \cite{zod,prisma,prisma_zod_generator}.
+În timpul \acrlong{ssr}, componentele \gls{angular} pot declanșa apeluri către proceduri \acrshort{trpc}, definite în stratul server-side al aplicației \cite{trpc}.
+Aceste proceduri reprezintă punctul de intrare pentru logica de business și realizează validarea datelor de intrare prin scheme \gls{zod}, generate din modelul \gls{prisma} \cite{zod,prisma,prisma_zod_generator}.
 
-Procedurile tRPC utilizează \textbf{Prisma Client} pentru a interacționa cu baza de date \textbf{CockroachDB}, executând operații de citire sau scriere într-un context tranzacțional sigur \cite{prisma,cockroachdb}.
-Rezultatele interogărilor sunt returnate către nivelul tRPC, apoi propagate către componentele Angular care participă la randarea inițială a paginii \cite{trpc}.
+Procedurile \acrshort{trpc} utilizează \gls{prismaclient} pentru a interacționa cu baza de date \textbf{\gls{cockroachdb}}, executând operații de citire sau scriere într-un context tranzacțional sigur \cite{prisma,cockroachdb}.
+Rezultatele interogărilor sunt returnate către nivelul \acrshort{trpc}, apoi propagate către componentele \gls{angular} care participă la randarea inițială a paginii \cite{trpc}.
 
-După finalizarea procesului de randare server-side, HTML-ul rezultat este trimis către browser.
-În paralel, aplicația Angular este descărcată și inițializată pe client, unde are loc procesul de \textbf{hidratare} (\textit{hydration}), prin care structura DOM generată pe server este reutilizată și îmbogățită cu interactivitate \cite{analog}.
+După finalizarea procesului de \acrlong{ssr}, \acrshort{html}-ul rezultat este trimis către browser.
+În paralel, aplicația \gls{angular} este descărcată și inițializată pe client, unde are loc procesul de \gls{hydration}, prin care structura \acrshort{dom} generată pe server este reutilizată și îmbogățită cu interactivitate \cite{analog}.
 
-Apelurile ulterioare inițiate din interfața utilizatorului (de exemplu, adăugarea sau actualizarea unui ingredient) sunt realizate direct din browser către procedurile tRPC, fără a mai necesita o randare completă pe server \cite{trpc}.
-Astfel, aplicația combină avantajele randării server-side pentru încărcarea inițială cu flexibilitatea și performanța interacțiunilor client-side.
+Apelurile ulterioare inițiate din interfața utilizatorului (de exemplu, adăugarea sau actualizarea unui ingredient) sunt realizate direct din browser către procedurile \acrshort{trpc}, fără a mai necesita o \gls{randare} completă pe server \cite{trpc}.
+Astfel, aplicația combină avantajele \acrlong{ssr} pentru încărcarea inițială cu flexibilitatea și performanța interacțiunilor pe client.
 
-Acest flux de execuție unitar demonstrează beneficiile arhitecturii full-stack adoptate în proiectul \textit{Kookio}, în care frontend-ul, backend-ul și stratul de persistență funcționează coerent într-un singur ecosistem TypeScript \cite{nx,analog,trpc,prisma}.
+Acest flux de execuție unitar demonstrează beneficiile arhitecturii full-stack adoptate în proiectul \textit{\gls{kookio}}, în care \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență funcționează coerent într-un singur ecosistem \gls{typescript} \cite{nx,analog,trpc,prisma}.
 
 \subsection{Testare și validare}
 
-Procesul de validare a aplicației include atât testare automată, cât și verificare manuală, fiind integrat în fluxul de dezvoltare al monorepo-ului Nx \cite{nx}.
+Procesul de validare a aplicației include atât \gls{unit}, cât și testare de \gls{integration}, fiind integrat în fluxul de dezvoltare al \gls{monorepo}-ului \gls{nx} \cite{nx}.
 
-Pentru testarea unitară și de integrare este utilizat \textbf{Vitest}, ales pentru integrarea sa nativă cu Vite și compatibilitatea cu ecosistemul Angular utilizat de Analog \cite{vitest,vite,analog}.
-Testele acoperă componentele UI, serviciile și logica de business, rulând într-un mediu controlat care permite izolarea dependențelor și verificarea comportamentului funcțiilor critice.
+Pentru \gls{unit} este utilizat \textbf{\gls{vitest}}, ales pentru integrarea sa nativă cu \gls{vite} și compatibilitatea cu ecosistemul \gls{angular} utilizat de \gls{analog} \cite{vitest,vite,analog}.
+Testele acoperă componentele \acrshort{ui}, serviciile și logica de business, rulând într-un mediu controlat care permite izolarea dependențelor și verificarea comportamentului funcțiilor critice.
 
-Testarea end-to-end este realizată cu \textbf{Playwright}, care simulează interacțiunea utilizatorului cu aplicația în browser \cite{playwright}.
-Aceasta este deosebit de relevantă în contextul randării server-side (SSR), întrucât permite validarea fluxurilor complete, de la generarea inițială a paginii pe server până la interacțiunea cu datele persistente prin API-ul tRPC \cite{analog,trpc}.
+Testarea \gls{e2e} și \gls{integration} sunt realizate cu \textbf{\gls{playwright}}, care simulează interacțiunea utilizatorului cu aplicația în browser \cite{playwright}.
+Această verificare este deosebit de relevantă în contextul \acrfull{ssr}, întrucât permite validarea fluxurilor complete, de la generarea inițială a paginii pe server până la interacțiunea cu datele persistente prin \acrshort{api}-ul \acrshort{trpc} \cite{analog,trpc}.
 
-Combinarea testelor unitare, de integrare și end-to-end contribuie la identificarea timpurie a defectelor și la creșterea stabilității aplicației, asigurând un comportament predictibil al sistemului în diferite scenarii de utilizare.
+Combinarea testelor \gls{unit}, de \gls{integration} și \gls{e2e} contribuie la identificarea timpurie a defectelor și la creșterea stabilității aplicației, asigurând un comportament predictibil al sistemului în diferite scenarii de utilizare.
 
 \subsection{Dezvoltare și deploy}
 
 Aplicația este dezvoltată local folosind un mediu care reproduce cât mai fidel configurația de producție.
-Variabilele de mediu sunt gestionate centralizat prin platforma Vercel, iar pentru dezvoltarea locală acestea sunt sincronizate cu ajutorul Vercel CLI \cite{vercel_cli}.
+Variabilele de mediu sunt gestionate centralizat prin platforma \gls{vercel}, iar pentru dezvoltarea locală acestea sunt sincronizate cu ajutorul Vercel \acrshort{cli} \cite{vercel_cli}.
 
-Deploy-ul aplicației este realizat pe platforma Vercel, care oferă suport nativ pentru aplicații server-side și integrare continuă.
+Deploy-ul aplicației este realizat pe platforma \gls{vercel}, care oferă suport nativ pentru aplicații server-side și integrare continuă (\acrshort{ci}).
 Această abordare permite rularea aplicației în medii distincte (dezvoltare, testare, producție), cu baze de date separate și configurări independente.
 
-În practică, generarea Prisma Client trebuie realizată pe platforma țintă de execuție (Linux în cazul Vercel), deoarece binarele Prisma sunt dependente de sistemul de operare și de biblioteca SSL utilizată.
-Utilizarea unui client generat pe o mașină locală poate conduce la incompatibilități de tip \texttt{darwin-arm64} vs. \texttt{rhel-openssl-3.0.x}.
-Soluția adoptată constă în generarea Prisma Client în cadrul pipeline-ului de build și deploy.
+În practică, generarea \gls{prismaclient} trebuie realizată pe platforma țintă de execuție (\gls{linux} în cazul \gls{vercel}), deoarece \glspl{binary} Prisma sunt dependente de sistemul de operare și de biblioteca \acrshort{ssl} utilizată.
+Utilizarea unui client generat pe o mașină locală poate conduce la incompatibilități de tip \gls{darwinarm64} vs. \gls{rhelopenssl30x}.
+Soluția adoptată constă în generarea \gls{prismaclient} în cadrul pipeline-ului de build și deploy.
 % 1-implementare.tex ends here

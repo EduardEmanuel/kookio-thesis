@@ -46,14 +46,14 @@
 % Mathematics
 % ------------------------------------------------------------------
 \usepackage{amsmath,amssymb}
-\usepackage{unicode-math}
 \usepackage{mathtools}
+\usepackage{unicode-math}
 
 % ------------------------------------------------------------------
 % Layout & microtypography
 % ------------------------------------------------------------------
 \usepackage[a4paper, margin=2.5cm]{geometry}
-\usepackage{setspace}
+% \usepackage{setspace} % not used
 \usepackage{microtype}
 \setlength{\emergencystretch}{3em}
 \setlength{\parskip}{0.5em}
@@ -97,7 +97,30 @@
   \setcounter{biburllcpenalty}{9000}%
 }{}{}
 
-\DeclareUrlCommand\codepath{\urlstyle{tt}}
+% (removed unused) \DeclareUrlCommand\codepath{\urlstyle{tt}}
+
+% ------------------------------------------------------------------
+% Acronyms and Terms (glossaries-extra)
+% ------------------------------------------------------------------
+\usepackage{hyphenat}
+\DeclareRobustCommand{\NoHyphens}[1]{\mbox{#1}}
+
+\usepackage[abbreviations,nonumberlist,nopostdot,hyperfirst=true]{glossaries-extra}
+
+
+\setabbreviationstyle{long-short}
+\let\acrshort\glsxtrshort
+\let\acrlong \glsxtrlong
+\let\acrfull \glsxtrfull
+\pdfstringdefDisableCommands{%
+  \def\NoHyphens#1{#1}%
+  \def\glsxtrshort#1{#1}%
+  \def\glsxtrlong #1{#1}%
+  \def\glsxtrfull #1{#1}%
+}
+% \preto\chapter{\glsresetall} % commented in order to avoid hyperlink polution
+\makeglossaries
+\loadglsentries{5-glosar}
 
 % ------------------------------------------------------------------
 % Bibliography
@@ -170,7 +193,7 @@
 % Metadata
 % ------------------------------------------------------------------
 \newcommand{\studentname}{Absolvent: Eduard - Emanuel Dinea}
-\newcommand{\teachername}{Coordonator științific: -}
+\newcommand{\teachername}{Coordonator științific: Lect. dr. Mihai Cherciu}
 \newcommand{\releasedate}{București, iulie 2026}
 \newcommand{\thesistitle}{Arhitectura PAN ca model pentru aplicații web full-stack}
 \newcommand{\thesissubtitle}{Studiu de caz privind reducerea risipei alimentare}
@@ -202,6 +225,8 @@
 \input{0-abstract.tex}
 
 \tableofcontents
+\newcommand{\glsunsetmany}[1]{\forcsvlist{\glsunset}{#1}}
+\glsunsetmany{avg,p50,p95,ssr,ssg,csr,api,db,orm,cicd,nx,analog,prisma,typescript,vitest,playwright,edgefunctions,serverless,hydration,monorepo,workflow,repository,github,gitlab}
 \clearpage
 
 \pagenumbering{arabic}
@@ -210,6 +235,7 @@
 \input{1-introducere.tex}
 \input{2-preliminarii.tex}
 \input{1-implementare.tex}
+\input{2a-evaluare.tex}
 \input{3-concluzii.tex}
 
 \begin{appendices}
@@ -217,6 +243,10 @@
 \input{4-anexe.tex}
 
 \end{appendices}
+
+\glsaddall
+\printglossary[title={Glosar de termeni}]
+\printglossary[type=\acronymtype,title={Lista de acronime}]
 \printbibliography
 \end{document}
 % main.tex ends here

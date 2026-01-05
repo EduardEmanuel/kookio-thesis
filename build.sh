@@ -33,13 +33,13 @@ if [[ "$MODE" == "full" ]]; then
 fi
 
 echo "Deleting generated files..."
-rm -f *.pdf *.aux *.log *.out *.toc *.run.xml *.nav *.snm *.fls *.fdb_latexmk
+rm -f *.pdf *.aux *.log *.out *.toc *.run.xml *.nav *.snm *.fls *.fdb_latexmk *.acn *.glo *.ist *.gls-abr *.gls *.glo-abr *.glg-abr *.glg
 [[ "$MODE" == "full" || "$MODE" == "delete" ]] && rm -f *.bcf *.blg *.bbl
 [[ "$MODE" == "delete" ]] && echo "Done deleting. Exiting." && exit 0
 
 echo "Compiling (mode: $MODE)..."
 lualatex "$TEX_FILE"
-[[ "$MODE" == "full" ]] && biber "$TEX_NAME" && lualatex "$TEX_FILE"
+[[ "$MODE" == "full" ]] && makeglossaries "$TEX_NAME" && biber "$TEX_NAME" && lualatex "$TEX_FILE"
 
 CURR_DIR_NAME=$(basename "$(pwd)")
 mkdir -p "$DIST_DIR"

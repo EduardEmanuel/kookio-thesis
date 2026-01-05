@@ -38,7 +38,7 @@ for %%I in (.) do set "CURR=%%~nxI"
 set "PDF_NAME=%TEX_NAME%_%CURR%.pdf"
 
 echo Deleting generated files...
-del /q *.pdf *.aux *.log *.out *.toc *.run.xml *.nav *.snm *.fls *.fdb_latexmk 2>nul
+del /q *.pdf *.aux *.log *.out *.toc *.run.xml *.nav *.snm *.fls *.fdb_latexmk *.acn *.glo *.ist *.gls-abr *.gls *.glo-abr *.glg-abr *.glg 2>nul
 if "%MODE%"=="full" (
     del /q *.bcf *.blg *.bbl 2>nul
 )
@@ -50,6 +50,7 @@ if "%MODE%"=="delete" (
 echo Compiling (mode: %MODE%)...
 lualatex %TEX_FILE%
 if "%MODE%"=="full" (
+    makeglossaries %TEX_NAME%
     biber %TEX_NAME%
     lualatex %TEX_FILE%
 )

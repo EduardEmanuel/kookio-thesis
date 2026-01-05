@@ -1,34 +1,34 @@
 % 3-concluzii.tex starts here
 \chapter{Concluzii}\label{ch:concl}
 
-Lucrarea de față a avut ca obiectiv proiectarea și implementarea unei aplicații web full-stack moderne, menită să demonstreze integrarea coerentă a tehnologiilor actuale din ecosistemul TypeScript într-o arhitectură unitară.
-Proiectul \textit{Kookio} a fost conceput atât ca aplicație funcțională, cât și ca studiu de caz pentru analiza arhitecturilor web hibride utilizate în contexte reale.
+Lucrarea de față a avut ca obiectiv proiectarea și implementarea unei aplicații \gls{web} \gls{fullstack} moderne, menită să demonstreze integrarea coerentă a tehnologiilor actuale din ecosistemul \gls{typescript} într-o arhitectură unitară.
+Proiectul \textit{\gls{kookio}} a fost conceput atât ca aplicație funcțională, cât și ca studiu de caz pentru analiza arhitecturilor \gls{web} bazate pe \gls{randarehibrida} utilizate în contexte reale.
 
-Adoptarea arhitecturii \textbf{PAN} (Prisma--Analog--Nx) a permis realizarea unui flux end-to-end tipizat, de la interfața utilizatorului până la nivelul de persistență al datelor.
-Această abordare reduce discrepanțele dintre frontend și backend, elimină duplicarea contractelor de date și facilitează dezvoltarea incrementală a funcționalităților.
-În acest context, arhitectura PAN se conturează ca un model viabil pentru aplicații web full-stack moderne.
+Adoptarea arhitecturii \textbf{\gls{pan}} a permis realizarea unui flux cap-coadă tipizat, de la interfața utilizatorului până la nivelul de persistență al datelor.
+Această abordare reduce discrepanțele dintre \gls{frontend} și \gls{backend}, elimină duplicarea contractelor de date și facilitează dezvoltarea incrementală a funcționalităților.
+În acest context, arhitectura \gls{pan} se conturează ca un model viabil pentru aplicații \gls{web} \gls{fullstack} moderne.
 
-Utilizarea \textbf{Angular} împreună cu \textbf{Analog} a permis implementarea unei aplicații cu randare server-side și hidratare client-side.
+Utilizarea \textbf{\gls{angular}} împreună cu \textbf{\gls{analog}} a permis implementarea unei aplicații cu \acrfull{ssr} și \gls{hydration} pe client.
 Această combinație îmbunătățește performanța percepută și compatibilitatea cu motoarele de căutare.
-Integrarea logicii de server în aceeași aplicație cu interfața utilizatorului simplifică arhitectura generală și reduce necesitatea unui backend separat, fără a compromite separarea responsabilităților.
+Integrarea logicii de server în aceeași aplicație cu interfața utilizatorului simplifică arhitectura generală și reduce necesitatea unui \gls{backend} separat, fără a compromite separarea responsabilităților.
 
-Pentru accesul la date, combinația dintre \textbf{Prisma} și \textbf{CockroachDB} oferă un model de persistență robust, compatibil cu standardele SQL și pregătit pentru scenarii de scalare viitoare.
-Definirea declarativă a schemei bazei de date, alături de generarea automată a clientului TypeScript, contribuie la creșterea siguranței, lizibilității și mentenabilității codului.
+Pentru accesul la date, combinația dintre \textbf{\gls{prisma}} și \textbf{\gls{cockroachdb}} oferă un model de persistență robust, compatibil cu standardele \gls{sql} și pregătit pentru scenarii de scalare viitoare.
+Definirea declarativă a schemei bazei de date, alături de generarea automată a \gls{prismaclient}, contribuie la creșterea siguranței, lizibilității și mentenabilității codului.
 
 Procesul de testare a evidențiat importanța combinării mai multor niveluri de validare.
-Testele unitare și de integrare realizate cu \textbf{Vitest} asigură corectitudinea logicii interne a aplicației.
-În completare, testele end-to-end cu \textbf{Playwright} validează funcționarea sistemului din perspectiva utilizatorului final, inclusiv în contextul randării server-side.
+Testele \gls{unit} cu \textbf{\gls{vitest}} asigură corectitudinea logicii interne a aplicației.
+În completare, testele \gls{e2e} și \gls{integration} realizate cu \textbf{\gls{playwright}} validează funcționarea sistemului din perspectiva utilizatorului final, inclusiv în contextul \acrshort{ssr}.
 
-Din punctul de vedere al obiectivelor inițiale, proiectul îndeplinește cerințele funcționale ale unui MVP (Minimum Viable Product).
+Din punctul de vedere al obiectivelor inițiale, proiectul îndeplinește cerințele funcționale ale unui \gls{mvp}.
 Aplicația oferă funcționalități de bază pentru gestionarea ingredientelor și demonstrează fezabilitatea arhitecturii propuse.
-Structura modulară a monorepo-ului și utilizarea instrumentului Nx permit extinderea ulterioară a aplicației fără modificări structurale majore.
+Structura modulară a \gls{monorepo}-ului gestionat cu \gls{nx} permite extinderea ulterioară a aplicației fără modificări structurale majore.
 
-În ansamblu, studiul realizat prin aplicația \textit{Kookio} arată că arhitectura PAN poate fi utilizată ca model coerent pentru dezvoltarea aplicațiilor web full-stack moderne.
+În ansamblu, studiul realizat prin aplicația \textit{\gls{kookio}} arată că arhitectura \gls{pan} poate fi utilizată ca model coerent pentru dezvoltarea aplicațiilor \gls{web} \gls{fullstack} moderne.
 Aceasta oferă atât valoare practică, cât și un cadru solid pentru analiză academică și dezvoltare ulterioară.
 
 \section*{Direcții viitoare}\label{sec:roadmap}
 
-Direcțiile viitoare de dezvoltare includ extinderea mecanismelor de autentificare și autorizare, optimizarea performanței prin introducerea unor strategii de caching și integrarea unor servicii inteligente pentru recomandarea rețetelor.
+Direcțiile viitoare de dezvoltare includ extinderea mecanismelor de \gls{authn} și \gls{authz}, optimizarea performanței prin introducerea unor strategii de \gls{caching} și integrarea unor servicii inteligente pentru recomandarea rețetelor.
 
 Aceste extensii pot fi realizate incremental, fără a afecta fundamentele arhitecturale prezentate în această lucrare.
 % 3-concluzii.tex ends here

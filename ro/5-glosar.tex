@@ -1,0 +1,505 @@
+% 5-glosar.tex starts here
+% Necesită în preambul: \usepackage{hyphenat}
+% ----------------------------------------------------------
+% ACRONYMS (used with \gls/\acr... rendered with \printglossary[type=\acronymtype])
+% ----------------------------------------------------------
+
+\newacronym{pan}{PAN}{Prisma–Analog–Nx}
+
+\newacronym{ssr}{SSR}{randare pe server}
+\newacronym{ssg}{SSG}{generare statică de pagini}
+\newacronym{csr}{CSR}{randare pe client}
+
+\newacronym{trpc}{tRPC}{apeluri de proceduri la distanță tipizate pentru TypeScript}
+
+\newacronym[longplural={obiecte de transfer de date}, shortplural={DTO-uri}]
+  {dto}{DTO}{obiect de transfer de date}
+
+\newacronym[longplural={mapări obiect–relaționale}, shortplural={ORM-uri}]
+  {orm}{ORM}{mapare obiect–relațională}
+
+\newacronym{odm}{ODM}{modelare a datelor orientată pe obiecte}
+
+\newacronym{e2e}{E2E}{testare cap-coadă}
+
+\newacronym{ci}{CI}{integrare continuă}
+\newacronym{cd}{CD}{livrare/implementare continuă}
+\newacronym{cicd}{CI/CD}{integrare continuă și livrare/implementare continuă}
+
+\newacronym{p50}{p50}{percentila 50 (mediană)}
+\newacronym{p95}{p95}{percentila 95}
+
+\newacronym[longplural={produse minime viabile}, shortplural={MVP-uri}]
+  {mvp}{MVP}{produs minim viabil}
+
+\newacronym{sql}{SQL}{limbaj de interogare structurat}
+
+\newacronym[longplural={interfețe de programare a aplicațiilor}, shortplural={API-uri}]
+  {api}{API}{interfață de programare a aplicațiilor}
+
+\newacronym[longplural={interfețe de utilizator}, shortplural={UI-uri}]
+  {ui}{UI}{interfață de utilizator}
+
+\newacronym[longplural={baze de date}, shortplural={DB-uri}]
+  {db}{DB}{bază de date}
+
+\newacronym[longplural={unități centrale de procesare}, shortplural={CPU-uri}]
+  {cpu}{CPU}{unitate centrală de procesare}
+
+\newacronym[longplural={unități de procesare grafică}, shortplural={GPU-uri}]
+  {gpu}{GPU}{unitate de procesare grafică}
+
+\newacronym[longplural={memorii cu acces aleator}, shortplural={RAM-uri}]
+  {ram}{RAM}{memorie cu acces aleator}
+
+\newacronym[longplural={interfețe de linie de comandă}, shortplural={CLI-uri}]
+  {cli}{CLI}{interfață de linie de comandă}
+
+\newacronym[longplural={localizatori uniformi de resurse}, shortplural={URL-uri}]
+  {url}{URL}{localizator uniform de resurse}
+
+\newacronym{jamstack}{JAMstack}{JavaScript, API-uri și Markup}
+\newacronym{mean}{MEAN}{MongoDB–Express–Angular–Node.js}
+
+\newacronym[longplural={sisteme de gestionare a conținutului}, shortplural={CMS-uri}]
+  {cms}{CMS}{sistem de gestionare a conținutului}
+
+\newacronym{rest}{REST}{transfer de stare reprezentațională}
+\newacronym[longplural={formate de document portabile}, shortplural={PDF-uri}]
+  {pdf}{PDF}{format de document portabil}
+
+\newacronym{html}{HTML}{HyperText Markup Language (limbaj de marcare hipertext)}
+
+\newacronym[longplural={sisteme de control al versiunilor}, shortplural={VCS-uri}]
+  {vcs}{VCS}{sistem de control al versiunilor}
+
+\newacronym{http}{HTTP}{protocol de transfer hipertext}
+\newacronym{https}{HTTPS}{protocol de transfer hipertext securizat}
+
+\newacronym{authn}{AuthN}{autentificare}
+\newacronym{authz}{AuthZ}{autorizare}
+\newacronym{sso}{SSO}{autentificare unică}
+\newacronym{mfa}{MFA}{autentificare multi-factor}
+
+\newacronym[longplural={modele ale obiectelor documentului}, shortplural={DOM-uri}]
+  {dom}{DOM}{model al obiectelor documentului}
+
+\newacronym[longplural={straturi de socketuri securizate}, shortplural={SSL-uri}]
+  {ssl}{SSL}{strat de socketuri securizate}
+\newacronym[longplural={mecanisme de securitate la nivelul transportului}, shortplural={TLS-uri}]
+  {tls}{TLS}{securitatea stratului de transport}
+
+% ----------------------------------------------------------
+% TERMS and NAMES (used with \gls rendered with \printglossary[title={Glosar de termeni}])
+% ----------------------------------------------------------
+
+\newglossaryentry{web}{
+  name={\NoHyphens{web}},
+  sort={web},
+  description={ecosistemul de resurse \emph{hipertext} accesibile prin Internet (World Wide Web); în lucrare, „aplicație web” desemnează aplicație accesată din browser, cu randare \glsxtrshort{ssr}/\glsxtrshort{ssg}/\glsxtrshort{csr}}
+}
+
+\newglossaryentry{nx}{
+  name={\NoHyphens{Nx}},
+  description={sistem de build și orchestrare pentru monorepo-uri JavaScript/TypeScript}
+}
+
+\newglossaryentry{prisma}{
+  name={\NoHyphens{Prisma}},
+  description={bibliotecă \glsxtrshort{orm} pentru TypeScript/Node.js}
+}
+
+\newglossaryentry{analog}{
+  name={\NoHyphens{Analog}},
+  description={meta-framework full-stack pentru \gls{angular}, cu suport \glsxtrshort{ssr} și rutare pe fișiere; folosit pentru aplicații \gls{web}}
+}
+
+\newglossaryentry{angular}{
+  name={\NoHyphens{Angular}},
+  description={platformă și framework pentru aplicații \gls{web} (SPA/\glsxtrshort{ssr})}
+}
+
+\newglossaryentry{nitro}{
+  name={\NoHyphens{Nitro}},
+  description={runtime universal (UnJS) pentru rute server și randare pe server (\glsxtrshort{ssr})}
+}
+
+\newglossaryentry{endpoint}{
+  name={\NoHyphens{endpoint}},
+  sort={endpoint},
+  plural={\NoHyphens{endpoint-uri}},
+  description={Punct final (URL) la care aplicația răspunde unei cereri \glsxtrshort{http}. În această lucrare, termenul acoperă atât rute \glsxtrshort{api} clasice (ex.: \texttt{/api/health}), cât și proceduri \glsxtrshort{trpc} expuse sub o rută agregatoare (ex.: \texttt{/api/trpc}). Un endpoint definește metoda, schema de intrare/ieșire și semantica răspunsului; este procesat de un \gls{handler}.},
+  see={[vezi și]{api,http,trpc,nitro}}
+}
+
+\newglossaryentry{handler}{
+  name={\NoHyphens{handler}},
+  sort={handler},
+  plural={\NoHyphens{handler-e}},
+  description={Funcție care primește o cerere (\textit{request}) și produce un răspuns (\textit{response}). În \gls{nitro}/\gls{analog} un handler procesează rute server (inclusiv \glsxtrshort{ssr}) sau endpoint-uri \glsxtrshort{api}; în \glsxtrshort{trpc}, \textit{resolver}-ele procedurilor acționează ca handler-e pentru apeluri tipizate.},
+  see={[vezi și]{endpoint,nitro,analog,trpc,ssr,api}}
+}
+
+\newglossaryentry{zod}{
+  name={\NoHyphens{Zod}},
+  description={bibliotecă de validare pe bază de schemă pentru TypeScript/JavaScript}
+}
+
+\newglossaryentry{cockroachdb}{
+  name={\NoHyphens{CockroachDB}},
+  description={sistem de gestiune a bazelor de date distribuit (\gls{newsql}), compatibil la nivel de protocol cu \gls{postgresql}, cu replicare și partiționare automate pentru reziliență și scalare orizontală},
+  sort={cockroachdb}
+}
+
+\newglossaryentry{postgresql}{
+  name={\NoHyphens{PostgreSQL}},
+  description={sistem de gestiune a bazelor de date relaționale open-source, cu suport extins pentru standardul \glsxtrshort{sql}, tranzacții ACID și extensibilitate prin tipuri și funcții definite de utilizator},
+  sort={postgresql}
+}
+
+\newglossaryentry{newsql}{
+  name={\NoHyphens{NewSQL}},
+  description={clasă de sisteme de gestiune a bazelor de date care păstrează modelul relațional și limbajul \glsxtrshort{sql}, oferind în același timp scalare orizontală și consistență ACID într-un mediu distribuit; multe implementări sunt compatibile la nivel de protocol cu \gls{postgresql} (de ex. \gls{cockroachdb})},
+  sort={newsql}
+}
+
+\newglossaryentry{avg}{
+  name={\NoHyphens{avg}},
+  sort={avg},
+  description={medie aritmetică a unui set de valori; în SQL corespunde funcției \texttt{AVG}, care (în implementările uzuale) ignoră valorile \texttt{NULL}. Se folosește în raportare împreună cu percentile precum \gls{p50} (mediană) și \gls{p95}}
+}
+
+\newglossaryentry{vercel}{
+  name={\NoHyphens{Vercel}},
+  description={platformă cloud pentru build, preview și deploy de aplicații \gls{web}, cu integrare \glsxtrshort{cicd}, variabile de mediu per mediu și suport pentru \glsxtrshort{ssr}, funcții \gls{serverless} și \gls{edgefunctions}},
+  sort={vercel}
+}
+
+\newglossaryentry{vitest}{
+  name={\NoHyphens{Vitest}},
+  description={framework de testare rapid pentru ecosistemul Vite, orientat spre teste unitare și de integrare, cu API în mare parte compatibil Jest și suport nativ pentru TypeScript},
+  sort={vitest}
+}
+
+\newglossaryentry{playwright}{
+  name={\NoHyphens{Playwright}},
+  description={bibliotecă pentru automatizarea browserelor și testare \glsxtrshort{e2e}, cu suport pentru Chromium, Firefox și WebKit, rulare headless/GUI și unelte precum trace viewer},
+  sort={playwright}
+}
+
+\newglossaryentry{edgefunctions}{
+  name={\NoHyphens{Edge Functions}},
+  description={funcții executate în rețeaua de \emph{edge} (aproape de utilizator), utile pentru latență redusă, personalizare și pre-/post-procesare a răspunsurilor \glsxtrshort{ssr}; pot rula cu constrângeri mai stricte (timp CPU, memorie) față de funcțiile serverless clasice},
+  sort={edgefunctions}
+}
+
+\newglossaryentry{serverless}{
+  name={\NoHyphens{serverless}},
+  description={model operațional în care alocarea resurselor și scalarea sunt gestionate de platformă; dezvoltatorul furnizează funcții sau servicii ce pornesc la cerere, cu facturare pe utilizare; folosit adesea pentru \glsxtrshortpl{api}, \glsxtrshort{ssr} și joburi programate},
+  sort={serverless}
+}
+
+\newglossaryentry{hydration}{
+  name={\NoHyphens{hidratare (hydration)}},
+  description={procesul prin care codul din client atașează comportament interactiv la \emph{markup}-ul generat prin \glsxtrshort{ssr}; permite trecerea de la randare inițială pe server la interacțiuni \glsxtrshort{csr} fără reîncărcarea paginii},
+  sort={hydration}
+}
+
+\newglossaryentry{monorepo}{
+  name={\NoHyphens{monorepo}},
+  description={strategie de organizare a codului în care mai multe aplicații și biblioteci coexistă într-un singur depozit, cu orchestrare unitară a build-urilor, testelor și \glsxtrshort{cicd}; în contextul lucrării este gestionat cu Nx},
+  sort={monorepo}
+}
+
+\newglossaryentry{mongoose}{
+  name={\NoHyphens{Mongoose}},
+  sort={mongoose},
+  description={bibliotecă de \emph{modelare a datelor} pentru \textit{MongoDB} în ecosistemul Node.js; oferă \emph{scheme}, validare, relații și \textit{middleware}/hooks pentru gestionarea logicii de persistență. Este frecvent folosită în cadrul stack-ului \glsxtrshort{mean}},
+  see={[vezi și]{mean}}
+}
+
+\newglossaryentry{typescript}{
+  name={\NoHyphens{TypeScript}},
+  sort={typescript},
+  description={superset tipizat al limbajului JavaScript care introduce tipuri statice și se transpilează la JavaScript}
+}
+
+\newglossaryentry{kookio}{
+  name={\NoHyphens{Kookio}},
+  sort={kookio},
+  description={aplicație \gls{web} full-stack folosită ca studiu de caz în această lucrare pentru gestionarea inventarului de ingrediente în arhitectura \gls{pan}}
+}
+
+\newglossaryentry{lualatex}{
+  name={\NoHyphens{LuaLaTeX}},
+  sort={lualatex},
+  description={motor \LaTeX{} bazat pe LuaTeX, cu suport nativ pentru Unicode și fonturi OpenType}
+}
+
+\newglossaryentry{biblatex}{
+  name={\NoHyphens{biblatex}},
+  sort={biblatex},
+  description={pachet \LaTeX{} pentru gestionarea bibliografiilor și citărilor cu backend-uri moderne (de ex. \texttt{biber})}
+}
+
+\newglossaryentry{unicode}{
+  name={\NoHyphens{Unicode}},
+  sort={unicode},
+  description={standard de codificare a caracterelor care oferă o mapare unică pentru simboluri folosite în scrieri și tehnică (ex. caractere \emph{box-drawing})}
+}
+
+\newglossaryentry{powershell}{
+  name={\NoHyphens{PowerShell}},
+  sort={powershell},
+  description={limbaj de scriptare și mediu de automatizare Microsoft, utilizat pentru task-uri de build și DevOps pe Windows}
+}
+
+\newglossaryentry{nextjs}{
+  name={\NoHyphens{Next.js}},
+  sort={nextjs},
+  description={framework React orientat pe randare hibridă (\glsxtrshort{ssr}/\glsxtrshort{ssg}), frecvent asociat cu \glsxtrshort{jamstack}}
+}
+
+\newglossaryentry{signals}{
+  name={\NoHyphens{Angular Signals}},
+  sort={angularsignals},
+  description={primitive reactive introduse în Angular pentru modelarea stării și propagarea schimbărilor cu granularitate fină}
+}
+
+\newglossaryentry{linux}{
+  name={\NoHyphens{Linux}},
+  sort={linux},
+  description={nucleu de sistem de operare și familie de distribuții GNU/Linux folosite pe scară largă în cloud, servere și desktop}
+}
+
+\newglossaryentry{windows}{
+  name={\NoHyphens{Windows}},
+  sort={windows},
+  description={sistem de operare Microsoft utilizat preponderent pe desktop și laptop, frecvent în mediile enterprise}
+}
+
+\newglossaryentry{freemono}{
+  name={\NoHyphens{FreeMono}},
+  sort={freemono},
+  description={font monospațiat din familia GNU FreeFont, cu suport Unicode extins (inclusiv caractere \emph{box-drawing} U+2500–U+257F)}
+}
+
+\newglossaryentry{treeverb}{
+  name={\NoHyphens{TreeVerb}},
+  sort={treeverb},
+  description={mediu \emph{verbatim} personalizat (bazat pe \texttt{fvextra}/\texttt{fancyvrb}) pentru randarea arborilor/structurilor de fișiere; folosește \gls{freemono} pentru simboluri \emph{box-drawing}}
+}
+
+\newglossaryentry{vite}{
+  name={\NoHyphens{Vite}},
+  sort={vite},
+  description={instrument de build și server de dezvoltare pentru aplicații \gls{web} moderne, bazat pe module ECMAScript, cu pornire foarte rapidă și \emph{hot module replacement} (HMR); stă la baza \gls{vitest} și este folosit de \gls{analog} pentru \glsxtrshort{ssr} și build}
+}
+
+\newglossaryentry{pino}{
+  name={\NoHyphens{Pino}},
+  sort={pino},
+  description={bibliotecă de logare pentru Node.js, orientată pe performanță (JSON logs, output low-overhead)}
+}
+
+\newglossaryentry{integration}{
+  name={\NoHyphens{testare de integrare (integration)}},
+  sort={integration},
+  plural={\NoHyphens{testări de integrare}},
+  description={nivel de testare care verifică interacțiunea dintre module/straturi (ex. \glsxtrshort{ui}+\glsxtrshort{api}, \glsxtrshort{trpc}+\gls{prisma}); în această lucrare este realizat predominant cu \gls{playwright} (inclusiv scenarii de integrare fără \glsxtrshort{ui} complet, folosind fixtures și acces la \glsxtrshort{api} atunci când este util)}
+}
+
+\newglossaryentry{unit}{
+  name={\NoHyphens{testare unitară (unit)}},
+  sort={unit},
+  plural={\NoHyphens{testări unitare}},
+  description={nivel de testare axat pe componente izolate (funcții, clase, componente \glsxtrshort{ui}), cu dependențe înlocuite (\emph{test doubles}); în lucrare este rulat predominant cu \gls{vitest}}
+}
+
+\newglossaryentry{repository}{
+  name={\NoHyphens{repository}},
+  sort={repository},
+  plural={\NoHyphens{repository-uri}},
+  description={spațiu logic pentru stocarea codului sursă, a istoricului de versiuni și a metadatelor; poate fi local sau la distanță (remote, ex.: GitHub/GitLab). În această lucrare, monorepo-ul reunește mai multe proiecte într-un singur repository.},
+  see={[vezi și]{monorepo}}
+}
+
+\newglossaryentry{github}{
+  name={\NoHyphens{GitHub}},
+  sort={github},
+  description={platformă de găzduire și colaborare pentru proiecte software bazate pe sistemul de versiuni Git; oferă găzduire de \glspl{repository}, mecanisme de colaborare (pull requests, code review), management de \emph{issues} și \glsxtrshort{cicd} prin GitHub Actions; utilizată frecvent pentru automatizări și publicare.},
+  see={[vezi și]{repository,cicd}}
+}
+
+\newglossaryentry{gitlab}{
+  name={\NoHyphens{GitLab}},
+  sort={gitlab},
+  description={platformă de găzduire și colaborare pentru proiecte software bazate pe Git, disponibilă ca serviciu cloud sau instalare self-hosted; integrează nativ \glsxtrshort{cicd} (GitLab CI/CD), management de \emph{issues}, \emph{merge requests} și registru de containere; alternativă la \gls{github} cu accent pe lanțul DevOps unificat.},
+  see={[vezi și]{repository,cicd}}
+}
+
+\newglossaryentry{workflow}{
+  name={\NoHyphens{workflow}},
+  sort={workflow},
+  plural={\NoHyphens{workflow-uri}},
+  description={configurație declarativă care descrie o succesiune de pași automatizați (build, testare, lint, deploy) declanșați de evenimente (ex.: push, pull request, programare). În ecosisteme precum \gls{github} Actions și \gls{gitlab} \glsxtrshort{ci}, un workflow este compus din job-uri și pași, poate folosi matrici, cache, artefacte, secrete/variabile și reguli de concurență. În acest proiect, workflow-urile orchestrează \glsxtrshort{cicd} și aliniază execuția la țintele \gls{nx}.},
+  see={[vezi și]{cicd,github,gitlab,nx}}
+}
+
+\newglossaryentry{compositeaction}{
+  name={\NoHyphens{composite action}},
+  sort={compositeaction},
+  plural={\NoHyphens{composite actions}},
+  description={tip de acțiune reutilizabilă în \gls{github} Actions care grupează mai mulți pași (\texttt{run}/\texttt{uses}) într-o singură acțiune; se distribuie ca director cu fișier \texttt{action.yml}, acceptă \textit{inputs}, \textit{outputs} și \textit{secrets} și poate fi apelată dintr-un \gls{workflow} prin \texttt{uses:}. Utilă pentru a elimina duplicarea (DRY) în pipeline-urile \glsxtrshort{cicd}; limitări uzuale: nu rulează în containere proprii și nu pot defini \textit{services}.},
+  see={[vezi și]{workflow,github,cicd}}
+}
+
+\newglossaryentry{caching}{
+  name={\NoHyphens{caching}},
+  sort={caching},
+  description={tehnici și politici de păstrare temporară a rezultatelor calculului sau ale răspunsurilor \glsxtrshort{api} pentru a reduce latența și costurile de execuție. În contextul \glsxtrshort{ssr}/\glsxtrshort{ssg} și al platformelor moderne (ex. \gls{vercel}), caching-ul poate fi aplicat la nivel de browser, rețea (CDN/edge) și aplicație (cache în memorie sau persistent). Include mecanisme de expirare și revalidare (ex. invalidare la scriere, la timp sau la eveniment) și strategii de tip \emph{stale-while-revalidate} pentru servirea rapidă a conținutului cu actualizare în fundal.},
+  see={[vezi și]{ssr,ssg,edgefunctions,serverless,vercel}}
+}
+
+\newglossaryentry{redis}{
+  name={\NoHyphens{Redis}},
+  sort={redis},
+  description={magazin de date \emph{in-memory} tip cheie–valoare, cu structuri avansate (liste, seturi, hash-uri, mulțimi ordonate, \textit{streams}) și latență foarte mică; folosit frecvent pentru \gls{caching}, stocare sesiuni, cozi/mesagerie (Pub/Sub, Streams), rate-limiting și \textit{leaderboards}. Suportă persistență opțională (RDB/AOF), replicare, \textit{cluster} pentru partiționare și, de regulă, completează o bază \gls{sql}/\gls{db} principală în arhitecturi microservicii și \gls{serverless}/\gls{edgefunctions}.},
+  see={[vezi și]{caching,sql,db,serverless,edgefunctions}}
+}
+
+\newglossaryentry{framework}{
+  name={\NoHyphens{framework}},
+  sort={framework},
+  description={set de convenții, componente și unelte care oferă o structură impusă pentru dezvoltarea de aplicații. Un \textit{framework} controlează fluxul principal al aplicației (inversiune a controlului), definește puncte de extensie și impune un mod coerent de organizare a codului; spre deosebire de o bibliotecă, pe care aplicația o apelează explicit. Exemple în lucrare: \gls{angular}; \gls{analog} funcționează ca \emph{meta-framework} peste \gls{angular} pentru \glsxtrshort{ssr} și rute server.},
+  see={[vezi și]{angular,analog,ssr}}
+}
+
+\newglossaryentry{metaframework}{
+  name={\NoHyphens{meta-framework}},
+  sort={metaframework},
+  description={framework care extinde un framework de bază pentru capabilități full-stack (ex. rutare pe fișiere, \glsxtrshort{ssr}/\glsxtrshort{ssg}, integrare cu \glsxtrshort{trpc}). În această lucrare, \gls{analog} extinde \gls{angular} peste runtime-ul \gls{nitro}.},
+  see={[vezi și]{analog,angular,nitro,ssr,ssg,trpc}}
+}
+
+\newglossaryentry{library}{
+  name={\NoHyphens{bibliotecă (software)}},
+  sort={biblioteca},
+  plural={\NoHyphens{biblioteci (software)}},
+  description={colecție reutilizabilă de funcții/clase pe care aplicația o apelează explicit pentru a rezolva probleme specifice. Spre deosebire de un \gls{framework}, o bibliotecă nu inversează controlul și nu dictează structura aplicației. Exemple în această lucrare: \gls{zod} (validare pe bază de schemă), \gls{prisma} (client \glsxtrshort{orm}), \gls{vitest} (testare unitară/integration), \gls{playwright} (testare \glsxtrshort{e2e}).},
+  see={[vezi și]{framework,prisma,zod,vitest,playwright,e2e,orm}}
+}
+
+\newglossaryentry{stdlib}{
+  name={\NoHyphens{bibliotecă standard}},
+  sort={bibliotecastandard},
+  plural={\NoHyphens{biblioteci standard}},
+  description={colecția de \glsxtrshort{api} de bază oferite implicit de un limbaj sau runtime, disponibilă fără dependențe externe. Include tipuri, structuri de date, I/O și utilitare fundamentale. În contextul acestei lucrări: bibliotecile standard ale JavaScript/TypeScript (tipuri și obiecte de bază) și ale runtime-ului Node.js (ex. \texttt{fs}, \texttt{path}). Se deosebește de o \gls{library} terță și de un \gls{framework} care impune inversiunea controlului.},
+  see={[vezi și]{library,framework,api,typescript}}
+}
+
+\newglossaryentry{prerender}{
+  name={\NoHyphens{prerender}},
+  sort={prerender},
+  description={generarea în prealabil a HTML-ului pentru o rută la \gls{buildtime}, rezultând fișiere statice ce pot fi servite direct (ex. din CDN). Este tehnică specifică \glsxtrshort{ssg}, utilă pentru conținut stabil; poate coexista cu rute \glsxtrshort{ssr} și interacțiuni \glsxtrshort{csr}. În \gls{analog}, rutele stabile pot fi prerenderizate pentru latență minimă și cost redus.},
+  see={[vezi și]{ssg,ssr,csr,analog}}
+}
+
+\newglossaryentry{buildtime}{
+  name={\NoHyphens{build-time}},
+  sort={buildtime},
+  description={faza de livrare în care codul este transpilat, agregat și optimizat înainte de publicare; aici pot rula sarcini precum \gls{prerender} (\glsxtrshort{ssg}), generarea de asset-uri și verificări statice. Se deosebește de execuția per cerere pe server (\glsxtrshort{ssr}) sau în browser (\glsxtrshort{csr}). În acest proiect, pașii critici de build sunt gestionați de \gls{vite} și \gls{analog}.},
+  see={[vezi și]{vite,analog,ssg,ssr,csr}}
+}
+
+\newglossaryentry{build}{
+  name={\NoHyphens{build}},
+  sort={build},
+  plural={\NoHyphens{build-uri}},
+  description={proces automatizat care transformă codul sursă și resursele (ex.: TypeScript, CSS, imagini) în artefacte optimizate pentru execuție (server/\gls{edgefunctions}/browser): transpilație/compilare, bundling, minificare, tree-shaking, code splitting, generare de sourcemaps și, când e cazul, \gls{prerender} (\glsxtrshort{ssg}). Rezultatul este publicat de regulă în \texttt{dist/}. Se deosebește de \textit{deploy}, care publică artefactele într-un mediu țintă.},
+  see={[vezi și]{buildtime,vite,workflow,nx,ssr,ssg}}
+}
+
+\newglossaryentry{randare}{
+  name={\NoHyphens{randare}},
+  sort={randare},
+  description={procesul prin care o aplicație generează HTML (și actualizări ale interfeței) din cod și date. În web-ul modern poate avea loc pe server (\glsxtrshort{ssr}), la \gls{buildtime} prin \glsxtrshort{ssg}/\gls{prerender}, sau în browser (\glsxtrshort{csr}); de regulă, este urmată de \gls{hydration} pentru interactivitate. În \gls{analog}, strategia de randare poate fi aleasă per rută.},
+  see={[vezi și]{ssr,ssg,csr,hydration,prerender,buildtime,analog}}
+}
+
+\newglossaryentry{randarehibrida}{
+  name={\NoHyphens{randare hibridă}},
+  sort={randarehibrida},
+  description={abordare care combină \glsxtrshort{ssr}, \glsxtrshort{ssg}/\gls{prerender} și \glsxtrshort{csr} în aceeași aplicație, alegând mecanismul optim per rută/scenariu. Avantaje: timp de răspuns inițial redus și compatibilitate ridicată cu motoarele de căutare; cost redus pe rute statice; interactivitate ridicată în client. În acest proiect, \gls{analog} permite configurarea hibridă la nivel de rute.},
+  see={[vezi și]{randare,analog,ssr,ssg,csr,hydration}}
+}
+
+\newglossaryentry{frontend}{
+  name={\NoHyphens{frontend}},
+  plural={\NoHyphens{frontend-uri}},
+  sort={frontend},
+  description={stratul aplicației care rulează în browser și gestionează \glsxtrshort{ui}-ul, logica de interacțiune și actualizările în \glsxtrshort{csr}. În arhitecturi hibride consumă HTML-ul generat prin \glsxtrshort{ssr}/\glsxtrshort{ssg} și trece prin \gls{hydration}. Comunică cu \gls{backend}-ul prin \glsxtrshort{api} (ex.: \glsxtrshort{trpc}). În acest proiect, frontend-ul este implementat cu \gls{angular} via \gls{analog}.},
+  see={[vezi și]{ui,csr,ssr,hydration,analog,trpc}}
+}
+
+\newglossaryentry{backend}{
+  name={\NoHyphens{backend}},
+  plural={\NoHyphens{backend-uri}},
+  sort={backend},
+  description={stratul server-side care implementează logica de business, expune \glsxtrshort{api}-uri și mediază accesul la date (ex.: \gls{prisma} către \gls{cockroachdb}). Poate rula ca \glsxtrshort{ssr}, funcții \gls{serverless}/\gls{edgefunctions} sau servicii dedicate. În acest proiect, backend-ul este integrat în \gls{analog} (Nitro routes și routere \glsxtrshort{trpc}).},
+  see={[vezi și]{api,ssr,serverless,prisma,cockroachdb,analog,trpc}}
+}
+
+\newglossaryentry{fullstack}{
+  name={\NoHyphens{full-stack}},
+  plural={\NoHyphens{full-stack}},
+  sort={fullstack},
+  description={abordare în care aceiași dezvoltatori/proiect acoperă cap-coadă \gls{frontend}-ul și \gls{backend}-ul, inclusiv modelarea datelor și pipeline-urile de \glsxtrshort{cicd}. Beneficii: tipuri partajate, coerență arhitecturală și viteză de livrare. În această lucrare, modelul full-stack este realizat prin arhitectura \gls{pan} într-un \gls{monorepo} Nx.},
+  see={[vezi și]{frontend,backend,pan,monorepo,cicd,nx}}
+}
+
+\newglossaryentry{logging}{
+  name={\NoHyphens{jurnalizare (logging)}},
+  sort={logging},
+  description={colectarea și înregistrarea evenimentelor aplicației (mesaje structurate pe niveluri, corelare prin identificatori, export către sisteme de agregare) pentru depanare și observabilitate}
+}
+
+\newglossaryentry{observability}{
+  name={\NoHyphens{observabilitate}},
+  sort={observability},
+  description={capacitatea unui sistem de a-și expune starea internă prin semnalizare (loguri, metrici, trasabilitate) pentru analiză și diagnostic}
+}
+
+\newglossaryentry{domtree}{
+  name={\NoHyphens{arbore DOM}},
+  sort={domtree},
+  description={reprezentarea ierarhică a unui document (de obicei HTML) sub formă de noduri și relații părinte–copil, conform \glsxtrshort{dom}}
+}
+
+\newglossaryentry{binary}{
+  name={\NoHyphens{binar (binary)}},
+  plural={\NoHyphens{binare (binaries)}},
+  sort={binary},
+  description={fișier executabil sau bibliotecă nativă generată prin compilare, specifică unei platforme (sistem de operare și arhitectură \glsxtrshort{cpu}); include executabile și biblioteci partajate (.so/.dylib/.dll). În contextul \gls{kookio}, \gls{prisma} folosește componente native (engines) care trebuie compatibile cu biblioteca OpenSSL a sistemului (de ex. \texttt{rhel-openssl-3.0.x}); de aceea clientul este generat pe platforma țintă (ex.: pe \gls{linux} în timpul deploy-ului pe \gls{vercel}).}
+}
+
+\newglossaryentry{darwinarm64}{
+  name={\NoHyphens{darwin-arm64}},
+  sort={darwinarm64},
+  description={etichetă de platformă (target) utilizată la generarea \glspl{binary} pentru ecosistemul Node.js pe macOS (kernel \textit{Darwin}) cu arhitectură ARM64 (Apple Silicon). În \gls{prisma}, selectarea acestui target indică faptul că \emph{engines} native sunt construite pentru dezvoltare locală pe macOS ARM și nu sunt compatibile cu \gls{linux} de producție; diferențele de \glsxtrshort{cpu} și biblioteci de sistem pot produce erori la runtime.}
+}
+
+\newglossaryentry{rhelopenssl30x}{
+  name={\NoHyphens{rhel-openssl-3.0.x}},
+  sort={rhelopenssl30x},
+  description={etichetă de platformă pentru distribuții \gls{linux} compatibile Red Hat Enterprise Linux care folosesc biblioteca OpenSSL 3.0.x. În \gls{prisma}, acest target este folosit în \texttt{binaryTargets} pentru a genera \glspl{binary} compatibile cu mediile de execuție tipice de producție (ex.: containere bazate pe \textit{glibc}); alegerea corectă elimină erorile de tip \texttt{wrong platform for query engine} la deploy.}
+}
+
+\newglossaryentry{prismaclient}{
+  name={\NoHyphens{Prisma Client}},
+  sort={prismaclient},
+  description={bibliotecă \texttt{TypeScript} generată automat de \gls{prisma} pe baza fișierului \texttt{schema.prisma}; oferă un API tipizat pentru operații \glsxtrshort{sql} (CRUD, filtre, relații, tranzacții) asupra modelelor definite. Utilizează motoare native (Query Engine) distribuite ca \glspl{binary} dependente de platformă (ex.: \gls{darwinarm64}, \gls{rhelopenssl30x}), motiv pentru care se generează pe mediul țintă de deploy; se invocă prin \texttt{npx prisma generate}.},
+  see={[vezi și]{prisma,orm,cockroachdb,postgresql,binary,darwinarm64,rhelopenssl30x}}
+}
+
+% 5-glosar.tex ends here

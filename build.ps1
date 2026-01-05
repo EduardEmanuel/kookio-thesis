@@ -38,7 +38,7 @@ if ($Mode -eq "full") {
 }
 
 Write-Host "Deleting generated files..."
-Remove-Item *.pdf, *.aux, *.log, *.out, *.toc, *.run.xml, *.nav, *.snm, *.fls, *.fdb_latexmk -ErrorAction SilentlyContinue
+Remove-Item *.pdf, *.aux, *.log, *.out, *.toc, *.run.xml, *.nav, *.snm, *.fls, *.fdb_latexmk, *.acn, *.glo, *.ist, *.gls-abr, *.gls, *.glo-abr, *.glg-abr, *.glg -ErrorAction SilentlyContinue
 if ($Mode -eq "full" -or $Mode -eq "delete") {
     Remove-Item *.bcf, *.blg, *.bbl -ErrorAction SilentlyContinue
 }
@@ -50,6 +50,7 @@ if ($Mode -eq "delete") {
 Write-Host "Compiling (mode: $Mode)..."
 lualatex $TEX_FILE | Out-Null
 if ($Mode -eq "full") {
+    makeglossaries $TEX_NAME | Out-Null
     biber $TEX_NAME | Out-Null
     lualatex $TEX_FILE | Out-Null
 }
