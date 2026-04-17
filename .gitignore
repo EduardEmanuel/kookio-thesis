@@ -29,3 +29,6 @@ _build/
 
 # Ignore resources under the ```ignored/``` folder
 ignored/
+
+# Node modules
+**/node_modules

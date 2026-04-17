@@ -1,0 +1,1177 @@
+{
+  "generatedAt": "2026-04-17",
+  "legend": {
+    "MERGE": "Both plural and singular exist — plural will be removed, singular kept",
+    "RENAME": "Only plural exists — will be renamed to singular, no removal"
+  },
+  "candidates": [
+    {
+      "plural": "basil_leaves",
+      "pluralName": "Basil Leaves",
+      "singular": "basil_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "bay_leaves",
+      "pluralName": "Bay Leaves",
+      "singular": "bay_leaf",
+      "action": "MERGE",
+      "approve": true,
+      "note": "bay_leaf already exists in catalog"
+    },
+    {
+      "plural": "borlotti_beans",
+      "pluralName": "Borlotti Beans",
+      "singular": "borlotti_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "breadcrumbs",
+      "pluralName": "Breadcrumbs",
+      "singular": "breadcrumb",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "brown_lentils",
+      "pluralName": "Brown Lentils",
+      "singular": "brown_lentil",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cannellini_beans",
+      "pluralName": "Cannellini Beans",
+      "singular": "cannellini_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "carrots",
+      "pluralName": "Carrots",
+      "singular": "carrot",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cashew_nuts",
+      "pluralName": "Cashew Nuts",
+      "singular": "cashew_nut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cashews",
+      "pluralName": "Cashews",
+      "singular": "cashew",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "challots",
+      "pluralName": "Challots",
+      "singular": "challot",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cheese_curds",
+      "pluralName": "Cheese Curds",
+      "singular": "cheese_curd",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chicken_breasts",
+      "pluralName": "Chicken Breasts",
+      "singular": "chicken_breast",
+      "action": "MERGE",
+      "approve": true,
+      "note": "chicken_breast already exists in catalog"
+    },
+    {
+      "plural": "chicken_legs",
+      "pluralName": "Chicken Legs",
+      "singular": "chicken_leg",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chicken_thighs",
+      "pluralName": "Chicken Thighs",
+      "singular": "chicken_thigh",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chocolate_chips",
+      "pluralName": "Chocolate Chips",
+      "singular": "chocolate_chip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "coriander_leaves",
+      "pluralName": "Coriander Leaves",
+      "singular": "coriander_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "coriander_seeds",
+      "pluralName": "Coriander Seeds",
+      "singular": "coriander_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cumin_seeds",
+      "pluralName": "Cumin Seeds",
+      "singular": "cumin_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "digestive_biscuits",
+      "pluralName": "Digestive Biscuits",
+      "singular": "digestive_biscuit",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "egg_plants",
+      "pluralName": "Egg Plants",
+      "singular": "egg_plant",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "egg_rolls",
+      "pluralName": "Egg Rolls",
+      "singular": "egg_roll",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "egg_yolks",
+      "pluralName": "Egg Yolks",
+      "singular": "egg_yolk",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "eggs",
+      "pluralName": "Eggs",
+      "singular": "egg",
+      "action": "MERGE",
+      "approve": true,
+      "note": "egg already exists in catalog"
+    },
+    {
+      "plural": "fennel_seeds",
+      "pluralName": "Fennel Seeds",
+      "singular": "fennel_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "flaked_almonds",
+      "pluralName": "Flaked Almonds",
+      "singular": "flaked_almond",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "flax_eggs",
+      "pluralName": "Flax Eggs",
+      "singular": "flax_egg",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "french_lentils",
+      "pluralName": "French Lentils",
+      "singular": "french_lentil",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "green_beans",
+      "pluralName": "Green Beans",
+      "singular": "green_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "green_red_lentils",
+      "pluralName": "Green Red Lentils",
+      "singular": "green_red_lentil",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "ground_almonds",
+      "pluralName": "Ground Almonds",
+      "singular": "ground_almond",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "hard_taco_shells",
+      "pluralName": "Hard Taco Shells",
+      "singular": "hard_taco_shell",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "king_prawns",
+      "pluralName": "King Prawns",
+      "singular": "king_prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lamb_loin_chops",
+      "pluralName": "Lamb Loin Chops",
+      "singular": "lamb_loin_chop",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lasagne_sheets",
+      "pluralName": "Lasagne Sheets",
+      "singular": "lasagne_sheet",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lemons",
+      "pluralName": "Lemons",
+      "singular": "lemon",
+      "action": "MERGE",
+      "approve": true,
+      "note": "lemon already exists in catalog"
+    },
+    {
+      "plural": "meringue_nests",
+      "pluralName": "Meringue Nests",
+      "singular": "meringue_nest",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "miniature_marshmallows",
+      "pluralName": "Miniature Marshmallows",
+      "singular": "miniature_marshmallow",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mozzarella_balls",
+      "pluralName": "Mozzarella Balls",
+      "singular": "mozzarella_ball",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mushrooms",
+      "pluralName": "Mushrooms",
+      "singular": "mushroom",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mustard_seeds",
+      "pluralName": "Mustard Seeds",
+      "singular": "mustard_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "onions",
+      "pluralName": "Onions",
+      "singular": "onion",
+      "action": "MERGE",
+      "approve": true,
+      "note": "onion already exists in catalog"
+    },
+    {
+      "plural": "peanuts",
+      "pluralName": "Peanuts",
+      "singular": "peanut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pine_nuts",
+      "pluralName": "Pine Nuts",
+      "singular": "pine_nut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "prawns",
+      "pluralName": "Prawns",
+      "singular": "prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "raw_king_prawns",
+      "pluralName": "Raw King Prawns",
+      "singular": "raw_king_prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "red_chilli_flakes",
+      "pluralName": "Red Chilli Flakes",
+      "singular": "red_chilli_flake",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "red_onions",
+      "pluralName": "Red Onions",
+      "singular": "red_onion",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "red_pepper_flakes",
+      "pluralName": "Red Pepper Flakes",
+      "singular": "red_pepper_flake",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "refried_beans",
+      "pluralName": "Refried Beans",
+      "singular": "refried_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "rolled_oats",
+      "pluralName": "Rolled Oats",
+      "singular": "rolled_oat",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "shallots",
+      "pluralName": "Shallots",
+      "singular": "shallot",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "spring_onions",
+      "pluralName": "Spring Onions",
+      "singular": "spring_onion",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "turnips",
+      "pluralName": "Turnips",
+      "singular": "turnip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "vine_leaves",
+      "pluralName": "Vine Leaves",
+      "singular": "vine_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "white_chocolate_chips",
+      "pluralName": "White Chocolate Chips",
+      "singular": "white_chocolate_chip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "white_fish_fillets",
+      "pluralName": "White Fish Fillets",
+      "singular": "white_fish_fillet",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pretzels",
+      "pluralName": "Pretzels",
+      "singular": "pretzel",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mussels",
+      "pluralName": "Mussels",
+      "singular": "mussel",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pilchards",
+      "pluralName": "Pilchards",
+      "singular": "pilchard",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "duck_legs",
+      "pluralName": "Duck Legs",
+      "singular": "duck_leg",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "clams",
+      "pluralName": "Clams",
+      "singular": "clam",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "haricot_beans",
+      "pluralName": "Haricot Beans",
+      "singular": "haricot_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "butter_beans",
+      "pluralName": "Butter Beans",
+      "singular": "butter_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pinto_beans",
+      "pluralName": "Pinto Beans",
+      "singular": "pinto_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "dried_apricots",
+      "pluralName": "Dried Apricots",
+      "singular": "dried_apricot",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "capers",
+      "pluralName": "Capers",
+      "singular": "caper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "walnuts",
+      "pluralName": "Walnuts",
+      "singular": "walnut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pecan_nuts",
+      "pluralName": "Pecan Nuts",
+      "singular": "pecan_nut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "dark_chocolate_chips",
+      "pluralName": "Dark Chocolate Chips",
+      "singular": "dark_chocolate_chip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "gelatine_leafs",
+      "pluralName": "Gelatine Leafs",
+      "singular": "gelatine_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chestnuts",
+      "pluralName": "Chestnuts",
+      "singular": "chestnut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "wild_mushrooms",
+      "pluralName": "Wild Mushrooms",
+      "singular": "wild_mushroom",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lentils",
+      "pluralName": "Lentils",
+      "singular": "lentil",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "kidney_beans",
+      "pluralName": "Kidney Beans",
+      "singular": "kidney_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "shiitake_mushrooms",
+      "pluralName": "Shiitake Mushrooms",
+      "singular": "shiitake_mushroom",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "oysters",
+      "pluralName": "Oysters",
+      "singular": "oyster",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "brussels_sprouts",
+      "pluralName": "Brussels Sprouts",
+      "singular": "brussels_sprout",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "raisins",
+      "pluralName": "Raisins",
+      "singular": "raisin",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "currants",
+      "pluralName": "Currants",
+      "singular": "currant",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "redcurrants",
+      "pluralName": "Redcurrants",
+      "singular": "redcurrant",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "hazlenuts",
+      "pluralName": "Hazlenuts",
+      "singular": "hazlenut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "almonds",
+      "pluralName": "Almonds",
+      "singular": "almond",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "baked_beans",
+      "pluralName": "Baked Beans",
+      "singular": "baked_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "oats",
+      "pluralName": "Oats",
+      "singular": "oat",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "tarragon_leaves",
+      "pluralName": "Tarragon Leaves",
+      "singular": "tarragon_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pears",
+      "pluralName": "Pears",
+      "singular": "pear",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "tiger_prawns",
+      "pluralName": "Tiger Prawns",
+      "singular": "tiger_prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "broad_beans",
+      "pluralName": "Broad Beans",
+      "singular": "broad_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "fermented_black_beans",
+      "pluralName": "Fermented Black Beans",
+      "singular": "fermented_black_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "scallions",
+      "pluralName": "Scallions",
+      "singular": "scallion",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "bean_sprouts",
+      "pluralName": "Bean Sprouts",
+      "singular": "bean_sprout",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "wood_ear_mushrooms",
+      "pluralName": "Wood Ear Mushrooms",
+      "singular": "wood_ear_mushroom",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "english_muffins",
+      "pluralName": "English Muffins",
+      "singular": "english_muffin",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "muffins",
+      "pluralName": "Muffins",
+      "singular": "muffin",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "black_beans",
+      "pluralName": "Black Beans",
+      "singular": "black_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "bread_rolls",
+      "pluralName": "Bread Rolls",
+      "singular": "bread_roll",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "potatoe_buns",
+      "pluralName": "Potatoe Buns",
+      "singular": "potatoe_bun",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pork_chops",
+      "pluralName": "Pork Chops",
+      "singular": "pork_chop",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sesame_seed_burger_buns",
+      "pluralName": "Sesame Seed Burger Buns",
+      "singular": "sesame_seed_burger_bun",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "buns",
+      "pluralName": "Buns",
+      "singular": "bun",
+      "action": "MERGE",
+      "approve": true,
+      "note": "bun already exists in catalog"
+    },
+    {
+      "plural": "figs",
+      "pluralName": "Figs",
+      "singular": "fig",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "grape_leaves",
+      "pluralName": "Grape leaves",
+      "singular": "grape_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "green_cardamom_pods",
+      "pluralName": "Green Cardamom Pods",
+      "singular": "green_cardamom_pod",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "black_cardamom_pods",
+      "pluralName": "Black Cardamom Pods",
+      "singular": "black_cardamom_pod",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chilli_flakes",
+      "pluralName": "Chilli Flakes",
+      "singular": "chilli_flake",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chicken_drumsticks",
+      "pluralName": "Chicken drumsticks",
+      "singular": "chicken_drumstick",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "porridge_oats",
+      "pluralName": "Porridge oats",
+      "singular": "porridge_oat",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sirloin_steak_tips",
+      "pluralName": "Sirloin Steak tips",
+      "singular": "sirloin_steak_tip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "whole_black_peppercorns",
+      "pluralName": "Whole black peppercorns",
+      "singular": "whole_black_peppercorn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mixed_beef_cuts",
+      "pluralName": "Mixed Beef Cuts",
+      "singular": "mixed_beef_cut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "wild_garlic_leaves",
+      "pluralName": "Wild Garlic Leaves",
+      "singular": "wild_garlic_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "dried_white_beans",
+      "pluralName": "Dried white beans",
+      "singular": "dried_white_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "padron_peppers",
+      "pluralName": "Padron peppers",
+      "singular": "padron_pepper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "raw_tiger_prawns",
+      "pluralName": "Raw tiger prawns",
+      "singular": "raw_tiger_prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mixed_peppers",
+      "pluralName": "Mixed peppers",
+      "singular": "mixed_pepper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "shelled_hazelnuts",
+      "pluralName": "Shelled Hazelnuts",
+      "singular": "shelled_hazelnut",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "ground_poppy_seeds",
+      "pluralName": "Ground Poppy seeds",
+      "singular": "ground_poppy_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "makrut_lime_leaves",
+      "pluralName": "makrut lime leaves",
+      "singular": "makrut_lime_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lemongrass_stalks",
+      "pluralName": "Lemongrass Stalks",
+      "singular": "lemongrass_stalk",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "oyster_mushrooms",
+      "pluralName": "Oyster Mushrooms",
+      "singular": "oyster_mushroom",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "runner_beans",
+      "pluralName": "Runner Beans",
+      "singular": "runner_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "raw_frozen_prawns",
+      "pluralName": "Raw Frozen Prawns",
+      "singular": "raw_frozen_prawn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lime_leaves",
+      "pluralName": "Lime Leaves",
+      "singular": "lime_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "oreo_cream_biscuits",
+      "pluralName": "Oreo Cream Biscuits",
+      "singular": "oreo_cream_biscuit",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "rice_paper_sheets",
+      "pluralName": "Rice Paper Sheets",
+      "singular": "rice_paper_sheet",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "lamb_shanks",
+      "pluralName": "Lamb Shanks",
+      "singular": "lamb_shank",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "szechuan_peppercorns",
+      "pluralName": "Szechuan Peppercorns",
+      "singular": "szechuan_peppercorn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pork_shoulder_steaks",
+      "pluralName": "Pork Shoulder Steaks",
+      "singular": "pork_shoulder_steak",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sea_bass_fillets",
+      "pluralName": "Sea Bass Fillets",
+      "singular": "sea_bass_fillet",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sweet_peppadew_peppers",
+      "pluralName": "Sweet Peppadew Peppers",
+      "singular": "sweet_peppadew_pepper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chicken_wings",
+      "pluralName": "Chicken Wings",
+      "singular": "chicken_wing",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "baby_lettuce_leaves",
+      "pluralName": "Baby Lettuce Leaves",
+      "singular": "baby_lettuce_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "peppercorns",
+      "pluralName": "Peppercorns",
+      "singular": "peppercorn",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cabbage_leaves",
+      "pluralName": "Cabbage Leaves",
+      "singular": "cabbage_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pork_back_ribs",
+      "pluralName": "Pork Back Ribs",
+      "singular": "pork_back_rib",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "poppy_seeds",
+      "pluralName": "Poppy Seeds",
+      "singular": "poppy_seed",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "coconut_flakes",
+      "pluralName": "Coconut Flakes",
+      "singular": "coconut_flake",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sweet_red_peppers",
+      "pluralName": "Sweet Red Peppers",
+      "singular": "sweet_red_pepper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "ground_oats",
+      "pluralName": "Ground Oats",
+      "singular": "ground_oat",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "dried_white_navy_beans",
+      "pluralName": "Dried White Navy Beans",
+      "singular": "dried_white_navy_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "graham_cracker_crumbs",
+      "pluralName": "Graham Cracker Crumbs",
+      "singular": "graham_cracker_crumb",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cilantro_leaves",
+      "pluralName": "Cilantro Leaves",
+      "singular": "cilantro_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "mung_bean_sprouts",
+      "pluralName": "Mung Bean Sprouts",
+      "singular": "mung_bean_sprout",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chinese_long_beans",
+      "pluralName": "Chinese Long Beans",
+      "singular": "chinese_long_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "egg_roll_wrappers",
+      "pluralName": "Egg Roll Wrappers",
+      "singular": "egg_roll_wrapper",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pineapple_chunks",
+      "pluralName": "Pineapple Chunks",
+      "singular": "pineapple_chunk",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    }
+  ]
+}
