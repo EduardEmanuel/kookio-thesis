@@ -1,6 +1,6 @@
 {
   "fetchedAt": "2026-04-17T16:28:33.578Z",
-  "cleanedAt": "2026-04-17T17:25:14.666Z",
+  "cleanedAt": "2026-04-18T00:27:56.376Z",
   "source": "https://www.themealdb.com",
   "categories": [
     {
@@ -486,8 +486,8 @@
     },
     {
       "externalId": "33",
-      "name": "Bramley Apples",
-      "normalizedName": "bramley_apples",
+      "name": "Bramley Apple",
+      "normalizedName": "bramley_apple",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Bramley%20Apples-Small.png",
       "category": "PRODUCE"
@@ -870,8 +870,8 @@
     },
     {
       "externalId": "87",
-      "name": "Cloves",
-      "normalizedName": "cloves",
+      "name": "Clove",
+      "normalizedName": "clove",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Cloves-Small.png",
       "category": "SPICES"
@@ -1470,8 +1470,8 @@
     },
     {
       "externalId": "166",
-      "name": "Green Olives",
-      "normalizedName": "green_olives",
+      "name": "Green Olive",
+      "normalizedName": "green_olive",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Green%20Olives-Small.png",
       "category": "CONDIMENTS"
@@ -1590,8 +1590,8 @@
     },
     {
       "externalId": "182",
-      "name": "Italian Fennel Sausages",
-      "normalizedName": "italian_fennel_sausages",
+      "name": "Italian Fennel Sausage",
+      "normalizedName": "italian_fennel_sausage",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Italian%20Fennel%20Sausages-Small.png",
       "category": "MEAT"
@@ -1622,8 +1622,8 @@
     },
     {
       "externalId": "186",
-      "name": "Jerusalem Artichokes",
-      "normalizedName": "jerusalem_artichokes",
+      "name": "Jerusalem Artichoke",
+      "normalizedName": "jerusalem_artichoke",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Jerusalem%20Artichokes-Small.png",
       "category": "PRODUCE"
@@ -1798,8 +1798,8 @@
     },
     {
       "externalId": "209",
-      "name": "Medjool Dates",
-      "normalizedName": "medjool_dates",
+      "name": "Medjool Date",
+      "normalizedName": "medjool_date",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Medjool%20Dates-Small.png",
       "category": "PRODUCE"
@@ -2078,8 +2078,8 @@
     },
     {
       "externalId": "246",
-      "name": "Pitted Black Olives",
-      "normalizedName": "pitted_black_olives",
+      "name": "Pitted Black Olive",
+      "normalizedName": "pitted_black_olive",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Pitted%20Black%20Olives-Small.png",
       "category": "CONDIMENTS"
@@ -2230,16 +2230,16 @@
     },
     {
       "externalId": "269",
-      "name": "Rice Noodles",
-      "normalizedName": "rice_noodles",
+      "name": "Rice Noodle",
+      "normalizedName": "rice_noodle",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Rice%20Noodles-Small.png",
       "category": "GRAINS"
     },
     {
       "externalId": "270",
-      "name": "Rice Stick Noodles",
-      "normalizedName": "rice_stick_noodles",
+      "name": "Rice Stick Noodle",
+      "normalizedName": "rice_stick_noodle",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Rice%20Stick%20Noodles-Small.png",
       "category": "GRAINS"
@@ -2326,8 +2326,8 @@
     },
     {
       "externalId": "283",
-      "name": "Sausages",
-      "normalizedName": "sausages",
+      "name": "Sausage",
+      "normalizedName": "sausage",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Sausages-Small.png",
       "category": "MEAT"
@@ -2470,8 +2470,8 @@
     },
     {
       "externalId": "303",
-      "name": "Stir-fry Vegetables",
-      "normalizedName": "stirfry_vegetables",
+      "name": "Stirfry Vegetable",
+      "normalizedName": "stirfry_vegetable",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Stir-fry%20Vegetables-Small.png",
       "category": "PRODUCE"
@@ -2942,8 +2942,8 @@
     },
     {
       "externalId": "363",
-      "name": "Black Olives",
-      "normalizedName": "black_olives",
+      "name": "Black Olive",
+      "normalizedName": "black_olive",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Black%20Olives-Small.png",
       "category": "CONDIMENTS"
@@ -3406,8 +3406,8 @@
     },
     {
       "externalId": "426",
-      "name": "Courgettes",
-      "normalizedName": "courgettes",
+      "name": "Courgette",
+      "normalizedName": "courgette",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Courgettes-Small.png",
       "category": "PRODUCE"
@@ -3470,8 +3470,8 @@
     },
     {
       "externalId": "434",
-      "name": "Roasted Vegetables",
-      "normalizedName": "roasted_vegetables",
+      "name": "Roasted Vegetable",
+      "normalizedName": "roasted_vegetable",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Roasted%20Vegetables-Small.png",
       "category": "PRODUCE"
@@ -3510,8 +3510,8 @@
     },
     {
       "externalId": "439",
-      "name": "Udon Noodles",
-      "normalizedName": "udon_noodles",
+      "name": "Udon Noodle",
+      "normalizedName": "udon_noodle",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Udon%20Noodles-Small.png",
       "category": "GRAINS"
@@ -3710,8 +3710,8 @@
     },
     {
       "externalId": "464",
-      "name": "Braeburn Apples",
-      "normalizedName": "braeburn_apples",
+      "name": "Braeburn Apple",
+      "normalizedName": "braeburn_apple",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Braeburn%20Apples-Small.png",
       "category": "PRODUCE"
@@ -3902,8 +3902,8 @@
     },
     {
       "externalId": "488",
-      "name": "Apples",
-      "normalizedName": "apples",
+      "name": "Apple",
+      "normalizedName": "apple",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Apples-Small.png",
       "category": "PRODUCE"
@@ -3950,8 +3950,8 @@
     },
     {
       "externalId": "494",
-      "name": "Chives",
-      "normalizedName": "chives",
+      "name": "Chive",
+      "normalizedName": "chive",
       "description": null,
       "imageUrl": "https://www.themealdb.com/images/ingredients/Chives-Small.png",
       "category": "HERBS"
@@ -4270,8 +4270,8 @@
     },
     {
       "externalId": "534",
-      "name": "Noodles",
-      "normalizedName": "noodles",
+      "name": "Noodle",
+      "normalizedName": "noodle",
       "description": "Noodles are a staple food in many cultures. They are made from unleavened dough which is stretched, extruded, or rolled flat and cut into one of a variety of shapes. While long, thin strips may be the most common, many varieties of noodles are cut into waves, helices, tubes, strings, or shells, or folded over, or cut into other shapes. Noodles are usually cooked in boiling water, sometimes with cooking oil or salt added. They are often pan-fried or deep-fried. Noodles are often served with an accompanying sauce or in a soup. Noodles can be refrigerated for short-term storage or dried and stored for future use. The material composition or geocultural origin must be specified when discussing noodles. The word derives from the German word Nudel.[1]",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Noodles-Small.png",
       "category": "GRAINS"
@@ -4630,8 +4630,8 @@
     },
     {
       "externalId": "582",
-      "name": "Dill Pickles",
-      "normalizedName": "dill_pickles",
+      "name": "Dill Pickle",
+      "normalizedName": "dill_pickle",
       "description": "A pickled cucumber is a cucumber that has been pickled in a brine, vinegar, or other solution and left to ferment for a period of time, by either immersing the cucumbers in an acidic solution or through souring by lacto-fermentation. Pickled cucumbers are often part of mixed pickles.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Dill%20Pickles-Small.png",
       "category": "HERBS"
@@ -4662,8 +4662,8 @@
     },
     {
       "externalId": "588",
-      "name": "Cheese Slices",
-      "normalizedName": "cheese_slices",
+      "name": "Cheese Slice",
+      "normalizedName": "cheese_slice",
       "description": "Processed cheese is a food product made from cheese and other unfermented dairy ingredients mixed with emulsifiers. Additional ingredients, such as vegetable oils, salt, food coloring, or sugar may be included. As a result, many flavors, colors, and textures of processed cheese exist.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Cheese%20Slices-Small.png",
       "category": "DAIRY"
@@ -4798,8 +4798,8 @@
     },
     {
       "externalId": "605",
-      "name": "Sardines",
-      "normalizedName": "sardines",
+      "name": "Sardine",
+      "normalizedName": "sardine",
       "description": "\"Sardine\" and \"pilchard\" are common names that refer to various small, oily forage fish in the herring family Clupeidae. The term \"sardine\" was first used in English during the early 15th century and may come from the Mediterranean island of Sardinia, around which sardines were once abundant.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Sardines-Small.png",
       "category": "FISH"
@@ -4822,8 +4822,8 @@
     },
     {
       "externalId": "608",
-      "name": "Prunes",
-      "normalizedName": "prunes",
+      "name": "Prune",
+      "normalizedName": "prune",
       "description": "A prune is a dried plum, most commonly from the European plum. Not all plum species or varieties can be dried into prunes. A prune is the firm-fleshed fruit (plum) of Prunus domestica varieties that have a high soluble solids content, and do not ferment during drying. Use of the term \"prune\" for fresh plums is obsolete except when applied to varieties of plum grown for drying.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Prunes-Small.png",
       "category": "PRODUCE"
@@ -4894,8 +4894,8 @@
     },
     {
       "externalId": "619",
-      "name": "Beef Stock Cubes",
-      "normalizedName": "beef_stock_cubes",
+      "name": "Beef Stock Cube",
+      "normalizedName": "beef_stock_cube",
       "description": "Beef flavour stock",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Beef%20Stock%20Cubes-Small.png",
       "category": "MEAT"
@@ -5254,8 +5254,8 @@
     },
     {
       "externalId": "664",
-      "name": "Bouillon Cubes",
-      "normalizedName": "bouillon_cubes",
+      "name": "Bouillon Cube",
+      "normalizedName": "bouillon_cube",
       "description": "Bouillon cubes are dehydrated, condensed broth or stock packaged in a small cube, made from ingredients like meat or vegetable stock, salt, fat, MSG, and seasonings. They are used to quickly make an instant broth for soups, stews, sauces, and other dishes by dissolving them in hot water, adding flavor and depth without the need to make stock from scratch.\nWhat they are made of\nDehydrated meat or vegetable stock\nSalt\nFat\nMSG (monosodium glutamate) and other seasonings\nHow to use them\nDissolve a cube in hot water to create a flavored liquid for cooking or for a quick soup.\nAdd to recipes like soups, stews, risottos, and sauces to enhance flavor.\nBe mindful of the salt content, as they can be quite salty, and taste the liquid before adding more salt to your dish.\nWhere to find them\nAvailable in most grocery stores in various flavors, such as chicken, beef, and vegetable.\nSome brands also offer them in granular, powdered, or paste forms.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Bouillon%20Cubes-Small.png",
       "category": "CONDIMENTS"
@@ -5454,8 +5454,8 @@
     },
     {
       "externalId": "689",
-      "name": "Pork belly slices",
-      "normalizedName": "pork_belly_slices",
+      "name": "Pork Belly Slice",
+      "normalizedName": "pork_belly_slice",
       "description": "Pork belly slices are cuts of pork from the belly, which are known for being fatty, rich, and flavorful. They are popular in many cuisines, like Korean barbecue, and can be prepared in various ways, such as grilling, frying, slow-roasting, or air-frying, often to achieve crispy crackling on the outside and tender meat on the inside. The slices are essentially the same cut of meat used for bacon, but are uncured and unsmoked.\nWhat they are\nCut: Slices taken from the underside of the pig, which contains a high amount of fat and meat.\nCharacteristics: Rich in flavor, succulent, and can become very crispy when cooked properly.\nFlavor Profile: Very rich and \"porky\".\nHow they are cooked\nGrilling/Pan-frying: Often cooked to render the fat and create a crispy exterior.\nSlow-roasting: Can be slow-roasted to tenderize the meat, leaving it stringy and flavorful.\nAir-frying: Can be cooked in an air fryer to achieve crispy results.\nBraising: Can be braised with other ingredients for a rich, tender dish.\nServing suggestions\nAppetizer or main course: Serve on their own, or with side dishes like arugula salad, steamed asparagus, or sautéed spinach.\nWith breakfast/brunch: Pair with eggs, fresh berries, or keto biscuits.\nIn dishes: Used in recipes like Chinese, Korean, or Philippine dishes.\nToppings: Can be used in sandwiches, like with mustard and greens.\nAccompaniments: Often served with wrap vegetables like lettuce and perilla leaves, along with a dipping sauce in Korean barbecue.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Pork%20belly%20slices-Small.png",
       "category": "MEAT"
@@ -5654,8 +5654,8 @@
     },
     {
       "externalId": "714",
-      "name": "Flat Rice Noodles",
-      "normalizedName": "flat_rice_noodles",
+      "name": "Flat Rice Noodle",
+      "normalizedName": "flat_rice_noodle",
       "description": "Flat rice noodles are a type of rice noodle that are wide and flat, with a soft and chewy texture. They are a staple in many Asian cuisines and are used in dishes like stir-fries (such as Pad Thai, Pad See Ew, or Beef Chow Fun) or noodle soups.\nIngredients: They are primarily made from rice flour and water, though some recipes and store-bought versions may add potato, tapioca, or corn starch to improve their texture.\nVariations: They can be found fresh, dried, or frozen, and their thickness can vary, with common names including Hor Fun, Shahe fen, and Kuey Teow.\nCharacteristics: Fresh versions are often coated in a light oil to prevent sticking and are best used the same day they are made, as refrigeration can make them brittle. They are known for their ability to absorb the flavors of sauces and other ingredients.\nCooking: They are typically cooked by soaking them in warm water until soft, rather than boiling, and are then added to stir-fries or soups.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Flat%20Rice%20Noodles-Small.png",
       "category": "GRAINS"
@@ -5758,8 +5758,8 @@
     },
     {
       "externalId": "728",
-      "name": "Vermicelli Rice Noodles",
-      "normalizedName": "vermicelli_rice_noodles",
+      "name": "Vermicelli Rice Noodle",
+      "normalizedName": "vermicelli_rice_noodle",
       "description": "Vermicelli rice noodles are very thin noodles made from rice flour and water, commonly used in East and Southeast Asian cuisine. They are delicate, absorb flavors well, and can be used in a variety of dishes like soups, salads, and stir-fries. They should not be confused with Italian-style vermicelli pasta or with cellophane noodles (glass noodles), which are made from starches like mung bean.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Vermicelli%20Rice%20Noodles-Small.png",
       "category": "GRAINS"
@@ -5790,8 +5790,8 @@
     },
     {
       "externalId": "732",
-      "name": "Egg Noodles",
-      "normalizedName": "egg_noodles",
+      "name": "Egg Noodle",
+      "normalizedName": "egg_noodle",
       "description": "Egg noodles are a type of noodle made from a mixture of wheat flour and eggs, formed into flat strips and cooked in boiling water. They are a staple in many cuisines and can be used in a wide variety of dishes, including soups, stir-fries, and casseroles. Unlike many other pastas made with only flour and water, their defining feature is the addition of eggs, which contributes to their soft, tender texture.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Egg%20Noodles-Small.png",
       "category": "DAIRY"
@@ -5902,8 +5902,8 @@
     },
     {
       "externalId": "746",
-      "name": "Garlic Granules",
-      "normalizedName": "garlic_granules",
+      "name": "Garlic Granule",
+      "normalizedName": "garlic_granule",
       "description": "Granulated garlic is dehydrated garlic cloves that are coarsely ground to a sand-like or cornmeal-like consistency. It is a versatile seasoning for adding garlic flavor without moisture and is ideal for dry rubs, spice blends, and dishes like sauces, soups, and marinades because it hydrates more slowly than garlic powder.\nHow it's made\nFresh garlic cloves are peeled, minced, and then dried.\nOnce dried, they are ground into granules that are coarser than garlic powder.\nKey characteristics\nTexture: Coarse and grainy, often compared to cornmeal or sand.\nFlavor: Pungent, savory, and slightly sweet, with a mild burn.\nDissolves: Takes longer to rehydrate than garlic powder, making it a good choice for dishes with longer cooking times.\nShelf life: A longer shelf life than fresh garlic, but its flavor is more stable than garlic powder, which can degrade faster due to a larger surface area.\nUses\nDry rubs and spice blends: The granules help the seasoning adhere to food without clumping.\nSoups, stews, and sauces: It adds a consistent garlic flavor that integrates well without adding extra moisture.\nHigh-heat cooking: It doesn't burn as quickly as fresh garlic, making it a safer option for roasting or other high-heat cooking.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Garlic%20Granules-Small.png",
       "category": "PRODUCE"
@@ -6086,8 +6086,8 @@
     },
     {
       "externalId": "769",
-      "name": "Rice Flour Pancakes",
-      "normalizedName": "rice_flour_pancakes",
+      "name": "Rice Flour Pancake",
+      "normalizedName": "rice_flour_pancake",
       "description": "Rice flour pancakes are a gluten-free alternative to traditional pancakes made with wheat flour, using finely milled rice instead. They can be fluffy or chewy depending on the recipe, with a unique, slightly nutty flavor that pairs well with various sweet or savory toppings.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Rice%20Flour%20Pancakes-Small.png",
       "category": "GRAINS"
@@ -6166,8 +6166,8 @@
     },
     {
       "externalId": "779",
-      "name": "Raw Vegetables",
-      "normalizedName": "raw_vegetables",
+      "name": "Raw Vegetable",
+      "normalizedName": "raw_vegetable",
       "description": "Raw vegetables are plant-based foods that are consumed without being cooked. They retain their natural nutrients and enzymes, and include parts of herbaceous plants like roots, stems, leaves, and non-sweet fruits. While they are rich in fiber, vitamins, and minerals, some vegetables are not meant to be eaten raw, such as potatoes and eggplants.\nExamples of vegetables that can be eaten raw\nRoot vegetables: Carrots, parsnips, beets, radishes\nLeafy greens: Lettuce, spinach, cabbage\nFruits (used as vegetables): Tomatoes, bell peppers, cucumbers, zucchini\nOther: Broccoli, cauliflower, celery, peas, asparagus\nBenefits of eating raw vegetables\nNutrient preservation: Cooking can diminish the levels of certain vitamins and antioxidants.\nFiber content: Raw vegetables are rich in fiber, which supports gut health.\nNatural enzymes: They contain natural enzymes that are destroyed by heat.\nThings to consider\nDigestibility: Raw vegetables can be harder to digest for some people, especially those with sensitive digestive systems.\nNutrient absorption: Cooking can actually make some nutrients more accessible and easier for the body to absorb.\nSafety: Some vegetables should never be eaten raw due to harmful compounds or bacteria. Examples include raw potatoes and eggplants, which contain toxins like solanine.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Raw%20Vegetables-Small.png",
       "category": "PRODUCE"
@@ -6294,8 +6294,8 @@
     },
     {
       "externalId": "796",
-      "name": "Stoned Dates",
-      "normalizedName": "stoned_dates",
+      "name": "Stoned Date",
+      "normalizedName": "stoned_date",
       "description": "Yes, \"stoned dates\" are dates that have had their pits removed, making them ready to eat or use in recipes. The term \"stoned\" refers to the removal of the stone, or pit, from the fruit. They are a convenient, ready-to-use form of dates that are popular for snacking, baking, and cooking.\nWhat \"stoned dates\" are\nPitted dates: The most direct meaning of \"stoned\" is that the pit has been removed.\nConvenient: They are prepared for immediate use, meaning you don't have to remove the pit yourself.\nCommonly available: You can buy them dried and sometimes pressed into a block, which makes them easy to chop for recipes like date crumble slice.\nHow to use them\nSnack on them: They are often eaten on their own as a healthy snack.\nStuff them: You can stuff them with nuts, cheese, or other fillings.\nBake with them: They are a key ingredient in many desserts, such as sticky toffee pudding or date slices.\nBlend them: You can blend them with hot water to create a toffee-like date sauce for pancakes or porridge.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Stoned%20Dates-Small.png",
       "category": "PRODUCE"
@@ -6446,8 +6446,8 @@
     },
     {
       "externalId": "816",
-      "name": "German Sausages",
-      "normalizedName": "german_sausages",
+      "name": "German Sausage",
+      "normalizedName": "german_sausage",
       "description": "German sausage refers to a diverse category of over 1,200 types of sausages, with key characteristics including the use of premium meat (often pork), specific seasonings, and traditional preparation methods like smoking or boiling. Popular examples include the grilled Bratwurst, the boiled Bavarian Weisswurst, and the smoked and sliced Teewurst.\nKey characteristics\nMeat: Typically made from pork or pork and beef blends, though other meats like veal and even wild game are used.\nSeasoning: A distinct blend of spices is used, with variations depending on the regional recipe.\nPreparation: Often prepared through traditional methods like pan-frying, grilling, or gentle boiling to preserve flavor and texture.\nPopular types of German sausage\nBratwurst: One of the most famous types, it can be made from various meats and is traditionally grilled or pan-fried.\nWeisswurst: A Bavarian sausage made from minced veal and back bacon, it is a boiled sausage traditionally eaten by noon.\nBlutwurst: A type of blood sausage made from pork rind and blood, often cooked down with barley.\nCurrywurst: A steamed or fried pork sausage, cut into slices and served with a curried ketchup sauce.\nTeewurst: A soft, spreadable, and smoked sausage made from pork and bacon, often served with tea.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/German%20Sausages-Small.png",
       "category": "MEAT"
@@ -6550,8 +6550,8 @@
     },
     {
       "externalId": "829",
-      "name": "Kabanos Sausages",
-      "normalizedName": "kabanos_sausages",
+      "name": "Kabanos Sausage",
+      "normalizedName": "kabanos_sausage",
       "description": "Kabanos sausages are red due to the pork and spices used, combined with a smoking and drying process that gives them a dark red color and a smoky flavor. They are a type of long, thin, dry sausage originating from Poland, typically made of pork, and are often eaten as a snack.\nIngredients and process: Kabanos is made from pork that is spiced with pepper, nutmeg, sugar, and caraway. After being stuffed into sheep casings, the sausages are smoked and hung to dry. This process concentrates the flavor and results in the sausage's characteristic dark red color.\nFlavor: The \"redness\" is not from artificial coloring but from the natural reaction of the meat and spices during the smoking and drying process. The final product has an intense, smoky, and savory flavor with notes of pepper and caraway.\nVariations: Some versions may have a \"chilli\" flavor, but this is specifically added and is different from the traditional color of the sausage. There are also other variations, such as those made with chicken or other ingredients.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Kabanos%20Sausages-Small.png",
       "category": "MEAT"
@@ -6838,8 +6838,8 @@
     },
     {
       "externalId": "865",
-      "name": "Pitted Dates",
-      "normalizedName": "pitted_dates",
+      "name": "Pitted Date",
+      "normalizedName": "pitted_date",
       "description": "Pitted dates are dried dates from which the pits (seeds) have been mechanically or manually removed, making them convenient for snacking and cooking. They retain the natural sweetness and flavor of the whole fruit and are a versatile ingredient for baking, smoothies, and as a natural sweetener.\nKey characteristics\nPits removed: The main characteristic is the absence of the hard seed in the center.\nConvenient: This makes them ready to eat or use in recipes without any extra preparation.\nVersatile: Pitted dates are used as a snack, blended into smoothies, baked into goods like muffins, or used to make a natural date paste.\nSweet and chewy: They have a naturally sweet, caramel-like flavor and a chewy texture.\nNutritious: They are a source of fiber, natural sugars, vitamins, and minerals such as potassium, calcium, and magnesium.\nHow to use them\nSnack on them: Enjoy them straight from the package.\nAdd to breakfast: Sprinkle them over yogurt, porridge, or add them to smoothies.\nBake with them: Incorporate them into cakes, pancakes, or energy balls.\nCreate a sweetener: Blend them with a little water to make a natural date paste for a sugar substitute.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Pitted%20Dates-Small.png",
       "category": "PRODUCE"

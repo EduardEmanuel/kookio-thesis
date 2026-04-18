@@ -52,7 +52,13 @@ const PLURAL_RULES: Array<{
     test: (n) => n.endsWith('_flakes'),
     toSingular: (n) => n.replace(/_flakes$/, '_flake'),
   },
-  // simple plural: ends with s (not ss, us, as, is, os) AND singular exists
+  // silent-e plural: consonant + es → consonant + e  (cloves→clove, noodles→noodle)
+  // Excludes: -ches (peaches→peach handled differently), -sses (molasses has no singular)
+  {
+    test: (n) => /[^aeiou]es$/.test(n) && !n.endsWith('ess') && !n.endsWith('ches') && !n.endsWith('sses'),
+    toSingular: (n) => n.slice(0, -1),
+  },
+  // simple plural: ends with s (not vowel+s, not ss)
   {
     test: (n) => n.endsWith('s') && !n.match(/[aeiou]s$/) && !n.endsWith('ss'),
     toSingular: (n) => n.slice(0, -1),

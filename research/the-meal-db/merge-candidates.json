@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17",
+  "generatedAt": "2026-04-18",
   "legend": {
     "MERGE": "Both plural and singular exist — plural will be removed, singular kept",
     "RENAME": "Only plural exists — will be renamed to singular, no removal"
@@ -25,6 +25,14 @@
       "plural": "borlotti_beans",
       "pluralName": "Borlotti Beans",
       "singular": "borlotti_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "bramley_apples",
+      "pluralName": "Bramley Apples",
+      "singular": "bramley_apple",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -121,6 +129,14 @@
       "plural": "chocolate_chips",
       "pluralName": "Chocolate Chips",
       "singular": "chocolate_chip",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "cloves",
+      "pluralName": "Cloves",
+      "singular": "clove",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -230,6 +246,14 @@
       "note": ""
     },
     {
+      "plural": "green_olives",
+      "pluralName": "Green Olives",
+      "singular": "green_olive",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "green_red_lentils",
       "pluralName": "Green Red Lentils",
       "singular": "green_red_lentil",
@@ -249,6 +273,22 @@
       "plural": "hard_taco_shells",
       "pluralName": "Hard Taco Shells",
       "singular": "hard_taco_shell",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "italian_fennel_sausages",
+      "pluralName": "Italian Fennel Sausages",
+      "singular": "italian_fennel_sausage",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "jerusalem_artichokes",
+      "pluralName": "Jerusalem Artichokes",
+      "singular": "jerusalem_artichoke",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -284,6 +324,14 @@
       "action": "MERGE",
       "approve": true,
       "note": "lemon already exists in catalog"
+    },
+    {
+      "plural": "medjool_dates",
+      "pluralName": "Medjool Dates",
+      "singular": "medjool_date",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
     },
     {
       "plural": "meringue_nests",
@@ -350,6 +398,14 @@
       "note": ""
     },
     {
+      "plural": "pitted_black_olives",
+      "pluralName": "Pitted Black Olives",
+      "singular": "pitted_black_olive",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "prawns",
       "pluralName": "Prawns",
       "singular": "prawn",
@@ -398,9 +454,33 @@
       "note": ""
     },
     {
+      "plural": "rice_noodles",
+      "pluralName": "Rice Noodles",
+      "singular": "rice_noodle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "rice_stick_noodles",
+      "pluralName": "Rice Stick Noodles",
+      "singular": "rice_stick_noodle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "rolled_oats",
       "pluralName": "Rolled Oats",
       "singular": "rolled_oat",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sausages",
+      "pluralName": "Sausages",
+      "singular": "sausage",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -417,6 +497,14 @@
       "plural": "spring_onions",
       "pluralName": "Spring Onions",
       "singular": "spring_onion",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "stirfry_vegetables",
+      "pluralName": "Stir-fry Vegetables",
+      "singular": "stirfry_vegetable",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -473,6 +561,14 @@
       "plural": "pilchards",
       "pluralName": "Pilchards",
       "singular": "pilchard",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "black_olives",
+      "pluralName": "Black Olives",
+      "singular": "black_olive",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -566,6 +662,14 @@
       "note": ""
     },
     {
+      "plural": "courgettes",
+      "pluralName": "Courgettes",
+      "singular": "courgette",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "chestnuts",
       "pluralName": "Chestnuts",
       "singular": "chestnut",
@@ -590,9 +694,25 @@
       "note": ""
     },
     {
+      "plural": "roasted_vegetables",
+      "pluralName": "Roasted Vegetables",
+      "singular": "roasted_vegetable",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "kidney_beans",
       "pluralName": "Kidney Beans",
       "singular": "kidney_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "udon_noodles",
+      "pluralName": "Udon Noodles",
+      "singular": "udon_noodle",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -654,6 +774,14 @@
       "note": ""
     },
     {
+      "plural": "braeburn_apples",
+      "pluralName": "Braeburn Apples",
+      "singular": "braeburn_apple",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "almonds",
       "pluralName": "Almonds",
       "singular": "almond",
@@ -678,9 +806,25 @@
       "note": ""
     },
     {
+      "plural": "apples",
+      "pluralName": "Apples",
+      "singular": "apple",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "tarragon_leaves",
       "pluralName": "Tarragon Leaves",
       "singular": "tarragon_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "chives",
+      "pluralName": "Chives",
+      "singular": "chive",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -729,6 +873,14 @@
       "plural": "bean_sprouts",
       "pluralName": "Bean Sprouts",
       "singular": "bean_sprout",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "noodles",
+      "pluralName": "Noodles",
+      "singular": "noodle",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -790,6 +942,14 @@
       "note": ""
     },
     {
+      "plural": "dill_pickles",
+      "pluralName": "Dill Pickles",
+      "singular": "dill_pickle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "sesame_seed_burger_buns",
       "pluralName": "Sesame Seed Burger Buns",
       "singular": "sesame_seed_burger_bun",
@@ -806,9 +966,33 @@
       "note": "bun already exists in catalog"
     },
     {
+      "plural": "cheese_slices",
+      "pluralName": "Cheese Slices",
+      "singular": "cheese_slice",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "figs",
       "pluralName": "Figs",
       "singular": "fig",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "sardines",
+      "pluralName": "Sardines",
+      "singular": "sardine",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "prunes",
+      "pluralName": "Prunes",
+      "singular": "prune",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -833,6 +1017,14 @@
       "plural": "black_cardamom_pods",
       "pluralName": "Black Cardamom Pods",
       "singular": "black_cardamom_pod",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "beef_stock_cubes",
+      "pluralName": "Beef Stock Cubes",
+      "singular": "beef_stock_cube",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -878,6 +1070,14 @@
       "note": ""
     },
     {
+      "plural": "bouillon_cubes",
+      "pluralName": "Bouillon Cubes",
+      "singular": "bouillon_cube",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "mixed_beef_cuts",
       "pluralName": "Mixed Beef Cuts",
       "singular": "mixed_beef_cut",
@@ -918,6 +1118,14 @@
       "note": ""
     },
     {
+      "plural": "pork_belly_slices",
+      "pluralName": "Pork belly slices",
+      "singular": "pork_belly_slice",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "mixed_peppers",
       "pluralName": "Mixed peppers",
       "singular": "mixed_pepper",
@@ -950,6 +1158,14 @@
       "note": ""
     },
     {
+      "plural": "flat_rice_noodles",
+      "pluralName": "Flat Rice Noodles",
+      "singular": "flat_rice_noodle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "lemongrass_stalks",
       "pluralName": "Lemongrass Stalks",
       "singular": "lemongrass_stalk",
@@ -974,6 +1190,14 @@
       "note": ""
     },
     {
+      "plural": "vermicelli_rice_noodles",
+      "pluralName": "Vermicelli Rice Noodles",
+      "singular": "vermicelli_rice_noodle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "raw_frozen_prawns",
       "pluralName": "Raw Frozen Prawns",
       "singular": "raw_frozen_prawn",
@@ -985,6 +1209,22 @@
       "plural": "lime_leaves",
       "pluralName": "Lime Leaves",
       "singular": "lime_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "egg_noodles",
+      "pluralName": "Egg Noodles",
+      "singular": "egg_noodle",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "garlic_granules",
+      "pluralName": "Garlic Granules",
+      "singular": "garlic_granule",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -1030,9 +1270,25 @@
       "note": ""
     },
     {
+      "plural": "rice_flour_pancakes",
+      "pluralName": "Rice Flour Pancakes",
+      "singular": "rice_flour_pancake",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "sea_bass_fillets",
       "pluralName": "Sea Bass Fillets",
       "singular": "sea_bass_fillet",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "raw_vegetables",
+      "pluralName": "Raw Vegetables",
+      "singular": "raw_vegetable",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -1054,9 +1310,25 @@
       "note": ""
     },
     {
+      "plural": "stoned_dates",
+      "pluralName": "Stoned Dates",
+      "singular": "stoned_date",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "baby_lettuce_leaves",
       "pluralName": "Baby Lettuce Leaves",
       "singular": "baby_lettuce_leaf",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "german_sausages",
+      "pluralName": "German Sausages",
+      "singular": "german_sausage",
       "action": "RENAME",
       "approve": true,
       "note": ""
@@ -1094,6 +1366,14 @@
       "note": ""
     },
     {
+      "plural": "kabanos_sausages",
+      "pluralName": "Kabanos Sausages",
+      "singular": "kabanos_sausage",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
       "plural": "coconut_flakes",
       "pluralName": "Coconut Flakes",
       "singular": "coconut_flake",
@@ -1121,6 +1401,14 @@
       "plural": "dried_white_navy_beans",
       "pluralName": "Dried White Navy Beans",
       "singular": "dried_white_navy_bean",
+      "action": "RENAME",
+      "approve": true,
+      "note": ""
+    },
+    {
+      "plural": "pitted_dates",
+      "pluralName": "Pitted Dates",
+      "singular": "pitted_date",
       "action": "RENAME",
       "approve": true,
       "note": ""
