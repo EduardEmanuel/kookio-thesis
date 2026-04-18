@@ -1,0 +1,21 @@
+{
+  "name": "kookio-thesis",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:ro": "tsx build.ts ro",
+    "build:ro:draft": "tsx build.ts ro --draft",
+    "build:ro:delete": "tsx build.ts ro --delete",
+    "fetch-catalog": "tsx ./research/the-meal-db/fetch-catalog.ts",
+    "generate-candidates": "tsx ./research/the-meal-db/generate-merge-candidates.ts",
+    "clean-catalog": "tsx ./research/the-meal-db/clean-catalog.ts",
+    "fetch-recipes": "tsx ./research/the-meal-db/fetch-recipes.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
