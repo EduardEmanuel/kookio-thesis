@@ -1,5 +1,5 @@
 % main.tex starts here
-\documentclass[12pt]{report}
+\documentclass[12pt]{article}
 
 % ------------------------------------------------------------------
 % Engine & page header
@@ -11,6 +11,12 @@
 % Fonts & verbatim environments (LuaLaTeX)
 % ------------------------------------------------------------------
 \usepackage{fontspec}
+
+% Body font — Times-family (TeX Gyre Termes is the open-source clone of
+% Times New Roman, shipped with every modern TeX distribution).
+% FMI guide §"Recomandări privind formatul lucrării" specifies Times New
+% Roman 12pt; Termes is metrically equivalent.
+\setmainfont{TeX Gyre Termes}
 
 \setmonofont[
   Scale=MatchLowercase,
@@ -53,7 +59,8 @@
 % Layout & microtypography
 % ------------------------------------------------------------------
 \usepackage[a4paper, margin=2.5cm]{geometry}
-% \usepackage{setspace} % not used
+\usepackage{setspace}
+\onehalfspacing % FMI guide §"Recomandări privind formatul lucrării": spațiere 1.5 rânduri
 \usepackage{microtype}
 \setlength{\emergencystretch}{3em}
 \setlength{\parskip}{0.5em}
@@ -187,7 +194,13 @@
   \renewcommand{\footrulewidth}{0pt}
 }
 
-\usepackage[toc]{appendix}
+\usepackage[toc,title,titletoc]{appendix}
+% Polyglossia romanian doesn't override the appendix package strings,
+% so set them explicitly to get "Anexa A: …" prefixes in body and TOC,
+% and "Anexe" instead of "Appendices" as the TOC section header.
+\renewcommand{\appendixname}{Anexa}
+\renewcommand{\appendixtocname}{Anexe}
+\renewcommand{\appendixpagename}{Anexe}
 
 % ------------------------------------------------------------------
 % Metadata
@@ -209,7 +222,6 @@
 \newcommand{\figref}[1]{Figura~\ref{#1}}
 \newcommand{\tabref}[1]{Tabelul~\ref{#1}}
 \newcommand{\lstref}[1]{Lista~\ref{#1}}
-\newcommand{\chapref}[1]{Capitolul~\ref{#1}}
 
 % ------------------------------------------------------------------
 % Document body
@@ -223,8 +235,23 @@
 \pagestyle{fancy}
 
 \input{0-abstract.tex}
+\clearpage % Rezumatul ocupă pagina i; cuprinsul începe pe pagina ii cu spațiu suficient
 
+% TOC stays single-spaced — the FMI 1.5-spacing rule applies to body text;
+% reference apparatus (TOC, glossary, bibliography) is conventionally tighter.
+% `tocdepth=2` keeps the TOC at section + subsection level. Subsubsections
+% remain in the body but are intentionally omitted from the TOC, both for
+% density (a 20-entry TOC clips lines at the page boundary regardless of
+% \raggedbottom + \singlespacing tweaks) and to match the FMI guide's TOC
+% requirement of "titlurile capitolelor și subcapitolelor".
+\setcounter{tocdepth}{2}
+\raggedbottom
+\begingroup
+\singlespacing
+\setlength{\parskip}{0pt}
 \tableofcontents
+\endgroup
+\flushbottom % body text uses standard page-filling
 \newcommand{\glsunsetmany}[1]{\forcsvlist{\glsunset}{#1}}
 \glsunsetmany{avg,p50,p95,ssr,ssg,csr,api,db,orm,cicd,nx,analog,prisma,typescript,vitest,playwright,edgefunctions,serverless,hydration,monorepo,workflow,repository,github,gitlab}
 \clearpage
@@ -235,7 +262,6 @@
 \input{1-introducere.tex}
 \input{2-preliminarii.tex}
 \input{1-implementare.tex}
-\input{2a-evaluare.tex}
 \input{3-concluzii.tex}
 
 \begin{appendices}
@@ -244,9 +270,17 @@
 
 \end{appendices}
 
+% Glossary and bibliography stay single-spaced with ragged bottom — same
+% rationale as TOC (reference apparatus, not body text). The `\raggedbottom`
+% prevents last-line clipping; entries land cleanly before page boundary.
+\raggedbottom
+\begingroup
+\singlespacing
+\setlength{\parskip}{0pt}
 \glsaddall
 \printglossary[title={Glosar de termeni}]
 \printglossary[type=\acronymtype,title={Lista de acronime}]
 \printbibliography
+\endgroup
 \end{document}
 % main.tex ends here

@@ -1,12 +1,12 @@
 % 1-implementare.tex starts here
-\chapter{Implementare}\label{ch:impl}
+\section{Implementare}\label{ch:impl}
 
-\section{Prezentare generală a implementării}
+\subsection{Prezentare generală a implementării}
 
 Aplicația \textit{\gls{kookio}} este implementată conform arhitecturii \textbf{\gls{pan}}, descrisă în Anexa~\ref{ch:appendix-manifest}.
 Această secțiune prezintă structura concretă a proiectului, organizarea codului și fluxurile principale de execuție, din perspectiva implementării efective.
 
-\subsection{Structura monorepo-ului Nx}\label{subsec:monorepo-struct}
+\subsubsection{Structura monorepo-ului Nx}\label{subsec:monorepo-struct}
 \vspace{0.3cm}
 \begin{TreeVerb}
 kookio/
@@ -37,18 +37,18 @@ kookio/
 
 Această organizare permite separarea clară a responsabilităților între aplicația \gls{web}, \gls{e2e} și \glspl{library} reutilizabile, facilitând dezvoltarea incrementală și testarea independentă a componentelor \cite{nx}.
 
-\subsection{Fluxul aplicației cap-coadă}\label{subsec:e2e-flow}
+\subsubsection{Fluxul aplicației cap-coadă}\label{subsec:e2e-flow}
 
 În implementarea aplicației \textit{\gls{kookio}}, fluxul principal de date urmează traseul:
 \textit{\Gls{analog} (\acrshort{ui} și \acrfull{ssr})} \(\rightarrow\) \textit{\acrfull{trpc} (\acrshort{api} type-safe)} \(\rightarrow\) \textit{\gls{prisma} (acces la date)} \cite{analog,trpc,prisma}.
 Această structură permite propagarea tipurilor \gls{typescript} între client și server și integrarea directă a logicii de business în cadrul rutelor server-side \cite{trpc}.
 
-\section{Implementarea aplicației}
+\subsection{Implementarea aplicației}
 
-Acest capitol descrie implementarea practică a aplicației \textit{\gls{kookio}}, evidențiind modul în care conceptele prezentate în capitolele anterioare sunt transpuse într-un sistem funcțional.
+Această secțiune descrie implementarea practică a aplicației \textit{\gls{kookio}}, evidențiind modul în care conceptele prezentate în secțiunile anterioare sunt transpuse într-un sistem funcțional.
 Sunt analizate structura proiectului, organizarea codului, fluxurile de date și deciziile tehnice care au stat la baza realizării aplicației.
 
-\subsection{Arhitecturi web moderne}
+\subsubsection{Arhitecturi web moderne}
 
 Aplicarea practică a arhitecturilor \gls{web} moderne presupune alegerea unei strategii de \gls{randare} adaptate tipului de conținut și cerințelor de performanță.
 În proiectul \textit{\gls{kookio}}, etapa de \gls{randare} este abordată \textbf{hibrid}, combinând \acrfull{ssr} cu \acrfull{ssg} acolo unde este posibil \cite{analog,nitro}.
@@ -61,7 +61,7 @@ Aplicarea practică a arhitecturilor \gls{web} moderne presupune alegerea unei s
 
 Această combinație permite un compromis eficient între performanță, flexibilitate și experiența utilizatorului, fără a separa artificial aplicația în proiecte distincte de \gls{frontend} și \gls{backend} \cite{analog,nitro}.
 
-\subsection{Structura proiectului și organizarea codului}
+\subsubsection{Structura proiectului și organizarea codului}
 
 Aplicația \textit{\gls{kookio}} este implementată într-un \gls{monorepo} gestionat cu \gls{nx}, care permite organizarea coerentă a aplicațiilor și \glspl{library} reutilizabile \cite{nx}.
 Această abordare facilitează separarea responsabilităților și încurajează reutilizarea codului, menținând în același timp un control centralizat asupra configurațiilor și dependențelor.
@@ -75,7 +75,7 @@ Structura principală a proiectului este împărțită în:
 
 Această organizare permite dezvoltarea incrementală a aplicației și extinderea facilă a funcționalităților, fără a introduce dependențe circulare sau redundanță \cite{nx}.
 
-\subsection{Angular și randare server-side}
+\subsubsection{Angular și randare server-side}
 
 În cadrul proiectului \textit{\gls{kookio}}, interfața este construită cu \gls{angular}, iar suportul pentru \acrlong{ssr} este obținut prin meta-framework-ul \textbf{\gls{analog}}, care rulează peste runtime-ul \textbf{\gls{nitro}} \cite{analog,nitro}.
 Această integrare permite ca aplicația să livreze \acrshort{html} inițial generat pe server, iar ulterior să devină complet interactivă în browser.
@@ -88,7 +88,7 @@ Fluxul de execuție este compus din două etape:
 
 Un avantaj important al acestei abordări este faptul că rutele de aplicație și rutele de tip \acrshort{api} coexistă în același proiect (ex.: \glspl{endpoint} de tip \acrshort{trpc} și rute auxiliare precum \texttt{/api/health}), permițând implementarea unui sistem full-stack coerent, cu acces la baza de date realizat exclusiv pe server \cite{analog,nitro,trpc}.
 
-\subsection{Gestionarea datelor cu Prisma și CockroachDB}
+\subsubsection{Gestionarea datelor cu Prisma și CockroachDB}
 
 Persistența datelor este realizată cu ajutorul \gls{prisma}, configurat pentru a utiliza \gls{cockroachdb} prin protocolul \gls{postgresql} \cite{prisma,cockroachdb,postgresql}.
 \Gls{prisma} oferă un model declarativ pentru definirea structurii bazei de date, precum și un client tipizat pentru interogarea acesteia din aplicație \cite{prisma}.
@@ -103,7 +103,7 @@ Schema bazei de date este definită într-un fișier central, din care \gls{pris
 Pentru modelul \texttt{Ingredient}, este utilizată o constrângere de unicitate compusă, care asigură faptul că un utilizator nu poate avea ingrediente duplicate cu același nume.
 Această regulă este exprimată direct în schema \gls{prisma} și este aplicată automat la nivelul bazei de date \cite{prisma}.
 
-\subsection{Comunicarea client–server cu tRPC}
+\subsubsection{Comunicarea client–server cu tRPC}
 
 Pentru comunicarea dintre client și server este utilizat \acrfull{trpc}, un framework care permite definirea \acrshort{api}-urilor tipizate fără a introduce un strat suplimentar de serializare manuală \cite{trpc}.
 Prin această abordare, tipurile sunt partajate între \gls{frontend} și \gls{backend}, eliminând discrepanțele dintre contractele de date \cite{trpc}.
@@ -118,7 +118,7 @@ Routerele \acrshort{trpc} sunt definite pe server și expun operații precum:
 Clientul \gls{angular} consumă aceste operații direct, beneficiind de verificare statică a tipurilor și de autocompletare în timpul dezvoltării \cite{trpc}.
 Această integrare reduce semnificativ riscul de erori la rulare și crește productivitatea dezvoltatorului.
 
-\subsection{Randare server-side și integrarea backend-ului}
+\subsubsection{Randare server-side și integrarea backend-ului}
 
 Aplicația utilizează \acrlong{ssr} prin \gls{analog}, care rulează peste infrastructura \gls{nitro} \cite{analog,nitro}.
 Această abordare permite definirea rutelor \acrshort{api} și a logicii de server direct în cadrul aplicației \gls{web}, fără a necesita un \gls{backend} separat \cite{nitro}.
@@ -128,14 +128,14 @@ Prin această integrare, aplicația poate executa interogări către baza de dat
 
 Această arhitectură reduce latența percepută de utilizator și permite un control mai bun asupra fluxului de date și al securității aplicației.
 
-\subsection{Jurnalizare și observabilitate}
+\subsubsection{Jurnalizare și observabilitate}
 
 Pentru monitorizarea comportamentului aplicației și facilitarea depanării, \textit{\gls{kookio}} utilizează un mecanism de \gls{logging} unitar, disponibil atât în context server-side, cât și în execuția locală, în sprijinul \gls{observability}.
 
 Jurnalizarea este realizată cu ajutorul bibliotecii \textbf{\gls{pino}} \cite{pino}, un jurnal performant pentru aplicații Node.js, ales pentru consumul redus de resurse și integrarea facilă în medii server-side moderne.
 Această abordare permite înregistrarea coerentă a evenimentelor relevante din fluxul de execuție, fără a afecta semnificativ performanța aplicației.
 
-\subsection{Fluxul de execuție al unei cereri}\label{subsec:request-flow}
+\subsubsection{Fluxul de execuție al unei cereri}\label{subsec:request-flow}
 
 Pentru a înțelege integrarea completă a componentelor prezentate anterior, este utilă analiza fluxului de execuție al unei cereri tipice în aplicația \textit{\gls{kookio}}, de la inițierea acesteia în browser până la accesul la datele persistente.
 
@@ -156,7 +156,7 @@ Astfel, aplicația combină avantajele \acrlong{ssr} pentru încărcarea iniția
 
 Acest flux de execuție unitar demonstrează beneficiile arhitecturii full-stack adoptate în proiectul \textit{\gls{kookio}}, în care \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență funcționează coerent într-un singur ecosistem \gls{typescript} \cite{nx,analog,trpc,prisma}.
 
-\subsection{Testare și validare}
+\subsubsection{Testare și validare}
 
 Procesul de validare a aplicației include atât \gls{unit}, cât și testare de \gls{integration}, fiind integrat în fluxul de dezvoltare al \gls{monorepo}-ului \gls{nx} \cite{nx}.
 
@@ -168,7 +168,7 @@ Această verificare este deosebit de relevantă în contextul \acrfull{ssr}, în
 
 Combinarea testelor \gls{unit}, de \gls{integration} și \gls{e2e} contribuie la identificarea timpurie a defectelor și la creșterea stabilității aplicației, asigurând un comportament predictibil al sistemului în diferite scenarii de utilizare.
 
-\subsection{Dezvoltare și deploy}
+\subsubsection{Dezvoltare și deploy}
 
 Aplicația este dezvoltată local folosind un mediu care reproduce cât mai fidel configurația de producție.
 Variabilele de mediu sunt gestionate centralizat prin platforma \gls{vercel}, iar pentru dezvoltarea locală acestea sunt sincronizate cu ajutorul Vercel \acrshort{cli} \cite{vercel_cli}.
@@ -179,4 +179,31 @@ Această abordare permite rularea aplicației în medii distincte (dezvoltare, t
 În practică, generarea \gls{prismaclient} trebuie realizată pe platforma țintă de execuție (\gls{linux} în cazul \gls{vercel}), deoarece \glspl{binary} Prisma sunt dependente de sistemul de operare și de biblioteca \acrshort{ssl} utilizată.
 Utilizarea unui client generat pe o mașină locală poate conduce la incompatibilități de tip \gls{darwinarm64} vs. \gls{rhelopenssl30x}.
 Soluția adoptată constă în generarea \gls{prismaclient} în cadrul pipeline-ului de build și deploy.
+
+\subsection{Metodologie și evaluare}\label{ch:evaluare}
+
+\subsubsection{Setare experimentală}
+\textbf{Mediu:} \gls{vercel} (preview/prod), \gls{cockroachdb} (cluster \dots).\\
+\textbf{\Glspl{build}:} \gls{analog} pentru \acrfull{ssr} (browser și server).\\
+\textbf{Date:} fixtures deterministe (\texttt{mockIngredients}).
+
+\subsubsection{Indicatori și proceduri}
+
+\paragraph{Timp rulare \acrfull{ci}.}
+Comparăm monolit (\gls{workflow} unic) vs. modular (\glspl{workflow} reutilizabile + \glspl{compositeaction}).
+
+\paragraph{Latența \acrfull{db}.}
+Rulăm \texttt{bench:preview} cu \(N=100\); raportăm medie, \acrshort{p50}, \acrshort{p95}; notăm \textit{cold}/\textit{warm}.
+
+\paragraph{Fiabilitate \acrfull{e2e}.}
+Rată de trecere \gls{playwright} pe \(k\) rulări, pe matrici de browser (Chromium/WebKit/Firefox).
+
+\subsubsection{Rezultate}
+\textbf{\acrshort{ci}:} \(4\) min \(\rightarrow\) \(3\) min (mediană).\\
+\textbf{\gls{cockroachdb}:} \(\text{\gls{avg}}=2.55\) ms, \acrshort{p50}=2.23 ms, \acrshort{p95}=3.52 ms.\\
+\textbf{\gls{redis}:} \(\text{\gls{avg}}=1.2\) ms, \acrshort{p50}=0.98 ms, \acrshort{p95}=1.52 ms.\\
+\textbf{\acrshort{e2e}:} \(100\)\% rata de trecere.
+
+\subsubsection{Discuție și limitări}
+Rezultate din mediu de \textit{preview}; nu includ trafic concurent. Generalizarea cere teste de încărcare și măsurători în producție.
 % 1-implementare.tex ends here

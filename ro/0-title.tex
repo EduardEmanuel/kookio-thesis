@@ -1,5 +1,9 @@
 % 0-title.tex starts here
-\begin{titlepage}
+% Manual title page — bypasses the article class's `titlepage` environment
+% because that env's internal \thispagestyle{empty} interacts badly with
+% \restoregeometry, leaking the "empty" style onto the page after the title
+% (which should show the roman numeral "i").
+\thispagestyle{empty}
 \newgeometry{left=2cm,right=2cm,top=1cm,bottom=1cm}
 \begin{figure}[!htb]
     \centering
@@ -46,6 +50,6 @@
 \begin{center}
     \Large \textbf{\releasedate}
 \end{center}
+\clearpage
 \restoregeometry
-\end{titlepage}
 % 0-title.tex ends here

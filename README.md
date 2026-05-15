@@ -45,7 +45,7 @@ Eduard - Emanuel Dinea
 
 ## 🧑‍🏫 Supervisor
 
-Conf. dr. Radu Boriga
+Conf. univ. dr. Marius Iulian Mihăilescu
 
 ## 📄 Thesis Abstract
 

@@ -1,10 +1,10 @@
 % 1-introducere.tex starts here
-\chapter{Introducere}\label{ch:intro}
-\addcontentsline{toc}{section}{Motivație}
-\addcontentsline{toc}{section}{Scopul lucrării}
-\addcontentsline{toc}{section}{Contribuții ale lucrării}
+\section{Introducere}\label{ch:intro}
+\addcontentsline{toc}{subsection}{Motivație}
+\addcontentsline{toc}{subsection}{Scopul lucrării}
+\addcontentsline{toc}{subsection}{Contribuții ale lucrării}
 
-\section*{Motivație}
+\subsection*{Motivație}
 În contextul vieții moderne, tot mai multe persoane caută soluții digitale care să simplifice organizarea meselor zilnice și gestionarea ingredientelor disponibile în gospodărie.
 Lipsa unei evidențe clare a ingredientelor conduce frecvent la achiziții redundante și, implicit, la risipă alimentară, fenomen cu impact atât economic, cât și social.
 
@@ -16,7 +16,7 @@ Proiectul \textit{\gls{kookio}} abordează aceste probleme prin adoptarea unei a
 Această arhitectură integrează \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență într-un flux unitar de dezvoltare.
 În acest context, este analizată arhitectura \textbf{\gls{pan}} ca model pentru realizarea unor aplicații \gls{web} \gls{fullstack} coerente, extensibile și ușor de testat.
 
-\section*{Scopul lucrării}
+\subsection*{Scopul lucrării}
 Scopul acestei lucrări este proiectarea și implementarea unei aplicații \gls{web} \gls{fullstack} care permite gestionarea inventarului de ingrediente pentru utilizatori casnici.
 Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan} și pentru analiza impactului acesteia asupra dezvoltării aplicațiilor \gls{web} moderne.
 
@@ -28,7 +28,7 @@ Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan}
   \item validarea implementării prin \gls{unit}, \gls{integration} și \acrshort{e2e}.
 \end{itemize}
 
-\section*{Contribuții ale lucrării}
+\subsection*{Contribuții ale lucrării}
 \begin{enumerate}
   \item Un \emph{blueprint} \gls{pan} complet funcțional: \gls{analog} (\gls{angular} 20) cu \acrshort{ssr} peste \gls{nitro}, \acrshort{trpc} pentru \acrshort{api} tipizat și \gls{prisma} către \gls{cockroachdb}, într-un \gls{monorepo} \gls{nx}.
   \item Tipare de partajare a contractelor (\glspl{dto} și scheme \gls{zod} generate din \gls{prisma}) reutilizabile în \gls{ui}, rute de server și teste.
@@ -38,5 +38,5 @@ Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan}
 
 Aplicația este concepută ca un \gls{mvp}, care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi.
 Prin aceste extensii, aplicația poate contribui indirect la reducerea risipei alimentare.
-Detaliile privind implementarea sunt prezentate în capitolul~\ref{ch:impl}.
+Detaliile privind implementarea sunt prezentate în secțiunea~\ref{ch:impl}.
 % 1-introducere.tex ends here

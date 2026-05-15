@@ -1,16 +1,16 @@
 % 2-preliminarii.tex starts here
-\chapter{Preliminarii}\label{ch:prelim}
+\section{Preliminarii}\label{ch:prelim}
 
-\section*{Contextul tehnologic}
+\subsection*{Contextul tehnologic}
 Proiectul \textit{\gls{kookio}} este fundamentat pe arhitectura unitară \textbf{\gls{pan}}, concepută pentru a acoperi întregul flux de dezvoltare \gls{typescript}, de la interfața utilizatorului până la stratul de persistență.
 Această arhitectură consolidează într-un cadru comun mecanismele de orchestrare, \gls{randarehibrida} și acces tipizat la date, oferind premisele unei aplicații coerente și extensibile \cite{nx,analog,prisma}.
 
 Rolul acestui capitol este de a introduce conceptele și tehnologiile care stau la baza implementării, fără a intra încă în detalii de ordin practic.
 Manifestul arhitectural complet, alături de avantajele comparative și direcțiile de evoluție, este prezentat în \textbf{Anexa~\ref{ch:appendix-manifest}}.
 
-\section{Cadrul tehnologic}
+\subsection{Cadrul tehnologic}
 
-\subsection{Arhitecturi web moderne}
+\subsubsection{Arhitecturi web moderne}
 
 Modelul tradițional client--server, în care browserul acționa exclusiv ca un consumator de \acrfull{api}-uri \acrfull{rest}, nu mai răspunde integral cerințelor aplicațiilor \gls{web} actuale.
 Așteptările privind performanța, experiența utilizatorului și vizibilitatea în motoarele de căutare au condus la apariția unor paradigme de \gls{randare} mai flexibile, în care responsabilitățile sunt distribuite între client și server \cite{analog,nitro}.
@@ -26,7 +26,7 @@ Așteptările privind performanța, experiența utilizatorului și vizibilitatea
 Aplicația \textit{\gls{kookio}} adoptă o astfel de arhitectură \gls{fullstack} hibridă, în care \gls{frontend}-ul și \gls{backend}-ul sunt dezvoltate împreună, într-un flux unitar.
 Această decizie permite partajarea tipurilor și a mecanismelor de validare între straturi (ex.: \gls{trpc}+\gls{zod}), reducând riscul erorilor de integrare și sporind coerența aplicației \cite{trpc}.
 
-\subsection{Angular și randare server-side}
+\subsubsection{Angular și randare server-side}
 
 \Gls{angular} este un \gls{framework} matur, construit în jurul limbajului \gls{typescript} și orientat către dezvoltarea de aplicații \gls{web} scalabile și bine structurate \cite{angular_signals}.
 Deși utilizat inițial preponderent în scenarii de \acrshort{csr}, ecosistemul \gls{angular} a evoluat semnificativ în direcția suportului pentru \acrshort{ssr}.
@@ -41,7 +41,7 @@ Deși utilizat inițial preponderent în scenarii de \acrshort{csr}, ecosistemul
 \Acrlong{ssr} permite generarea \acrshort{html}-ului inițial înainte ca aplicația să ajungă în browser, îmbunătățind atât timpul de afișare perceput, cât și compatibilitatea cu motoarele de căutare \cite{nitro}.
 Pentru o aplicație orientată către conținut și uz casnic, precum \gls{kookio}, aceste aspecte devin relevante încă din primele interacțiuni ale utilizatorului.
 
-\subsection{Monorepo și orchestrare cu Nx}
+\subsubsection{Monorepo și orchestrare cu Nx}
 
 Gestionarea complexității unui proiect \gls{fullstack} presupune o organizare clară a codului și a proceselor de build.
 În acest scop, proiectul \textit{\gls{kookio}} este structurat ca \gls{monorepo}, utilizând instrumentul \textbf{\gls{nx}} \cite{nx}.
@@ -57,7 +57,7 @@ Această abordare permite gruparea într-un singur \gls{repository} a aplicație
 \Gls{nx} adaugă peste această structură mecanisme de \textbf{execuția incrementală a sarcinilor}, \gls{caching} și izolare logică între proiecte.
 Astfel, modificările locale pot fi propagate eficient, fără a afecta întregul sistem, un avantaj esențial în dezvoltarea iterativă a aplicațiilor \gls{fullstack}.
 
-\subsection{tRPC și partajarea tipurilor}
+\subsubsection{tRPC și partajarea tipurilor}
 
 Un element central al arhitecturii \gls{pan} îl reprezintă comunicarea \textit{type-safe} dintre client și server.
 În acest scop, proiectul utilizează \textbf{\gls{trpc}}, un framework care elimină necesitatea definirii manuale a contractelor \acrshort{api} \cite{trpc}.
@@ -71,7 +71,7 @@ Procedurile \gls{trpc} sunt declarate pe server și consumate direct în aplica�
 
 Această abordare simplifică semnificativ integrarea și creează un cadru robust pentru extinderea ulterioară a funcționalităților.
 
-\subsection{Persistență: Prisma și CockroachDB}
+\subsubsection{Persistență: Prisma și CockroachDB}
 
 Stratul de persistență al aplicației este construit pe baza \textbf{\gls{prisma}}, un \gls{orm}, și a sistemului de gestiune a bazelor de date \textbf{\gls{cockroachdb}} \cite{prisma,cockroachdb}.
 \Gls{cockroachdb} oferă un model \gls{newsql} distribuit, compatibil cu protocolul \gls{postgresql}, permițând atât consistență tranzacțională, cât și scalare orizontală \cite{postgresql}.
@@ -85,7 +85,7 @@ Stratul de persistență al aplicației este construit pe baza \textbf{\gls{pris
 
 Această combinație oferă un echilibru între stabilitatea ecosistemului \gls{sql} și flexibilitatea necesară evoluției aplicației.
 
-\subsection{Testare automată: Vitest și Playwright}
+\subsubsection{Testare automată: Vitest și Playwright}
 
 Asigurarea calității aplicației presupune validarea comportamentului acesteia la mai multe niveluri.
 În proiectul \textit{\gls{kookio}}, acest obiectiv este atins prin combinarea \gls{unit} cu \gls{e2e}.
@@ -96,7 +96,7 @@ Acesta permite testarea logicii de business și a componentelor într-un mediu c
 Testarea \gls{e2e} și \gls{integration} sunt realizate cu \textbf{\gls{playwright}}, care simulează interacțiuni reale ale utilizatorului în browser \cite{playwright}.
 Prin această abordare sunt validate fluxurile critice ale aplicației, de la încărcarea inițială a paginii până la comunicarea cu \acrshort{api}-ul server-side.
 
-\subsection{Managementul configurației și mediilor}
+\subsubsection{Managementul configurației și mediilor}
 
 Configurarea aplicației este gestionată centralizat prin platforma de deployment \textbf{\gls{vercel}}, care acționează ca sursă unică de adevăr pentru variabilele de mediu \cite{vercel_cli}.
 Această strategie permite separarea clară a mediilor de dezvoltare, testare și producție, reducând riscurile asociate gestionării locale a secretelor.

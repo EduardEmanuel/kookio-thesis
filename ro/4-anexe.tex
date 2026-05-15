@@ -1,11 +1,11 @@
 % anexa-latex.tex starts here
-\chapter{Anexă: Redactarea lucrării în \LaTeX}\label{ch:appendix-latex}
+\section{Redactarea lucrării în \LaTeX}\label{ch:appendix-latex}
 
-\section{Instrumente pentru redactare}
+\subsection{Instrumente pentru redactare}
 Lucrarea a fost redactată cu motorul \gls{lualatex}, folosind fonturi \gls{unicode} și pachetul \gls{biblatex} pentru gestionarea bibliografiei. Structura este modulară, fiecare capitol fiind un fișier separat (\texttt{.tex}) compilat prin scripturi automate de \gls{build}.
 Imaginile sunt salvate în \texttt{images/}, iar citările se realizează cu \verb|\cite{}|.
 
-\section{Compatibilitate multiplatformă}
+\subsection{Compatibilitate multiplatformă}
 Există scripturi automate pentru \gls{linux} (\texttt{build.sh}), \gls{windows} (\texttt{build.bat}) și \gls{powershell} (\texttt{build.ps1}) care generează \acrfull{pdf} în directorul \texttt{dist/} și afișează eventualele erori de compilare.
 
 \vspace{0.5em}
@@ -18,26 +18,26 @@ Există scripturi automate pentru \gls{linux} (\texttt{build.sh}), \gls{windows}
 % but were not cited directly in the main chapters (e.g., roadmap tools).
 \nocite{vite,cockroachdb,redis,firebase_auth,json_schema}
 
-\chapter{\texorpdfstring{\gls{kookio}: Manifest Arhitectural \acrfull{pan}}{Kookio: Manifest Arhitectural PAN}}\label{ch:appendix-manifest}
+\section{\texorpdfstring{Manifest Arhitectural \acrfull{pan}}{Manifest Arhitectural PAN}}\label{ch:appendix-manifest}
 
-\section{Viziune generală}
+\subsection{Viziune generală}
 \textbf{\gls{kookio}} este o aplicație \gls{fullstack} dezvoltată în \gls{typescript}, bazată pe arhitectura
 \textbf{\gls{pan}} — un cadru scalabil care integrează \textbf{\gls{prisma}} pentru acces la date,
 \textbf{\gls{analog}} pentru \gls{randarehibrida} și \textbf{\gls{nx}} pentru orchestrare \gls{monorepo}.
 Această abordare reprezintă o alternativă la stack-uri consacrate (\gls{jamstack}, \gls{mean}),
 fiind adaptată ecosistemului \gls{angular} și cerințelor enterprise.
 
-\section{Componentele arhitecturii}
+\subsection{Componentele arhitecturii}
 \begin{itemize}
   \item \textbf{\gls{prisma}} – \gls{orm} cu suport pentru \gls{postgresql} și extensii \gls{newsql} (\gls{cockroachdb}).
   \item \textbf{\gls{analog}} – meta-framework pentru \gls{angular} cu \acrfull{ssr}, \gls{signals} și \acrfull{trpc}, urmate de \gls{hydration} în client.
   \item \textbf{\gls{nx}} – orchestrator modular care optimizează \gls{build}-urile și testele în context \gls{monorepo}.
 \end{itemize}
 
-\section{Structura fizică a proiectului}
-Structura completă a \gls{monorepo}-ului este ilustrată în \textbf{§~\ref{subsec:monorepo-struct}} din capitolul~\ref{ch:impl}.
+\subsection{Structura fizică a proiectului}
+Structura completă a \gls{monorepo}-ului este ilustrată în \textbf{§~\ref{subsec:monorepo-struct}} din secțiunea~\ref{ch:impl}.
 
-\section{Avantaje comparative}
+\subsection{Avantaje comparative}
 \begin{table}[H]
   \centering
   \small
@@ -56,10 +56,10 @@ Structura completă a \gls{monorepo}-ului este ilustrată în \textbf{§~\ref{su
   \label{tab:pan-adv}
 \end{table}
 
-\section{Direcții de viitor}
+\subsection{Direcții de viitor}
 Direcțiile viitoare de dezvoltare sunt prezentate în \textbf{§~\ref{sec:roadmap}}, unde sunt discutate extensiile funcționale și tehnice ale aplicației.
 
-\section{Concluzie}
+\subsection{Concluzie}
 Arhitectura \textbf{\gls{pan}} sintetizează cele mai bune practici moderne din ecosistemul \gls{typescript}, oferind o experiență unificată \gls{fullstack} și o bază solidă pentru aplicații educaționale, alimentare sau de lifestyle, precum viziunea \textit{\gls{kookio}}.
 \textbf{\gls{pan}} nu reprezintă un standard formal, ci un model arhitectural derivat din integrarea unor tehnologii mature, validat prin implementarea aplicației \textit{\gls{kookio}}.
 % anexa-latex.tex ends here
