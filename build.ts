@@ -134,6 +134,11 @@ const main = async (): Promise<void> => {
     await run('makeglossaries', [TEX_NAME]);
     await run('biber', [TEX_NAME]);
     await run('lualatex', [TEX_FILE]);
+    // Defensive third pass: when pass 2 expands the glossary or bibliography,
+    // pages shift and cross-references in the freshly-written .aux become
+    // stale. Without this, biblatex prints "Please rerun LaTeX" and labels
+    // like "Anexa B" can render as "Anexa ??" in the final PDF.
+    await run('lualatex', [TEX_FILE]);
   }
 
   mkdirSync(distPath, { recursive: true });
