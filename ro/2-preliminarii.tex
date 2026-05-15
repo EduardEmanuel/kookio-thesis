@@ -2,104 +2,90 @@
 \section{Preliminarii}\label{ch:prelim}
 
 \subsection*{Contextul tehnologic}
-Proiectul \textit{\gls{kookio}} este fundamentat pe arhitectura unitară \textbf{\gls{pan}}, concepută pentru a acoperi întregul flux de dezvoltare \gls{typescript}, de la interfața utilizatorului până la stratul de persistență.
-Această arhitectură consolidează într-un cadru comun mecanismele de orchestrare, \gls{randarehibrida} și acces tipizat la date, oferind premisele unei aplicații coerente și extensibile \cite{nx,analog,prisma}.
+Din punct de vedere profesional, am dobândit o preferință față de limbajul \gls{typescript}. Apreciez funcționalitățile suplimentare pe care le adaugă peste \textit{JavaScript} și sunt încrezător că, pe termen lung, nivelul său de adopție va continua să crească. Pornind de la această preferință personală, mi-am dorit ca în cadrul \textit{\gls{kookio}} să explorez posibilitatea construirii unei aplicații complete, dintr-un capăt în celălalt, exclusiv pe \gls{typescript} --- o stivă de tehnologii pe care o denumesc generic \textbf{\gls{pan}}.
 
-Rolul acestui capitol este de a introduce conceptele și tehnologiile care stau la baza implementării, fără a intra încă în detalii de ordin practic.
-Manifestul arhitectural complet, alături de avantajele comparative și direcțiile de evoluție, este prezentat în \textbf{Anexa~\ref{ch:appendix-manifest}}.
+O primă provocare conceptuală a fost alegerea bazei de date. Istoric vorbind, \textit{MongoDB} a fost pentru mulți ani favoritul dezvoltatorilor din ecosistemul \textit{JavaScript}/\gls{typescript}. Bazele de date nerelaționale au avantajul ușurinței de creare și de parcurgere, însă cele relaționale rămân superioare la interogări compuse. Fiindcă mi-am dorit posibilitatea de a extinde aplicația în ambele direcții, am descoperit \textbf{\gls{prisma}} --- o mapare obiect-relațională (\acrshort{orm}) care abstractizează limbajul din spatele bazei de date \cite{prisma}. Am ales protocolul \gls{postgresql} \cite{postgresql}, iar ca implementare a serviciului m-am orientat spre \gls{cockroachdb} \cite{cockroachdb}.
+
+Pentru interfața grafică a clientului, alegerea \gls{framework}-ului \textbf{\gls{angular}} a venit firesc, dat fiind angajamentul față de \gls{typescript} \cite{angular_signals}. Pasul următor a fost să identific o opțiune potrivită pentru codul ce urma să ruleze pe server; aici a venit o primă coincidență fericită --- descoperirea comunității \textbf{\gls{analog}}, un \gls{metaframework} al cărui scop declarat este să extindă \gls{angular} cu funcționalități pentru server \cite{analog}. Pe măsură ce o aplicație acumulează funcționalități tot mai diversificate și mai specializate pe nevoile de afaceri, organizarea internă a codului devine la fel de importantă ca alegerea tehnologiilor. Printr-o a doua coincidență fericită am descoperit \textbf{\gls{nx}}, o unealtă de linie de comandă suficient de puternică și de versatilă încât să accelereze crearea șabloanelor de cod pe care le folosesc în dezvoltarea bibliotecilor specializate pentru fiecare funcționalitate de bază a aplicației \cite{nx}.
+
+Manifestul arhitectural complet, împreună cu avantajele comparative și direcțiile de evoluție, se află în \textbf{Anexa~\ref{ch:appendix-manifest}}.
 
 \subsection{Cadrul tehnologic}
 
 \subsubsection{Arhitecturi web moderne}
 
-Modelul tradițional client--server, în care browserul acționa exclusiv ca un consumator de \acrfull{api}-uri \acrfull{rest}, nu mai răspunde integral cerințelor aplicațiilor \gls{web} actuale.
-Așteptările privind performanța, experiența utilizatorului și vizibilitatea în motoarele de căutare au condus la apariția unor paradigme de \gls{randare} mai flexibile, în care responsabilitățile sunt distribuite între client și server \cite{analog,nitro}.
+Pentru o aplicație culinară în care prima impresie a utilizatorului depinde de un \acrshort{html} populat încă de la prima vizită, modelul \acrshort{csr} pur al unui \acrshort{spa} \gls{angular} clasic nu era suficient. Cerințele de afișare rapidă, \acrshort{seo} pentru rețete publice și interactivitate ulterioară pe pagină m-au condus la o arhitectură care împarte sarcinile de \gls{randare} între server și client \cite{analog,nitro}.
 
-În acest context, se disting mai multe strategii de \gls{randare}:
+Strategiile de \gls{randare} relevante pentru proiect sunt:
 \begin{itemize}
-  \item \textbf{\acrfull{csr}}, care maximizează interactivitatea în browser;
-  \item \textbf{\acrfull{ssr}}, orientată spre livrarea rapidă a conținutului inițial;
-  \item \textbf{\acrfull{ssg}}, potrivită pentru conținut stabil și public;
-  \item \textbf{arhitecturi hibride}, care combină aceste tehnici în funcție de tipul rutei și de dinamica datelor.
+  \item \acrfull{csr} --- folosit în \textit{\gls{kookio}} pentru ecranele autentificate (planificator, cămară), unde interactivitatea primează;
+  \item \acrfull{ssr} --- pentru pagini publice cu conținut dinamic (feed de rețete, profile), unde \acrshort{html}-ul inițial trebuie să fie complet;
+  \item \acrfull{ssg} --- pentru pagini cu conținut stabil (legal, atribuții), prerandate la build;
+  \item arhitecturi hibride --- combinarea celor trei pe rute diferite, în funcție de natura conținutului \cite{analog}.
 \end{itemize}
 
-Aplicația \textit{\gls{kookio}} adoptă o astfel de arhitectură \gls{fullstack} hibridă, în care \gls{frontend}-ul și \gls{backend}-ul sunt dezvoltate împreună, într-un flux unitar.
-Această decizie permite partajarea tipurilor și a mecanismelor de validare între straturi (ex.: \gls{trpc}+\gls{zod}), reducând riscul erorilor de integrare și sporind coerența aplicației \cite{trpc}.
+Am ales o arhitectură \gls{fullstack} hibridă în care \gls{frontend}-ul și \gls{backend}-ul rulează în aceeași bază de cod \gls{typescript}. Decizia este motivată practic: tipurile și schemele de validare (\gls{trpc} peste \gls{zod}) sunt partajate la nivel de modul, iar un singur pas de construcție livrează ambele straturi \cite{trpc,zod}.
 
 \subsubsection{Angular și randare server-side}
 
-\Gls{angular} este un \gls{framework} matur, construit în jurul limbajului \gls{typescript} și orientat către dezvoltarea de aplicații \gls{web} scalabile și bine structurate \cite{angular_signals}.
-Deși utilizat inițial preponderent în scenarii de \acrshort{csr}, ecosistemul \gls{angular} a evoluat semnificativ în direcția suportului pentru \acrshort{ssr}.
+Am ales \gls{angular} ca \gls{framework} de \gls{frontend} pentru că ecosistemul său oferă în mod nativ piesele de care aveam nevoie pentru \textit{\gls{kookio}}: tipizare strictă, componente \textit{standalone}, semnale reactive și o suită Angular Material/CDK consistentă din punct de vedere al accesibilității \cite{angular_signals}.
 
-În cadrul proiectului \textit{\gls{kookio}}, acest suport este furnizat de \textbf{\gls{analog}}, un \gls{metaframework} care extinde \gls{angular} cu funcționalități full-stack, precum:
+Suportul pentru \acrshort{ssr} din \textit{\gls{kookio}} provine din \textbf{\gls{analog}}, un \gls{metaframework} care extinde \gls{angular} cu:
 \begin{itemize}
-  \item \acrfull{ssr},
-  \item rutare bazată pe structură de fișiere,
-  \item integrarea logicii de server în aceeași aplicație \cite{analog}.
+  \item \acrfull{ssr} și \acrfull{ssg} configurabile per rută,
+  \item rutare bazată pe structura de fișiere,
+  \item integrarea logicii de server (\gls{nitro}, \gls{trpc}) în același proiect \cite{analog,nitro}.
 \end{itemize}
 
-\Acrlong{ssr} permite generarea \acrshort{html}-ului inițial înainte ca aplicația să ajungă în browser, îmbunătățind atât timpul de afișare perceput, cât și compatibilitatea cu motoarele de căutare \cite{nitro}.
-Pentru o aplicație orientată către conținut și uz casnic, precum \gls{kookio}, aceste aspecte devin relevante încă din primele interacțiuni ale utilizatorului.
+Pentru o pagină de rețetă publică, \acrshort{ssr} face diferența între un schelet gol până la \gls{hydration} și un \acrshort{html} populat încă de la prima cerere --- important atât pentru utilizator, cât și pentru indexarea \acrshort{seo} pe care se sprijină distribuția organică a conținutului \cite{analog}.
 
 \subsubsection{Monorepo și orchestrare cu Nx}
 
-Gestionarea complexității unui proiect \gls{fullstack} presupune o organizare clară a codului și a proceselor de build.
-În acest scop, proiectul \textit{\gls{kookio}} este structurat ca \gls{monorepo}, utilizând instrumentul \textbf{\gls{nx}} \cite{nx}.
+Am organizat \textit{\gls{kookio}} ca \gls{monorepo} folosind \textbf{\gls{nx}}: o singură aplicație (\texttt{apps/web}) și un set de biblioteci segmentate pe responsabilități (\texttt{core}, \texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) \cite{nx}.
 
-Această abordare permite gruparea într-un singur \gls{repository} a aplicației \gls{web} și a \glspl{library} asociate, fiecare cu responsabilități bine delimitate:
+Bibliotecile sunt grupate pe roluri:
 \begin{itemize}
-  \item interfața utilizator (\acrshort{ui}) și logica server-side,
-  \item accesul la date și modelele definite prin \gls{orm},
-  \item validarea contractelor de date,
-  \item utilitare și date \textit{mock} reutilizabile.
+  \item \texttt{core/} --- configurație, logare, securitate (preocupări trans-feature),
+  \item \texttt{feature/} --- fluxuri de utilizator (auth, shell),
+  \item \texttt{prisma/client} --- schema, clientul generat, schemele \gls{zod},
+  \item \texttt{server/} --- context \gls{trpc}, middleware-uri, helperi de runtime server,
+  \item \texttt{shared/} --- \acrshort{ui}, utilitare, date \textit{mock}.
 \end{itemize}
 
-\Gls{nx} adaugă peste această structură mecanisme de \textbf{execuția incrementală a sarcinilor}, \gls{caching} și izolare logică între proiecte.
-Astfel, modificările locale pot fi propagate eficient, fără a afecta întregul sistem, un avantaj esențial în dezvoltarea iterativă a aplicațiilor \gls{fullstack}.
+Peste această structură, \gls{nx} aplică două lucruri pe care le folosesc zilnic: \texttt{nx affected} rulează numai sarcinile (\texttt{lint}, \texttt{test}, \texttt{build}) atinse de modificările curente, iar regula \texttt{enforce-module-boundaries} respinge la \acrshort{ci} importurile care încalcă topologia de biblioteci \cite{nx}.
 
 \subsubsection{tRPC și partajarea tipurilor}
 
-Un element central al arhitecturii \gls{pan} îl reprezintă comunicarea \textit{type-safe} dintre client și server.
-În acest scop, proiectul utilizează \textbf{\gls{trpc}}, un framework care elimină necesitatea definirii manuale a contractelor \acrshort{api} \cite{trpc}.
+Comunicarea client--server din \textit{\gls{kookio}} folosește \textbf{\gls{trpc}}: procedurile sunt declarate o singură dată, în \gls{typescript}, pe server, iar clientul \gls{angular} le invocă direct, fără strat intermediar de definiții \acrshort{api} \cite{trpc}.
 
-Procedurile \gls{trpc} sunt declarate pe server și consumate direct în aplicația \gls{angular}, beneficiind de:
+Avantajele concrete pe care le-am observat:
 \begin{itemize}
-  \item inferență completă a tipurilor \gls{typescript},
-  \item validarea automată a datelor de intrare prin scheme \gls{zod} \cite{zod},
-  \item sincronizarea implicită a contractelor între straturi.
+  \item inferența completă \gls{typescript} elimină \acrshort{dto}-urile duplicate între straturi,
+  \item validarea de intrare se face prin scheme \gls{zod} generate automat din schema \gls{prisma} \cite{zod,prisma_zod_generator},
+  \item refactorările cu \textit{rename} pe câmpuri propagă instantaneu pe ambele straturi.
 \end{itemize}
 
-Această abordare simplifică semnificativ integrarea și creează un cadru robust pentru extinderea ulterioară a funcționalităților.
+Pentru \textit{\gls{kookio}} aceasta s-a tradus, în practică, în eliminarea aproape completă a verificărilor de tip la frontiera client--server: contractul este compilatorul.
 
 \subsubsection{Persistență: Prisma și CockroachDB}
 
-Stratul de persistență al aplicației este construit pe baza \textbf{\gls{prisma}}, un \gls{orm}, și a sistemului de gestiune a bazelor de date \textbf{\gls{cockroachdb}} \cite{prisma,cockroachdb}.
-\Gls{cockroachdb} oferă un model \gls{newsql} distribuit, compatibil cu protocolul \gls{postgresql}, permițând atât consistență tranzacțională, cât și scalare orizontală \cite{postgresql}.
+Pentru persistență am ales \textbf{\gls{cockroachdb}} ca bază de date și \textbf{\gls{prisma}} drept \gls{orm} \cite{prisma,cockroachdb}. \gls{cockroachdb} \textit{vorbește} protocolul \gls{postgresql}, ceea ce înseamnă că ecosistemul de unelte \acrshort{sql} (drivere, clienți \texttt{psql}, \gls{prisma}) funcționează fără adaptări, dar cu o poveste de scalare orizontală. \gls{postgresql} clasic nu oferă această opțiune de la sine \cite{postgresql}.
 
-\Gls{prisma} joacă rolul de interfață declarativă între aplicație și baza de date, fiind responsabilă pentru:
-\begin{itemize}
-  \item definirea schemei relaționale,
-  \item generarea automată a clientului \gls{typescript},
-  \item gestionarea migrațiilor între versiuni ale structurii de date.
-\end{itemize}
+\gls{prisma} acoperă, în proiect, trei responsabilități: declararea schemei în \texttt{schema.prisma}, generarea unui client \gls{typescript} cu tipuri exacte pentru fiecare model și gestionarea migrațiilor versionate aplicate la \texttt{deploy} \cite{prisma}.
 
-Această combinație oferă un echilibru între stabilitatea ecosistemului \gls{sql} și flexibilitatea necesară evoluției aplicației.
+La generarea schemelor \gls{zod} folosesc \texttt{prisma-zod-generator}, care expune o copie validabilă a fiecărui model --- sursa de adevăr este schema \gls{prisma}, iar straturile \acrshort{api} și \acrshort{ui} consumă derivate ale ei \cite{prisma_zod_generator}.
 
 \subsubsection{Testare automată: Vitest și Playwright}
 
-Asigurarea calității aplicației presupune validarea comportamentului acesteia la mai multe niveluri.
-În proiectul \textit{\gls{kookio}}, acest obiectiv este atins prin combinarea \gls{unit} cu \gls{e2e}.
+Suita de testare din \textit{\gls{kookio}} are două straturi disjuncte: teste unitare cu \textbf{\gls{vitest}} pentru logica izolată și teste \acrshort{e2e} cu \textbf{\gls{playwright}} pentru fluxurile reale prin browser \cite{vitest,playwright}.
 
-Pentru \gls{unit} este utilizat \textbf{\gls{vitest}}, ales pentru viteza de execuție și integrarea nativă cu ecosistemul \gls{vite} \cite{vitest,vite}.
-Acesta permite testarea logicii de business și a componentelor într-un mediu controlat.
+Am ales \gls{vitest} pentru că rulează deja pe \gls{vite} (același bundler ca aplicația principală), ceea ce înseamnă că nu există configurări duplicate sau divergențe între \texttt{nx test} și \texttt{nx build} \cite{vitest,vite}.
 
-Testarea \gls{e2e} și \gls{integration} sunt realizate cu \textbf{\gls{playwright}}, care simulează interacțiuni reale ale utilizatorului în browser \cite{playwright}.
-Prin această abordare sunt validate fluxurile critice ale aplicației, de la încărcarea inițială a paginii până la comunicarea cu \acrshort{api}-ul server-side.
+\gls{playwright} acoperă fluxurile critice: autentificare, finalizare \textit{onboarding}, adăugare în cămară, vizualizare planificator. Suita rulează în \acrshort{ci} pe fiecare \acrshort{pr} către \texttt{test} înainte de promovarea în \texttt{main} \cite{playwright}.
 
 \subsubsection{Managementul configurației și mediilor}
 
-Configurarea aplicației este gestionată centralizat prin platforma de deployment \textbf{\gls{vercel}}, care acționează ca sursă unică de adevăr pentru variabilele de mediu \cite{vercel_cli}.
-Această strategie permite separarea clară a mediilor de dezvoltare, testare și producție, reducând riscurile asociate gestionării locale a secretelor.
+Variabilele de mediu (chei Firebase, \acrshort{url}-uri \gls{redis}, secrete \gls{vercel}) sunt definite o singură dată în panoul \gls{vercel}, separat pe medii (\texttt{development}, \texttt{preview}, \texttt{production}) \cite{vercel_cli}. Această centralizare elimină fișierele \texttt{.env} comise accidental în istoric și ține în sincron toate ramurile.
 
-Pentru dezvoltarea locală, Vercel \acrfull{cli} este utilizat pentru sincronizarea temporară a variabilelor active, asigurând alinierea mediului local cu cel de deploy, fără introducerea fișierelor sensibile în \gls{repository}.
+Local, sincronizarea se face cu \texttt{vercel env pull}, care scrie un \texttt{.env.local} \textit{gitignored} cu valorile mediului curent --- niciun secret nu trece prin git \cite{vercel_cli}.
 % 2-preliminarii.tex ends here
