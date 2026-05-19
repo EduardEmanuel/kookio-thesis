@@ -1,0 +1,76 @@
+# tex-requirements.txt
+# TeX Live packages required to compile the bachelor's thesis "PAN Architecture"
+# Generated from analysis of the `kookio_thesis.tex` preamble
+# Compatible with TeX Live 2024+ (tested with TeX Live 2025 / LuaHBTeX 1.21.0)
+#
+# Usage: ./install-tex-deps.sh (calls tlmgr with the list below)
+
+# === Engine and back-end ===
+luatex
+luahbtex
+biber
+
+# === Unicode fonts (for LuaLaTeX) ===
+fontspec
+unicode-math
+tex-gyre              # Termes family (open-source Times-equivalent)
+lm                    # Latin Modern
+lm-math               # Latin Modern Math
+
+# === Language and quotations ===
+polyglossia           # multilingual support (Romanian)
+csquotes              # context-sensitive quotations
+hyphenat              # hyphenation control
+
+# === Math ===
+amsmath               # AMS math environment
+amsfonts              # AMS symbols (amssymb)
+mathtools             # extensions over amsmath
+
+# === Layout and typography ===
+geometry              # A4 page configuration
+setspace              # 1.5 line spacing
+microtype             # micro-typography
+
+# === Graphics ===
+graphics              # bundle (includes graphicx)
+float                 # `[H]` placement for figures
+caption               # subcaption for sub-figures
+
+# === URLs and hyperlinks ===
+xurl                  # break URL at any character
+etoolbox              # LaTeX programming (\apptocmd etc.)
+hyperref              # internal and external links
+
+# === Glossary and acronyms ===
+glossaries            # base for glossaries-extra
+glossaries-extra      # acronym and term management system
+mfirstuc              # glossaries dependency
+
+# === Bibliography ===
+biblatex              # with biber back-end (declared above)
+logreq                # biblatex dependency
+
+# === Verbatim and code listings ===
+fvextra               # extensions over fancyvrb (used for TreeVerb)
+fancyvrb              # base for fvextra
+upquote               # correct vertical quotes in verbatim
+listings              # code blocks
+
+# === Tables ===
+ragged2e              # \RaggedRight for X columns
+tools                 # bundle containing tabularx, array
+booktabs              # \toprule, \midrule, \bottomrule
+makecell              # multi-line cells
+
+# === Headers and appendices ===
+fancyhdr              # custom header/footer
+appendix              # appendix environment with TOC support
+
+# === Notes ===
+# The FreeMono font (used for box-drawing characters U+2500–U+257F in the
+# TreeVerb environment) is a component of GNU FreeFont and must be installed
+# separately at the operating-system level:
+#   macOS (Homebrew):    brew install --cask font-gnu-freefont-freemono
+#   Ubuntu/Debian:       sudo apt install fonts-freefont-ttf
+#   Windows:             download from https://www.gnu.org/software/freefont/
