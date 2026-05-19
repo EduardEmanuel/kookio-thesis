@@ -19,20 +19,97 @@
   title      = {Ce este {Nx}?},
   titleaddon = {Documentația {Nx}},
   date       = {2025},
-  url        = {https://nx.dev/getting-started/intro},
-  urldate    = {2025-06-15},
+  url        = {https://nx.dev/docs/features/ci-features/affected},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Nx; citată pentru orchestrarea monorepo-ului, rulările afectate, caching și graful de proiect.},
   langid     = {english}
 }
 
-@online{prisma,
+@online{prisma_orm,
   author     = {{Prisma Labs}},
-  title      = {Documentația {Prisma} {ORM}},
-  titleaddon = {Documentația {Prisma}},
+  title      = {{Prisma} {Client} — Generarea clientului tipizat și interogări},
+  titleaddon = {Documentația {Prisma} {ORM}},
   date       = {2025},
-  url        = {https://www.prisma.io/docs},
-  urldate    = {2025-10-18},
-  note       = {Documentație oficială Prisma; citată pentru modelarea schemei, migrații, generarea clientului TypeScript și integrarea cu Zod.},
+  url        = {https://www.prisma.io/docs/orm/prisma-client},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Prisma; citată pentru generarea clientului TypeScript din \texttt{schema.prisma}, gestionarea migrațiilor versionate și inferența tipurilor pentru fiecare model.},
+  langid     = {english}
+}
+
+@online{prisma_cockroachdb,
+  author     = {{Prisma Labs}},
+  title      = {Conectare {Prisma} la {CockroachDB}},
+  titleaddon = {Documentația {Prisma} {ORM}},
+  date       = {2025},
+  url        = {https://www.prisma.io/docs/orm/overview/databases/cockroachdb},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Prisma; citată pentru integrarea cu \texttt{CockroachDB} prin protocolul de legătură PostgreSQL și pentru particularitățile suportului distribuit.},
+  langid     = {english}
+}
+
+@online{prisma_transactions,
+  author     = {{Prisma Labs}},
+  title      = {Tranzacții și operații în lot},
+  titleaddon = {Documentația {Prisma} {Client}},
+  date       = {2025},
+  url        = {https://www.prisma.io/docs/orm/prisma-client/queries/transactions},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Prisma; citată pentru \texttt{prisma.\$transaction}, gestionarea conflictelor \emph{serializable} (cod \texttt{P2034}) și pentru strategiile de reluare automată în baze distribuite.},
+  langid     = {english}
+}
+
+@online{prisma_engines,
+  author     = {{Prisma Labs}},
+  title      = {{Prisma} {Engines} — Binare native și platforme țintă},
+  titleaddon = {Documentația {Prisma} {ORM}},
+  date       = {2025},
+  url        = {https://www.prisma.io/docs/orm/more/under-the-hood/engines},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Prisma; citată pentru \emph{query engine}-urile native specifice platformei (\texttt{darwin-arm64}, \texttt{rhel-openssl-3.0.x}) și pentru regenerarea clientului în fluxul automatizat de \emph{deploy}.},
+  langid     = {english}
+}
+
+@online{nx_boundaries,
+  author     = {{Echipa Nrwl}},
+  title      = {Enforce Module Boundaries — Regulă ESLint pentru constrângeri arhitecturale},
+  titleaddon = {Documentația {Nx}},
+  date       = {2025},
+  url        = {https://nx.dev/docs/features/enforce-module-boundaries},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Nx; citată pentru regula \texttt{@nx/enforce-module-boundaries} care respinge la \acrshort{ci} importurile care încalcă topologia dintre grupuri de biblioteci.},
+  langid     = {english}
+}
+
+@online{analog_routing,
+  author     = {{Dezvoltatorii AnalogJS}},
+  title      = {Routing — Rutare bazată pe structura de fișiere},
+  titleaddon = {Documentația {Analog}},
+  date       = {2025},
+  url        = {https://analogjs.org/docs/features/routing/overview},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Analog; citată pentru rutarea \emph{filesystem-based} (\texttt{*.page.ts}, rute dinamice cu parametri, colocarea logicii de server în \texttt{*.server.ts}).},
+  langid     = {english}
+}
+
+@online{trpc_middleware,
+  author     = {{Proiectul tRPC}},
+  title      = {Middlewares — Constructori de proceduri și compunere de autorizare},
+  titleaddon = {Documentația {tRPC}},
+  date       = {2025},
+  url        = {https://trpc.io/docs/server/middlewares},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială tRPC; citată pentru constructorii compoziționali de proceduri (\texttt{publicProcedure}, \texttt{protectedProcedure}) și pentru verificarea identității în context.},
+  langid     = {english}
+}
+
+@online{angular_material,
+  author     = {{Echipa Google Angular}},
+  title      = {{Angular} {Material} — Componente cu accesibilitate nativă},
+  titleaddon = {Documentația {Angular} {Material}/{CDK}},
+  date       = {2025},
+  url        = {https://material.angular.dev/},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială Angular Material; citată pentru setul de componente \acrshort{ui} și pentru \texttt{Angular CDK}, consistent în privința accesibilității (\emph{a11y}).},
   langid     = {english}
 }
 
@@ -41,8 +118,8 @@
   title      = {{Analog} – Meta-framework full-stack pentru {Angular}},
   titleaddon = {Documentația {Analog}},
   date       = {2025},
-  url        = {https://analogjs.org},
-  urldate    = {2025-09-14},
+  url        = {https://analogjs.org/docs/features/server-side-rendering},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Analog; citată pentru SSR, rutare bazată pe fișiere și integrarea Nitro/tRPC în aplicațiile Angular.},
   langid     = {english}
 }
@@ -52,8 +129,8 @@
   title      = {Documentația {tRPC} — API-uri {type-safe} end-to-end},
   titleaddon = {Documentația {tRPC}},
   date       = {2025},
-  url        = {https://trpc.io/docs},
-  urldate    = {2025-09-14},
+  url        = {https://trpc.io/docs/server/procedures},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială tRPC; citată pentru contractele de tipuri între client și server și pentru structura router/context.},
   langid     = {english}
 }
@@ -63,8 +140,8 @@
   title      = {{Nitro}: Motorul de server pentru web},
   titleaddon = {Documentația {Nitro}},
   date       = {2025},
-  url        = {https://nitro.unjs.io},
-  urldate    = {2025-09-14},
+  url        = {https://nitro.build/guide},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Nitro; citată pentru execuția pe server, rutele API și mediile de implementare compatibile cu Analog SSR.},
   langid     = {english}
 }
@@ -74,9 +151,9 @@
   title      = {Documentația oficială {PostgreSQL}},
   titleaddon = {Documentația {PostgreSQL}},
   date       = {2025},
-  url        = {https://www.postgresql.org/docs/},
-  urldate    = {2025-10-18},
-  note       = {Documentație oficială PostgreSQL; citată pentru semantica SQL, suportul JSONB și siguranța tranzacțiilor utilizate prin Prisma.},
+  url        = {https://www.postgresql.org/docs/current/protocol.html},
+  urldate    = {2026-05-18},
+  note       = {Documentație oficială PostgreSQL; citată pentru protocolul de legătură (\emph{wire protocol}) pe care \gls{cockroachdb} îl emulează pentru compatibilitate cu ecosistemul de unelte SQL.},
   langid     = {english}
 }
 
@@ -85,8 +162,8 @@
   title      = {Ghidul {Vite}},
   titleaddon = {Documentația {Vite}},
   date       = {2025},
-  url        = {https://vitejs.dev/guide/},
-  urldate    = {2025-09-14},
+  url        = {https://vitejs.dev/guide/why.html},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Vite; citată pentru configurarea build-ului comună aplicațiilor și bibliotecilor și integrarea cu țintele Nx.},
   langid     = {english}
 }
@@ -96,8 +173,8 @@
   title      = {Ghidul {Vitest}},
   titleaddon = {Documentația {Vitest}},
   date       = {2025},
-  url        = {https://vitest.dev/guide/},
-  urldate    = {2025-08-12},
+  url        = {https://vitest.dev/guide/workspace.html},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Vitest; citată pentru configurarea și utilizarea testelor unitare, folosită în proiect începând cu august 2025.},
   langid     = {english}
 }
@@ -107,8 +184,8 @@
   title      = {Testarea cu {Playwright} — Ghid introductiv},
   titleaddon = {Documentația {Playwright}},
   date       = {2025},
-  url        = {https://playwright.dev/docs/intro},
-  urldate    = {2025-07-10},
+  url        = {https://playwright.dev/docs/test-global-setup-teardown},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Playwright; citată pentru testarea end-to-end adoptată în perioada iunie–iulie 2025.},
   langid     = {english}
 }
@@ -118,8 +195,8 @@
   title      = {Documentația {CockroachDB}},
   titleaddon = {Documentația {CockroachDB}},
   date       = {2025},
-  url        = {https://www.cockroachlabs.com/docs/stable/},
-  urldate    = {2025-10-18},
+  url        = {https://www.cockroachlabs.com/docs/stable/postgresql-compatibility},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială CockroachDB; citată în planul de dezvoltare pentru analiza scalabilității orizontale.},
   langid     = {english}
 }
@@ -135,24 +212,13 @@
   langid     = {english}
 }
 
-@online{firebase_auth,
-  author     = {{Google Firebase}},
-  title      = {Autentificarea în {Firebase}},
-  titleaddon = {Documentația {Firebase}},
-  date       = {2025},
-  url        = {https://firebase.google.com/docs/auth},
-  urldate    = {2025-07-10},
-  note       = {Documentație oficială Firebase; citată pentru autentificarea planificată și politicile de autorizare bazate pe roluri.},
-  langid     = {english}
-}
-
 @online{zod,
   author     = {{Autorii Zod}},
   title      = {Documentația {Zod}},
   titleaddon = {Documentația {Zod}},
   date       = {2025},
-  url        = {https://zod.dev},
-  urldate    = {2025-06-15},
+  url        = {https://zod.dev/?id=objects},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Zod; citată pentru validarea schemelor utilizate împreună cu tipurile generate de Prisma.},
   langid     = {english}
 }
@@ -162,20 +228,9 @@
   title      = {{Pino} — Logger pentru {Node.js}},
   titleaddon = {Documentația {Pino}},
   date       = {2025},
-  url        = {https://getpino.io/},
-  urldate    = {2025-09-30},
+  url        = {https://getpino.io/#/docs/transports},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială Pino; citată pentru logarea centralizată utilizată atât în backend, cât și în frontend.},
-  langid     = {english}
-}
-
-@online{json_schema,
-  author     = {{Comunitatea JSON Schema}},
-  title      = {{JSON} {Schema} — Învață (Learn)},
-  titleaddon = {Documentația {JSON} {Schema}},
-  date       = {2025},
-  url        = {https://json-schema.org/learn/},
-  urldate    = {2025-06-15},
-  note       = {Resursă oficială JSON Schema; citată pentru validarea externă și interoperabilitatea menționată în planul de dezvoltare.},
   langid     = {english}
 }
 
@@ -185,7 +240,7 @@
   titleaddon = {Depozitul {GitHub}},
   date       = {2025},
   url        = {https://github.com/omar-dulaimi/prisma-zod-generator},
-  urldate    = {2025-10-18},
+  urldate    = {2026-05-18},
   note       = {Versiunea 1.27.7; citată pentru generarea automată a schemelor de validare Zod pe baza modelelor Prisma.},
   langid     = {english}
 }
@@ -195,9 +250,83 @@
   title      = {{Vercel CLI} — Command Line Interface},
   titleaddon = {Documentația {Vercel}},
   date       = {2025},
-  url        = {https://vercel.com/docs/cli},
-  urldate    = {2025-12-16},
+  url        = {https://vercel.com/docs/cli/env},
+  urldate    = {2026-05-18},
   note       = {Documentație oficială pentru gestionarea proiectelor și a variabilelor de mediu în Vercel.},
+  langid     = {english}
+}
+
+% ===============================
+% Historical References
+% ===============================
+
+@online{karpovMean2013,
+  author     = {Karpov, Valeri},
+  title      = {The {MEAN} Stack: {MongoDB}, {ExpressJS}, {AngularJS} and {Node.js}},
+  titleaddon = {{MongoDB} Blog},
+  date       = {2013-04},
+  url        = {http://blog.mongodb.org/post/49262866911/the-mean-stack-mongodb-expressjs-angularjs-and},
+  urldate    = {2026-05-17},
+  note       = {Articol original prin care Valeri Karpov a introdus termenul „MEAN stack''; citat ca referință istorică pentru arhitectura tradițională din ecosistemul JavaScript și pentru paralela conceptuală cu arhitectura PAN propusă în prezenta lucrare.},
+  langid     = {english}
+}
+
+% ===============================
+% Statistics & Surveys
+% ===============================
+
+@online{unepFoodWaste2024,
+  author     = {{Programul Națiunilor Unite pentru Mediu}},
+  title      = {Food Waste Index Report 2024},
+  titleaddon = {Raport oficial {UNEP}},
+  date       = {2024},
+  url        = {https://www.unep.org/resources/publication/food-waste-index-report-2024},
+  urldate    = {2026-05-17},
+  note       = {Raport UNEP, co-autor WRAP; citat pentru date globale privind risipa alimentară la nivel de gospodărie (60\% din risipa totală, 631 milioane tone în 2022) și pentru obiectivul SDG 12.3 de înjumătățire a risipei alimentare până în 2030.},
+  langid     = {english}
+}
+
+@online{eurostatFoodWaste2024,
+  author     = {{Eurostat}},
+  title      = {Food waste: 132 kg per inhabitant in the {EU} in 2022},
+  titleaddon = {Comunicat {Eurostat}},
+  date       = {2024},
+  url        = {https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240927-2},
+  urldate    = {2026-05-17},
+  note       = {Comunicat oficial Eurostat; citat pentru date privind risipa alimentară per locuitor în Uniunea Europeană (132 kg/locuitor în 2022, 59,2 milioane tone total) și pentru ponderea gospodăriilor (54\%) în risipa totală.},
+  langid     = {english}
+}
+
+@online{europarlFoodWaste2025,
+  author     = {{Parlamentul European}},
+  title      = {Food waste in {Europe}: facts, {EU} policies and 2030 targets},
+  titleaddon = {European Parliament Topics},
+  date       = {2025},
+  url        = {https://www.europarl.europa.eu/topics/en/article/20240318STO19401/food-waste-in-europe-facts-eu-policies-and-2030-targets},
+  urldate    = {2026-05-17},
+  note       = {Sinteză oficială a Parlamentului European; citată pentru cauzele comportamentale ale risipei alimentare la nivel de consumator (cumpărături impulsive, planificare insuficientă a meselor, gestionare deficitară a inventarului) și pentru obiectivele 2030.},
+  langid     = {english}
+}
+
+@online{stateOfJS2024,
+  author     = {{Devographics}},
+  title      = {State of {JavaScript} 2024},
+  titleaddon = {Sondaj anual al ecosistemului {JavaScript}},
+  date       = {2024},
+  url        = {https://2024.stateofjs.com/en-US/libraries/front-end-frameworks/},
+  urldate    = {2026-05-18},
+  note       = {Sondaj anual al comunității JavaScript (peste 22.000 de respondenți); citat pentru tiparele de utilizare a SSR (59\%) și SSG (46\%), adopția TypeScript și complexitatea framework-urilor frontend.},
+  langid     = {english}
+}
+
+@online{jetbrainsJsSurvey2024,
+  author     = {{JetBrains}},
+  title      = {{JavaScript} and {TypeScript} Trends 2024},
+  titleaddon = {Insights From the Developer Ecosystem Survey},
+  date       = {2024},
+  url        = {https://blog.jetbrains.com/webstorm/2024/02/js-and-ts-trends-2024/},
+  urldate    = {2026-05-17},
+  note       = {Sondaj anual JetBrains; citat pentru creșterea adopției TypeScript (12\% în 2017, 35\% în 2024) și ponderea dezvoltatorilor predominant TypeScript (67\%).},
   langid     = {english}
 }
 
