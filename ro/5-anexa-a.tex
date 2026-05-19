@@ -1,0 +1,60 @@
+% 5-anexa-a.tex starts here
+
+\section{Redactarea lucrării în \LaTeX{}}\label{anexa:redactare}
+
+\subsection{Instrumente pentru redactare}\label{subsec:instrumente-redactare}
+
+Lucrarea a fost redactată cu motorul \gls{lualatex} (distribuit prin TeX Live 2025), folosind fonturi \gls{unicode} și pachetul \gls{biblatex} cu backend-ul \texttt{biber} pentru gestionarea bibliografiei.
+Alegerea \gls{lualatex} peste XeLaTeX a fost motivată de suportul nativ pentru extensii prin Lua și de gestionarea îmbunătățită a fonturilor OpenType, relevantă pentru caracterele \gls{unicode} speciale folosite în redarea structurii de fișiere.
+
+Pe partea de toolchain de dezvoltare, lucrarea a fost editată în Visual Studio Code cu extensia \textit{LaTeX Workshop}, configurată să ruleze pipeline-ul \texttt{lualatex} \(\rightarrow\) \texttt{makeglossaries} \(\rightarrow\) \texttt{biber} \(\rightarrow\) \texttt{lualatex} \(\rightarrow\) \texttt{lualatex} la fiecare invocare a fluxului automatizat.
+
+Structura sursei este modulară: fiecare capitol este un fișier \texttt{.tex} separat, inclus prin \verb|\input{}| în documentul principal \texttt{kookio\_thesis.tex}.
+Imaginile sunt salvate în \texttt{images/}, iar citările se realizează prin macrocomanda \verb|\cite{cheie}| pe baza intrărilor din fișierul \texttt{bibliography.bib}.
+Glosarul de termeni și lista de acronime sunt gestionate prin pachetul \texttt{glossaries-extra}, cu intrările declarate în \texttt{5-glosar.tex}.
+
+Lucrarea este versionată în Git într-un \gls{repository} dedicat (\texttt{kookio-thesis}), separat de \gls{repository}-ul codului sursă al aplicației \textit{\gls{kookio}}, pentru a păstra istoricul de revizii al textului independent de cel al implementării.
+
+\subsection{Automatizarea compilării și reproductibilitatea}\label{subsec:automatizare-build}
+
+Compilarea lucrării este orchestrată de două scripturi \gls{typescript} rulate prin \texttt{tsx} (executor \gls{typescript} fără pas de transpilare separat), care partajează utilitarele comune din \texttt{utils.ts} (logger colorat, detectare de unelte, executare de procese-copil).
+
+Scriptul \texttt{build.ts} orchestrează lanțul complet de compilare în ordinea \texttt{lualatex} \(\rightarrow\) \texttt{makeglossaries} \(\rightarrow\) \texttt{biber} \(\rightarrow\) \texttt{lualatex} \(\rightarrow\) \texttt{lualatex}.
+A treia rulare \texttt{lualatex} este o măsură defensivă: după ce a doua rulare expandează glosarul sau bibliografia, paginile se deplasează, iar referințele încrucișate din fișierul \texttt{.aux} proaspăt scris devin neactualizate; fără această rulare suplimentară, etichetele precum \textit{„Anexa B"} pot apărea drept \textit{„Anexa ??"} în PDF-ul final.
+
+Scriptul \texttt{install-tex-deps.ts} citește fișierul de cerințe \texttt{tex-requirements.txt} (versionat în repository) și instalează pachetele lipsă prin \texttt{tlmgr}, optimizând operațiunea printr-un singur apel \texttt{tlmgr list --only-installed} folosit pentru deduplicare în memorie.
+Cele trei comenzi suportate sunt prezentate în Lista~\ref{lst:build-commands}.
+
+\refstepcounter{codlista}\label{lst:build-commands}
+\par\medskip
+\noindent\begin{minipage}{\linewidth}
+\textbf{Lista \thecodlista:} Comenzi principale de compilare și gestionare a dependențelor.
+\begin{Verbatim}[fontsize=\footnotesize]
+tsx build.ts ro                     # compilare completă (cu bibliografie)
+tsx build.ts ro --draft             # compilare rapidă (fără bibliografie)
+tsx build.ts ro --delete            # curăță doar fișierele auxiliare
+
+tsx install-tex-deps.ts             # instalează pachetele lipsă
+tsx install-tex-deps.ts --check     # verifică, fără modificări
+tsx install-tex-deps.ts --update    # actualizează tlmgr și pachetele
+\end{Verbatim}
+\end{minipage}
+\par\medskip
+
+\subsection{Compatibilitate multiplatformă}\label{subsec:compatibilitate-multiplatforma}
+
+Configurațiile recomandate per platformă sunt următoarele:
+
+\begin{itemize}
+  \item \textbf{macOS:} \texttt{brew install --cask mactex} instalează distribuția MacTeX cu schema completă (include implicit toate pachetele din \texttt{tex-requirements.txt}); rularea ulterioară a \texttt{install-tex-deps.ts} este opțională și servește la verificarea integrității.
+  \item \textbf{Ubuntu / Debian:} se instalează schema de bază prin \texttt{sudo apt install texlive-base}, după care \texttt{install-tex-deps.ts} completează lista de pachete necesare. Alternativ, \texttt{texlive-full} acoperă toate dependențele într-un singur pas.
+  \item \textbf{Windows:} se instalează MikTeX de la \url{https://miktex.org/download}; distribuția MikTeX detectează și instalează automat pachetele lipsă la prima compilare, motiv pentru care scriptul \texttt{install-tex-deps.ts} nu este necesar pe această platformă.
+\end{itemize}
+
+Fontul \gls{freemono}, folosit în mediul \gls{treeverb} pentru caracterele \gls{unicode} de desenare a chenarelor (\textit{box-drawing}, intervalul \texttt{U+2500--U+257F}), este o componentă GNU FreeFont care se instalează la nivelul sistemului de operare prin \texttt{brew install --cask font-gnu-freefont-freemono} pe macOS sau \texttt{sudo apt install fonts-freefont-ttf} pe Ubuntu/Debian.
+
+\paragraph{Notă privind mediul TreeVerb.}
+Mediul \gls{treeverb} (definit local în preambulul lucrării, bazat pe \texttt{fvextra} și \texttt{fancyvrb}) utilizează fontul \gls{freemono} pentru redarea structurii de fișiere în \secref{subsec:structura-monorepo}.
+
+
+% 5-anexa-a.tex ends here

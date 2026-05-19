@@ -1,0 +1,163 @@
+% 5-anexa-b.tex starts here
+% Keep \raggedbottom for this appendix too (same rationale as 5-anexa-a.tex):
+% several [H] floats here (tab:pan-stiva, fig:mean-vs-pan, tab:pan-vs-altele)
+% bump to the next page when they don't fit, and \flushbottom would stretch
+% the slack into subsection gaps rather than letting it settle at page bottom.
+\raggedbottom
+
+\section{Manifest Arhitectural \acrshort{pan}}\label{anexa:manifest}
+
+Această anexă consolidează arhitectura \gls{pan} propusă în lucrare, sintetizând definițiile, justificările tehnologice și limitările identificate pe parcurs.
+Spre deosebire de \secref{cap:preliminarii} (care narează drumul către \gls{pan}) și \secref{cap:implementare} (care detaliază implementarea concretă în \textit{\gls{kookio}}), prezenta anexă oferă o privire de ansamblu organizată tematic --- utilă fie pentru o lectură de referință după ce lucrarea a fost parcursă integral, fie ca punct de plecare pentru cititorul care vrea să înțeleagă \gls{pan} fără să citească întregul studiu de caz.
+
+\subsection{Definiție și principii structurale}\label{subsec:pan-definitie}
+
+\gls{pan} (\acrlong{pan}) este o arhitectură \gls{fullstack} monolitică modulară pentru aplicații \gls{web} construite integral în ecosistemul \gls{typescript}.
+Cele trei componente eponime --- \gls{prisma} ca \gls{orm} declarativ, \gls{analog} ca \gls{metaframework} \gls{angular} cu suport \acrshort{ssr} și \gls{nx} ca orchestrator de \gls{monorepo} --- sunt elementele constitutive în jurul cărora se organizează o stivă coerentă cu cinci principii fundamentale:
+
+\begin{enumerate}
+  \item \textbf{Limbaj unic de la capăt la capăt.} Întreaga aplicație --- \acrshort{ui}, server, validare, persistență --- este scrisă în \gls{typescript}. Această decizie elimină categoria de erori provenite din desincronizarea contractelor între limbaje diferite (de exemplu, Java pe server și \gls{typescript} pe client) și permite reutilizarea uniformă a tipurilor.
+
+  \item \textbf{O singură sursă de adevăr pentru contractele de date.} Schema bazei de date declarată în \texttt{schema.prisma} este sursa primară din care se derivă, automat, atât clientul \gls{prisma} \gls{typescript}, cât și schemele de validare \gls{zod} (via \texttt{prisma-zod-generator}). Tipurile aplicaționale sunt apoi compuse din aceste scheme prin operatorii \texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()} și \texttt{z.infer<>}. O modificare în \texttt{schema.prisma} se propagă, la compilare, prin toate straturile.
+
+  \item \textbf{Topologie modulară aciclică, aplicată la \acrshort{ci}.} Codul este organizat într-un \gls{monorepo} \gls{nx} cu cinci grupuri de biblioteci (\texttt{core}, \texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) și o relație de dependență strict aciclică. Regula \texttt{enforce-module-boundaries} respinge la integrarea continuă orice import care încalcă topologia, garantând că structura arhitecturală nu se degradează pe parcursul evoluției proiectului.
+
+  \item \textbf{Absența unui strat de \textit{repository} intermediar.} Procedurile \gls{trpc} apelează direct clientul \gls{prisma} (\texttt{ctx.prisma}), fără un strat intermediar de tip \textit{repository} orientat-obiect. Această decizie reduce numărul de straturi de adaptare și forțează ca logica de afaceri să se exprime în termenii primitivelor expuse de \gls{prisma} --- un compromis explicit între simplitate și abstracție.
+
+  \item \textbf{Randare pe server ca mod implicit.} Combinația \gls{angular} \(+\) \gls{analog} livrează \acrshort{ssr} drept comportament implicit pentru toate rutele, iar \acrshort{ssg} este folosit punctual pentru paginile cu conținut stabil. Astfel, prima impresie a utilizatorului depinde de un \acrshort{html} populat încă de la prima cerere, important atât pentru indexarea \acrshort{seo}, cât și pentru perceperea performanței.
+\end{enumerate}
+
+\subsection{Stiva tehnologică detaliată}\label{subsec:pan-stiva}
+
+Fiecare nivel al stivei \gls{pan} este materializat de o tehnologie concretă, aleasă în raport cu alternative consacrate.
+Cele paisprezece niveluri sunt grupate în două tabele după responsabilitate: \tabref{tab:pan-stiva} acoperă componentele aplicative (\gls{frontend}, server, persistență), iar \tabref{tab:pan-tooling} acoperă tooling-ul de dezvoltare și operare.
+
+\begin{table}[H]
+\centering
+\caption{Componentele aplicative ale arhitecturii \gls{pan} și justificarea fiecărei alegeri tehnologice.}
+\label{tab:pan-stiva}
+\small
+\begin{tabularx}{\textwidth}{llY}
+\toprule
+\textbf{Nivel} & \textbf{Tehnologie} & \textbf{Justificare} \\
+\midrule
+Frontend         & \gls{angular} 20                  & Tipizare strictă nativă, ecosistem Material/CDK consistent, semnale reactive \\
+Meta-framework   & \gls{analog}                      & Singura opțiune nativ-\gls{angular} cu \acrshort{ssr}, rutare pe fișiere și \textit{endpoint}-uri server integrate \\
+Server runtime   & \gls{nitro}                       & Adoptat de \gls{analog}, agnostic față de hosting (\gls{vercel}, Node.js, Bun, Deno) \\
+\acrshort{api}   & \gls{trpc}                        & Tipuri partajate de la capăt la capăt fără un strat suplimentar de definiții \\
+Validare         & \gls{zod} via \texttt{prisma-zod-generator} & Generare automată din schema \gls{prisma}, integrare nativă cu \gls{trpc} \\
+\gls{orm}        & \gls{prisma}                      & Schemă declarativă, client \gls{typescript} generat, migrații versionate \\
+Bază de date     & \gls{cockroachdb}                 & Compatibilitate de protocol cu \gls{postgresql}, scalare orizontală nativă, nivel \textit{serverless} \\
+Cache            & \gls{redis}                       & Suport nativ pentru \textit{rate-limiting}, structuri de date specializate \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Tooling-ul de dezvoltare și operare al arhitecturii \gls{pan} și justificarea fiecărei alegeri tehnologice.}
+\label{tab:pan-tooling}
+\small
+\begin{tabularx}{\textwidth}{llY}
+\toprule
+\textbf{Nivel} & \textbf{Tehnologie} & \textbf{Justificare} \\
+\midrule
+Monorepo         & \gls{nx}                          & Filiație \gls{angular} (Nrwl), cache distribuit, generatoare native, \texttt{enforce-module-boundaries} \\
+Build            & \gls{vite}                        & Suport \gls{typescript} nativ, \textit{hot module replacement} rapid, compatibilitate directă cu \gls{vitest} \\
+Test unitar      & \gls{vitest}                      & Rulează pe \gls{vite} (nu duplică configurația), \acrshort{api} compatibil Jest \\
+Test \acrshort{e2e} & \gls{playwright}               & Suport multi-browser nativ, paralelism prin \textit{workers}, depanare cu \acrshort{ui} dedicată \\
+\acrshort{cicd}  & GitHub Actions cu \glspl{compositeaction} & Aliniere cu țintele \gls{nx}, reutilizare prin acțiuni compozite \\
+Hosting          & \gls{vercel}                      & Suport nativ pentru \gls{analog}/\gls{nitro}, mediu de previzualizare per ramură, variabile de mediu centralizate \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Comparație cu arhitecturi alternative}\label{subsec:pan-comparatie}
+
+\gls{pan} se înscrie într-o linie de arhitecturi \gls{fullstack} moștenite conceptual din \gls{mean}, propusă de Karpov în 2013~\cite{karpovMean2013}.
+\figref{fig:mean-vs-pan} ilustrează paralela structurală între cele două.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{mean-vs-pan}
+  \caption{Paralelă structurală între arhitectura \gls{mean} (Karpov, 2013) și arhitectura \gls{pan} propusă în prezenta lucrare. Diagrama evidențiază maturizarea ecosistemului: \gls{analog} absoarbe rolurile distribuite în \gls{mean} între \textit{Express} și \gls{angular}, iar \gls{nx} adresează preocuparea organizării \gls{monorepo} care, în era \gls{mean}, nu era încă subiect de discuție arhitecturală.}
+  \label{fig:mean-vs-pan}
+\end{figure}
+
+Spre deosebire de \gls{mean}, care era un set de tehnologii relativ disjuncte unite prin convenție comunitară, \gls{pan} reflectă o filiație tehnologică directă: comunitatea Nrwl (\gls{nx}) este fondată de foști ingineri Google din echipa \gls{angular}, iar comunitatea \gls{analog} menține \gls{nx} ca platforma preferată de orchestrare.
+Această convergență structurală reduce frecușul de integrare pe care \gls{mean} îl avea (fiecare dezvoltator \gls{mean} își configura propriul flux de \textit{build}).
+
+Stiva contemporană React (MERN + \gls{nextjs} + \textit{Turborepo}) ocupă același spațiu de soluții ca \gls{pan}, dar într-un alt ecosistem.
+\tabref{tab:pan-vs-altele} oferă o comparație directă.
+
+\begin{table}[H]
+\centering
+\caption{Comparație între \gls{mean} (2013), stiva React modernă și arhitectura \gls{pan}.}
+\label{tab:pan-vs-altele}
+\small
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+\textbf{Aspect} & \textbf{\gls{mean} (2013)} & \textbf{MERN + \gls{nextjs} + Turborepo} & \textbf{\gls{pan}} \\
+\midrule
+Frontend         & \gls{angular} (vechi)   & React                  & \gls{angular} 20 \\
+Meta-framework   & --- (Express)           & \gls{nextjs}           & \gls{analog} \\
+Server runtime   & Node.js + Express       & Node.js + \gls{nextjs} & \gls{nitro} \\
+\acrshort{api}   & REST manual             & API routes + \gls{trpc} opțional & \gls{trpc} obligatoriu \\
+Tipuri partajate & Nu                      & Parțial (App Router)   & End-to-end automat \\
+Bază de date     & MongoDB                 & MongoDB sau \gls{postgresql} & \gls{cockroachdb} \\
+\gls{orm}        & Mongoose                & \gls{prisma} sau Drizzle & \gls{prisma} \\
+Monorepo         & ---                     & Turborepo              & \gls{nx} \\
+Limbaj           & JavaScript              & \gls{typescript} parțial & \gls{typescript} pur \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Diferențele majore între \gls{pan} și stiva React modernă sunt:
+
+\begin{itemize}
+  \item \textbf{Comunitate.} \gls{pan} este construit pe \gls{angular}, \gls{framework} cu o cotă de utilizare mai mică decât a React (\(50{,}1\,\%\) față de \(81{,}1\,\%\) \textit{State of JavaScript 2024}~\cite{stateOfJS2024}). Această diferență este atât o limitare practică (mai puțini dezvoltatori disponibili, mai puține biblioteci de \acrshort{ui} \textit{third-party}), cât și o invitație la disciplină --- \gls{angular} impune o organizare mai structurată implicit, prin \textit{dependency injection} și module.
+
+  \item \textbf{Maturitate.} \gls{nextjs} are aproape un deceniu de evoluție și o adopție extinsă în producție; \gls{analog} are sub trei ani și o comunitate mică. \gls{pan} compensează prin alegerea \gls{angular} și \gls{nitro} (ambele mature individual) ca platforme de bază, dar acceptă riscul comunitar al \gls{analog}.
+
+  \item \textbf{Tipizare end-to-end.} \gls{trpc} este în \gls{pan} o componentă obligatorie a arhitecturii, nu opțională. Această decizie face \gls{pan} mai restrictiv decât stiva React modernă (unde poți alege REST, GraphQL sau \gls{trpc} ad-hoc), dar elimină categoria de erori de desincronizare contractuală între client și server.
+\end{itemize}
+
+\subsection{Limitări și compromisuri}\label{subsec:pan-limitari}
+
+Adoptarea \gls{pan} ca arhitectură nu este lipsită de compromisuri.
+Această subsecțiune le listează explicit, pentru ca un cititor care evaluează \gls{pan} pentru un proiect propriu să poată face o alegere informată:
+
+\begin{itemize}
+  \item \textbf{Curba de adoptare.} \gls{pan} cere cunoștințe consolidate de \gls{angular} și de \gls{typescript} avansat (\textit{generics}, \textit{conditional types}, \textit{mapped types}). Pentru o echipă fără experiență \gls{angular}, învățarea \gls{pan} are un cost semnificativ mai mare decât adoptarea unui \gls{nextjs} convențional.
+
+  \item \textbf{Maturitate \gls{analog}.} \gls{analog} este, la momentul scrierii, un proiect cu o comunitate de câteva mii de utilizatori și fără adopție majoră în mediul corporativ. Riscul ca anumite probleme de producție să nu aibă răspuns documentat este real. Mitigarea folosită în prezenta lucrare a fost selectarea componentelor mature individual (\gls{angular}, \gls{nitro}) și acceptarea explicită a riscului pentru stratul de orchestrare \gls{analog}.
+
+  \item \textbf{Cuplaj la \gls{typescript}.} \gls{trpc} presupune că ambele capete ale comunicării sunt \gls{typescript}. \gls{pan} nu este o opțiune viabilă pentru aplicații care trebuie să expună un \acrshort{api} public consumat de clienți în alte limbaje (Java, Go, Python). În astfel de cazuri, GraphQL sau OpenAPI rămân alegeri mai potrivite.
+
+  \item \textbf{Dependență moderată de furnizor.} Deși \gls{pan} poate fi publicat pe orice infrastructură compatibilă Node.js (\gls{nitro} suportă \gls{vercel}, Netlify, AWS, Cloudflare, Bun, Deno), integrarea cu \gls{vercel} este cea mai bine bătătorită. Migrarea către un alt furnizor este posibilă, dar nu este lipsită de efort.
+
+  \item \textbf{\gls{cockroachdb} la scară mică.} Pentru aplicații sub \(100\,000\) cereri pe zi, complexitatea operațională a \gls{cockroachdb} (algoritmul de consens Raft, izolarea \textit{serializable} implicită care necesită logică de reluare) este disproporționată față de \gls{postgresql} standard. \gls{pan} cu \gls{postgresql} clasic ar fi o variantă mai simplă pentru aplicații care nu necesită scalare orizontală reală.
+
+  \item \textbf{Resurse de învățare limitate.} Conținutul comunitar (Stack Overflow, articole de blog, cursuri) pentru \gls{pan} ca atare nu există --- există doar pentru componentele individuale. Un dezvoltator care întâmpină o problemă specifică integrării \gls{analog} \(+\) \gls{trpc} \(+\) \gls{prisma} \(+\) \gls{nx} trebuie să își construiască soluția pornind de la primele principii.
+\end{itemize}
+
+\subsection{Direcții de evoluție arhitecturală}\label{subsec:pan-evolutie}
+
+\gls{pan}, ca arhitectură, este extensibilă pe mai multe axe care nu au fost explorate în studiul de caz \textit{\gls{kookio}}:
+
+\begin{itemize}
+  \item \textbf{Comunicare în timp real.} \gls{trpc} suportă \textit{subscriptions} prin WebSocket sau Server-Sent Events; o ramură naturală de evoluție este integrarea cu un broker de mesaje (\gls{redis} Pub/Sub, NATS) pentru notificări către clienți autentificați.
+
+  \item \textbf{Funcții la nivelul rețelei de margine (\textit{edge functions}).} \gls{nitro} permite publicare parțială la nivelul \textit{edge} (\gls{vercel} Edge Functions, Cloudflare Workers). Procedurile \gls{trpc} care nu necesită \gls{prisma} pot fi mutate la \textit{edge} pentru reducerea latenței geografice.
+
+  \item \textbf{Multi-regional.} \gls{cockroachdb} suportă nativ replicare cross-zone; pentru o aplicație care iese din regimul mono-regional, această capacitate poate fi activată fără modificări de cod aplicativ.
+
+  \item \textbf{Aplicații mobile.} Stiva \gls{angular} are suport pentru aplicații mobile native prin Capacitor sau NativeScript; bibliotecile \texttt{core} și \texttt{shared} ale unui proiect \gls{pan} sunt direct reutilizabile între o aplicație \gls{web} și una mobilă.
+
+  \item \textbf{Internaționalizare.} \gls{angular} i18n combinat cu rutare multilingvă \gls{analog} (rute parametrizate prin prefix de limbă) acoperă cazul aplicațiilor multilingve fără modificări arhitecturale.
+\end{itemize}
+
+\gls{pan} nu este, în concluzie, o arhitectură universal aplicabilă.
+Este o arhitectură pentru echipe mici cu cunoștințe \gls{angular} consolidate care construiesc aplicații \gls{typescript} moderne, monolitice (în sensul publicării unitare) și centrate pe date.
+În acest spațiu de soluții, \gls{pan} oferă o coerență tehnologică și o disciplină structurală pe care alternativele bazate pe React le ating doar prin alegeri și convenții \textit{ad-hoc}.
+% 5-anexa-b.tex ends here
