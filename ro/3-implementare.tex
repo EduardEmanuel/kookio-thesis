@@ -1,0 +1,179 @@
+% 3-implementare.tex starts here
+\section{Implementare}\label{cap:implementare}
+
+\subsection{Prezentare generală a implementării}
+
+Capitolul precedent a stabilit alegerile tehnologice care formează arhitectura \textbf{\gls{pan}} (manifestul complet în \anxref{anexa:manifest}). În cele ce urmează descriu cum se traduce acest tipar în structura efectivă a \gls{repository}-ului: o singură aplicație \gls{analog} sub \texttt{apps/}, un set de biblioteci \gls{nx} grupate pe responsabilități sub \texttt{libs/} și un lanț unitar de execuție prin care o cerere ajunge de la runtime-ul server-side al \gls{analog} către straturile \gls{trpc} și \gls{prisma}.
+
+\subsubsection{Structura monorepo-ului Nx}\label{subsec:structura-monorepo}
+\vspace{0.3cm}
+\begin{TreeVerb}
+kookio/
+├── apps/
+│   ├── web/                    # aplicație Analog (Angular 20 + SSR),
+│   │                             rulează atât în browser cât și ca
+│   │                             runtime server (Nitro)
+│   └── web-e2e/                # suită Playwright pentru fluxurile
+│                                 critice (login, onboarding, pantry,
+│                                 planificator)
+├── libs/
+│   ├── core/                   # config, logging, security
+│   │                             (preocupări trans-feature)
+│   ├── feature/                # fluxuri vizibile utilizatorului
+│   │   ├── auth/               #   login, înregistrare, sesiune
+│   │   ├── onboarding/         #   pași de configurare profil
+│   │   ├── pantry/             #   gestiune cămară
+│   │   ├── plan/               #   planificator zilnic
+│   │   ├── recipes/            #   feed și detaliu rețete
+│   │   ├── groceries/          #   listă derivată de cumpărături
+│   │   ├── saved/              #   colecții salvate
+│   │   ├── dashboard/          #   ecran principal autentificat
+│   │   └── shell/              #   layout, topbar, navigare
+│   ├── prisma/client           # schemă Prisma, migrații,
+│   │                             scheme Zod generate, tipuri derivate
+│   ├── server/                 # auth, logger, trpc
+│   │                             (helperi de runtime server)
+│   └── shared/                 # ui, utility, mock
+│                                 (componente, helperi, fixtures)
+├── nx.json                     # configurație globală Nx
+├── package.json                # manifestul principal al proiectului
+├── tsconfig.base.json          # config TypeScript + alias-urile
+├── vercel.json                 # rute, headers și build pentru Vercel
+└── vitest.workspace.ts         # workspace Vitest (toate proiectele)
+\end{TreeVerb}
+\vspace{0.3cm}
+
+În practică, o modificare în \texttt{libs/feature/pantry} declanșează doar verificările pentru biblioteca afectată și pentru modulele care depind direct de ea (via \texttt{nx affected}), nu pentru întregul \gls{repository} \cite{nx}. Topologia dintre grupuri (\texttt{feature/} nu importă din \texttt{feature/}, \texttt{shared/} nu depinde de nimic intern) este aplicată automat de regula \texttt{enforce-module-boundaries}, verificată la \acrshort{ci}.
+
+\subsubsection{Fluxul aplicației cap-coadă}\label{subsec:flux-capcoada}
+
+La nivel de ansamblu, o cerere parcurge trei straturi: \textit{\Gls{analog} (\acrshort{ui} și \acrshort{ssr})} \(\rightarrow\) \textit{\acrshort{trpc} (\acrshort{api} tipizat)} \(\rightarrow\) \textit{\gls{prisma} (acces la date)} \cite{analog,trpc,prisma_orm}. Tranzițiile dintre straturi nu trec printr-un strat suplimentar de serializare manuală --- tipurile \gls{typescript} sunt partajate de la capăt la capăt, iar validarea de intrare la frontiera \gls{trpc} folosește scheme \gls{zod} derivate din schema \gls{prisma} \cite{trpc,zod,prisma_zod_generator}. Detalierea pe etape a unei cereri concrete (de la \acrshort{ssr} inițial până la apelurile ulterioare din browser) se găsește în \secref{subsec:flux-executie}.
+
+\subsection{Implementarea aplicației}
+
+Dacă secțiunea anterioară a justificat alegerile tehnologice, cea de față arată cum se vede fiecare alegere în repository: ce fișiere o materializează, ce convenții o aplică și ce constrângeri concrete a impus la nivelul codului. Pentru fiecare tehnologie, accentul nu mai cade pe \textit{de ce} a fost aleasă, ci pe \textit{ce a rezultat efectiv} odată integrată în \textit{\gls{kookio}}.
+
+\subsubsection{Arhitecturi web moderne}\label{subsec:arhitecturi-implementare}
+
+Configurarea de \gls{randare} a \textit{\gls{kookio}} este concentrată în \texttt{apps/web/vite.config.ts}: plugin-ul \texttt{analog} este apelat cu \texttt{ssr: true} și o singură rută declarată în \texttt{prerender.routes}, anume \texttt{/about}. Practic, \acrshort{ssr} este modul implicit pentru toate rutele aplicației, iar \acrshort{ssg} este folosit punctual pentru singurele pagini al căror conținut nu depinde de cerere \cite{analog}.
+
+Pe ramura \acrshort{ssr}, distincția dintre rutele publice (\texttt{/recipes}, \texttt{/legal/attributions}) și cele autentificate (\texttt{/pantry}, \texttt{/plan}) nu se manifestă în strategia de \gls{randare}, ci în ceea ce execută serverul înainte de a servi pagina: rutele autentificate trec printr-un \textit{guard} (interceptor de rută) care emite o redirecționare către \texttt{/login} dacă sesiunea Firebase lipsește, vizibilă pentru \gls{playwright} drept \texttt{ERR\_ABORTED} pe Chromium și gestionată prin \texttt{waitUntil: 'commit'} în testele \acrshort{e2e}.
+
+\subsubsection{Topologia bibliotecilor și absența unui strat de repository}\label{subsec:topologie-biblioteci}
+
+Bibliotecile \textit{feature} ale aplicației sunt felii verticale (\textit{vertical slices}): fiecare reprezintă un flux utilizator complet (\texttt{auth}, \texttt{onboarding}, \texttt{pantry}, \texttt{plan}, \texttt{recipes}) și conține componentele, magazinele de stare (\textit{store}-uri NgRx Signals) și serviciile de care depinde acel flux. Topologia impusă de \texttt{enforce-module-boundaries} este aciclică: \texttt{apps/} \(\rightarrow\) \texttt{libs/feature/} \(\rightarrow\) \texttt{libs/core/}, \texttt{libs/server/}, \texttt{libs/shared/}, \texttt{libs/prisma/}, iar \texttt{libs/feature/X} nu poate importa din \texttt{libs/feature/Y}. Comunicarea între feature-uri se face prin magazine de stare \texttt{providedIn: 'root'} sau prin procedurile \gls{trpc} expuse de \texttt{libs/server/trpc} \cite{nx,nx_boundaries,trpc}.
+
+Codul \gls{backend} și cel \gls{frontend} coexistă în același \gls{repository}: clientul \gls{prisma} și schemele \gls{zod} generate sunt localizate în \texttt{libs/prisma/client}, iar tipurile lor sunt importate direct în componentele \gls{angular} \cite{prisma_zod_generator}. Nu există un strat clasic de tip \textit{repository} orientat-obiect între procedurile \gls{trpc} și \gls{prisma}; dispecerii de rute apelează direct \texttt{ctx.prisma}, iar tranzacțiile multi-pas folosesc \texttt{prisma.\$transaction} \cite{trpc,prisma_transactions}.
+
+\subsubsection{Angular și randare server-side}\label{subsec:angular-ssr-implementare}
+
+Rutele aplicației sunt definite pe baza structurii de fișiere (\textit{filesystem-based}) sub \texttt{apps/\allowbreak web/\allowbreak src/\allowbreak app/\allowbreak pages/}: un fișier \texttt{about.page.ts} expune \texttt{/about}, \texttt{cook.[recipeId].page.ts} expune o rută dinamică cu parametru, iar un \texttt{cook.[recipeId].server.ts} colocat realizează încărcarea de date înainte ca \gls{angular} să randeze componenta \cite{analog,analog_routing}. Fiecare \texttt{*.page.ts} este export implicit (\textit{default export}) și este încărcat la cerere (\textit{lazy loading}) de către dispecerul de rute \gls{analog}; nu există un fișier centralizat de rute.
+
+Configurarea \acrshort{ssr} la nivel de aplicație este minimală: \texttt{app.config.ts} include \texttt{provideFileRouter()}, \texttt{provideHttpClient(\ldots)} și \texttt{provideClientHydration(\ldots)}, ultimul rerulând prin opțiunea \texttt{withEventReplay()} evenimentele utilizator capturate în intervalul dintre \acrshort{ssr} și \gls{hydration} \cite{analog}. Fiecare import adăugat în \texttt{app.config.ts} are însă un cost amplificat de \acrshort{ssr}: modulul este evaluat pe traseul critic al fiecărei rute, iar fișierele agregatoare de tip \textit{barrel} (re-exporturi de tipul \texttt{export *}) nu sunt eliminate de \gls{vite} în mediul de dezvoltare. Constrângerea practică este să se importe direct, prin sub-căi, doar tokenii efectiv utilizați, lăsând componentele grele (Material datepicker, autocomplete) să fie încărcate de la nivelul paginii care le folosește.
+
+\subsubsection{Gestionarea datelor cu Prisma și CockroachDB}\label{subsec:gestionarea-datelor}
+
+Schema bazei de date se află la \texttt{libs/prisma/client/schema.prisma}, alături de migrațiile gestionate de \gls{prisma} și de generatorul \texttt{prisma-zod-generator}, care produce o copie validabilă a fiecărui model în formă \gls{zod} \cite{prisma_orm,prisma_zod_generator}. Tipurile derivate (seturi inițiale de date, intrări de formular, payload-uri pentru rute \gls{trpc}) sunt construite prin compoziție --- \texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()} --- direct peste schemele generate, astfel încât o redenumire de câmp în \texttt{schema.prisma} să se propage automat în consumatori \cite{prisma_zod_generator}.
+
+Două decizii structurale susțin acest aranjament. Întâi, indexul public \texttt{@kookio/prisma-client} este sigur pentru execuție în browser: exportă numai tipuri și scheme \gls{zod}, iar instanța \texttt{PrismaClient} este izolată sub sub-calea \texttt{@kookio/prisma-client/server}, iar importul acesteia este blocat de ESLint în codul de \gls{frontend} \cite{prisma_orm}. Apoi, instanța \gls{prisma} este extinsă cu o reluare automată la conflict (\textit{retry-on-conflict}) pentru codurile de eroare \textit{serializable} specifice \gls{cockroachdb} (\texttt{P2034}, \texttt{40001}); toate operațiile de scriere (\texttt{create}, \texttt{update}, \texttt{upsert}, \texttt{delete} și variantele \texttt{*Many}) trec prin acest \textit{wrapper} (înveliș de cod), iar tranzacțiile multi-pas sunt declarate idempotente pentru a permite reluarea automată \cite{prisma_transactions,cockroachdb}.
+
+Constrângerile de unicitate compusă (de exemplu \texttt{@@unique([userId, date, slotType])} pe \texttt{MealSlot}, sau perechea \texttt{userId}--\texttt{ingredientCatalogId} pe \texttt{PantryItem}) sunt declarate în \texttt{schema.prisma} și aplicate la nivelul bazei de date, iar \gls{prisma} generează automat formele cu cheie compusă (\textit{compound key}, de tipul \texttt{where: \{ userId\_ingredientCatalogId: \{ \ldots \} \}}) pentru interogările de căutare aferente \cite{prisma_orm}.
+
+\subsubsection{Comunicarea client–server cu tRPC}\label{subsec:comunicare-trpc}
+
+Dispecerii de rute \gls{trpc} sunt definiți sub \texttt{libs/server/trpc/src/lib/routers/}, câte un dispecer de rute per domeniu (\texttt{auth}, \texttt{pantry}, \texttt{onboarding}, \texttt{meal-plan}, \texttt{recipes}, \texttt{cooking-session} ș.a.). Fiecare procedură este compusă dintr-unul din trei \textit{constructori} declarați în \texttt{libs/\allowbreak server/\allowbreak trpc/\allowbreak src/\allowbreak lib/\allowbreak middlewares/\allowbreak auth.ts}: \texttt{publicProcedure} (expusă anonim, fără autentificare), \texttt{protectedProcedure} (necesită sesiune Firebase verificată în \texttt{createContext}) și \texttt{onboardedProcedure} (necesită în plus \texttt{onboardingDone === true} pe utilizator) \cite{trpc,trpc_middleware}. Convenția este una de structură: o căutare cu \texttt{grep} prin constructorul folosit într-un dispecer de rute arată imediat ce interfață expune punctul de acces, fără a fi nevoie să se inspecteze fiecare strat de \textit{middleware} compus local.
+
+Pe partea de client, instanța \gls{trpc} este creată în \texttt{apps/web/src/trpc-client.ts} cu un \texttt{authAwareFetch} dedicat care (i) atașează \textit{ID token}-ul Firebase ca antet HTTP \texttt{Authorization}, (ii) împrospătează proactiv tokenul când expiră în mai puțin de cinci minute, (iii) rezolvă \acrshort{url}-urile relative la formă absolută în context \acrshort{ssr} (Node.js nu are o bază implicită pentru \texttt{fetch('/api/\ldots')}). Procedurile \gls{trpc} returnează \texttt{Observable}-uri RxJS în această configurație, iar consumatorii din \gls{angular} aleg între \texttt{from(\ldots).pipe(\ldots)} pentru flux reactiv și \texttt{await firstValueFrom(from(\ldots))} pentru un singur rezultat \cite{trpc}.
+
+\subsubsection{Rute h3 auxiliare și infrastructura Redis}\label{subsec:rute-h3-redis}
+
+Pe lângă handler-ul \gls{trpc} (\texttt{apps/\allowbreak web/\allowbreak src/\allowbreak server/\allowbreak routes/\allowbreak api/\allowbreak trpc/\allowbreak [trpc].ts}), aplicația expune două rute \texttt{h3} suplimentare: \texttt{/api/health} pentru verificarea de stare (\textit{healthcheck}) și \texttt{/api/internal/bench-db} pentru benchmark-ul de latență al \gls{cockroachdb} (folosit în secțiunea de evaluare). Un singur \textit{middleware} \texttt{h3} (\texttt{apps/web/src/server/\allowbreak middleware/security.ts}) acoperă cerințele transversale --- antete de securitate și \texttt{404} explicit pentru \texttt{/assets/*} negăsite, pentru a evita situația în care \acrshort{ssr}-ul ar returna \texttt{200} cu \acrshort{html} pentru un fișier de tip \textit{bundle} înlocuit între deploy-uri.
+
+Componenta Redis se află în \texttt{apps/web/src/server/infra/} și este proiectată să tolereze indisponibilitatea. \texttt{getRedis()} este un singleton cu \textit{circuit breaker} de 60 de secunde: după o conexiune eșuată, apelurile următoare eșuează rapid (\textit{fail-fast}) în loc să recreeze clientul \cite{redis}. Pe ramura de citire (\texttt{groceries.list}), o funcție utilitară captează silențios eșecurile Redis și returnează mulțimea goală, astfel încât pagina să se randeze fără starea «cumpărat»; pe ramura de scriere, răspunsul include un câmp \texttt{persisted: false} dacă Redis este indisponibil, permițând clientului să păstreze comutarea optimistă (\textit{optimistic update}) și să afișeze o notificare. Limitarea ratei (\textit{rate-limiting}, \texttt{rateLimitFixedWindow}) folosește o fereastră fixă \texttt{INCR + EXPIRE} și este aplicată momentan doar pe punctul final de benchmark.
+
+\subsubsection{Jurnalizare și observabilitate}\label{subsec:jurnalizare}
+
+Stratul de \gls{logging} este izolat în \texttt{libs/server/logger/}: o singură instanță \gls{pino} este creată cu un transport dependent de mediu --- \texttt{pino-pretty} cu \textit{colorize} și marcaj de timp scurt în dezvoltare, JSON brut în producție (\gls{vercel}) \cite{pino}. Pe ramura de producție, instanța aplică o listă explicită de câmpuri redactate (\textit{redact list}: \texttt{password}, \texttt{*.token}, \texttt{authorization}) pentru a împiedica scurgerea credențialelor în jurnale (\textit{log}-uri).
+
+Pe lângă instanța globală de jurnalizare, \texttt{createLogger(namespace, bindings)} returnează un \textit{logger} copil cu o etichetă de \textit{namespace} (\texttt{ns: 'pantry'}, \texttt{ns: 'auth'}) care însoțește toate intrările emise de acea componentă, iar \texttt{createAudit(bindings)} returnează un logger specializat pentru evenimente de audit (cu indicatorul \texttt{audit: true} aplicat automat). Mesajele sunt întotdeauna structurate --- \texttt{logger.info(\{ userId, action \}, 'message')} --- nu interpolări de șir, pentru ca log-urile produse să fie filtrabile direct pe platforma de agregare.
+
+\subsubsection{Fluxul de execuție al unei cereri}\label{subsec:flux-executie}
+
+Detalierea fluxului rezumat în \secref{subsec:flux-capcoada} se desfășoară pe trei etape.
+
+\textbf{Etapa~1 (randare inițială).} Cererea \acrshort{http} ajunge la runtime-ul server-side al \gls{analog} (bazat pe \gls{nitro}), iar instanța \gls{angular} este executată pe server pentru a produce \acrshort{html}-ul inițial \cite{analog,nitro}.
+
+\textbf{Etapa~2 (interogarea persistenței).} Componentele \gls{angular} declanșează apeluri către procedurile \gls{trpc} ale stratului server-side; fiecare procedură își validează intrările cu o schemă \gls{zod} derivată din schema \gls{prisma} și folosește \texttt{ctx.prisma} pentru a interoga \gls{cockroachdb} \cite{trpc,zod,prisma_zod_generator,prisma_cockroachdb}. Rezultatele se propagă înapoi prin stratul \gls{trpc} către componentele care participă la randarea inițială.
+
+\textbf{Etapa~3 (hidratare și interacțiune ulterioară).} \acrshort{html}-ul randat ajunge la browser, iar instanța \gls{angular} preia controlul prin \gls{hydration} --- arborele \acrshort{dom} produs pe server este reutilizat, iar evenimentele capturate în interval sunt rerulate de \texttt{withEventReplay()} \cite{analog}. De aici, interacțiunile ulterioare apelează direct procedurile \gls{trpc} din browser, fără o nouă \gls{randare} pe server \cite{trpc}.
+
+\subsubsection{Testare și validare}\label{subsec:testare-validare}
+
+Suita de \gls{vitest} este orchestrată de \texttt{vitest.workspace.ts} la rădăcina \gls{repository}-ului, care colectează automat toate fișierele \texttt{vite.config.*} și \texttt{vitest.config.*} din proiectele \gls{nx} \cite{vitest,vite}. Fișierele de specificații (\textit{spec}-uri, \texttt{*.spec.ts}) sunt colocate lângă codul testat, atât în bibliotecile de \textit{feature}, cât și în bibliotecile de server (de exemplu \texttt{pantry.router.spec.ts} alături de \texttt{pantry.router.ts}). Granularitatea este principiul director: \texttt{nx affected -t test} rulează numai spec-urile atinse de modificările curente.
+
+Suita \gls{playwright} se află la \texttt{apps/web-e2e/} și are propriul \texttt{global-setup.ts} care preîncălzește toate rutele aplicației înainte ca primul proces de lucru (\textit{worker}) să pornească --- măsură necesară pentru a evita constrângerile de timp la prima pornire pe \gls{vite} în mediul de dezvoltare \cite{playwright}. Fluxurile critice (autentificare, înregistrare, finalizare \textit{onboarding}, adăugare în cămară, vizualizare planificator) parcurg interfața în Chromium; rutele protejate folosesc \texttt{waitUntil: 'commit'} pentru a evita eroarea \texttt{ERR\_ABORTED} produsă de redirecționările \gls{angular} în timpul \gls{hydration}.
+
+Disciplina cea mai vizibilă în practică se aplică la refactorizările care modifică dependențele injectate într-o componentă partajată: testele bibliotecii respective continuă să treacă (stub-urile locale --- \textit{stubs}, înlocuitori de test --- sunt actualizate), dar spec-urile modulelor dependente pot eșua cu \texttt{NullInjectorError}. Pentru a detecta aceste regresii, se rulează \texttt{nx affected -t test}, care urmărește graful de dependențe \gls{nx} și rulează tot ce este afectat \cite{nx}.
+
+\subsubsection{Dezvoltare și deploy}\label{subsec:dezvoltare-deploy}
+
+Configurarea mediilor este centralizată în panoul \gls{vercel}, separat pe \texttt{production}, \texttt{preview} și \texttt{development} \cite{vercel_cli}. Local, \texttt{vercel env pull} sincronizează valorile mediului curent într-un \texttt{.env.local} (exclus din versionare prin \texttt{.gitignore}), eliminând necesitatea ca vreun secret să fie versionat în Git.
+
+Promovarea între medii respectă fluxul \texttt{dev} \(\rightarrow\) \texttt{test} \(\rightarrow\) \texttt{main}. Ramura \texttt{dev} alimentează mediul de previzualizare (\textit{Preview}) de dezvoltare; ramura \texttt{test} declanșează suita \acrshort{e2e} pe mediul de previzualizare de testare înaintea promovării în \texttt{main}, iar ramura \texttt{main} alimentează publicarea (\textit{deploy}) de producție în regiunea \texttt{fra1} (Frankfurt) \cite{vercel_cli}.
+
+Build-ul de producție rulează \texttt{nx build web} cu \texttt{NODE\_OPTIONS=\allowbreak --max-old-space-size=6144}.
+Limita implicită a heap-ului V8 este insuficientă pentru \textit{bundling}-ul integral al stivei \gls{angular} Material în context \gls{nitro}: fazele de transformare a arborelui sintactic abstract (AST) și de generare a hărților sursă (\textit{source maps}) acumulează volume mari de obiecte temporare, iar build-ul eșuează cu \texttt{JavaScript heap out of memory} înainte de finalizare.
+Ridicarea limitei la 6\,GB asigură marja necesară pentru ambele faze.
+\gls{prismaclient} este regenerat în fluxul automatizat (\textit{pipeline}) --- ținta \texttt{generate} este dependență a țintei \texttt{build} ---, evitând astfel incompatibilitățile de binar (\textit{binary}) între platformele \gls{darwinarm64} și \gls{rhelopenssl30x} \cite{prisma_engines}.
+
+\subsection{Metodologie și evaluare}\label{ch:evaluare}
+
+\subsubsection{Setare experimentală}\label{subsec:setare-experimentala}
+
+Toate măsurătorile au fost realizate în mediul \textit{Preview} al \gls{vercel} (regiunea \texttt{fra1}, Frankfurt), cu \gls{cockroachdb} Serverless și \gls{redis} Cloud în aceeași regiune; stiva rulează \gls{analog} peste \gls{nitro}, cu \acrshort{ssr} la prima cerere și \gls{hydration} la client. Setul de date provine din seturi deterministe de date de test (\textit{fixture}-uri, \texttt{libs/shared/mock/}) și din scripturile de inițializare (\textit{seed}, \texttt{libs/\allowbreak prisma/\allowbreak client/\allowbreak seed-data/\allowbreak catalog.json}, \texttt{recipes.json}).
+
+Toate procedurile de măsurare sunt versionate în \gls{repository}-ul lucrării: ruta de benchmark este definită în \texttt{apps/\allowbreak web/\allowbreak src/\allowbreak server/\allowbreak routes/\allowbreak api/\allowbreak internal/\allowbreak bench-db.get.ts}, fluxurile de \acrshort{ci} sunt în \texttt{.github/workflows/}, iar configurația suitei \acrshort{e2e} este în \texttt{apps/web-e2e/playwright.config.ts}. Rezultatele de latență pot fi reproduse executând \texttt{npm run bench:preview} local (cu credențialele de acces \gls{vercel} corespunzătoare), iar metricile de \acrshort{ci} și \acrshort{e2e} prin declanșarea fluxului automatizat pe orice ramură de dezvoltare.
+
+\subsubsection{Indicatori și proceduri}\label{subsec:indicatori-proceduri}
+
+\paragraph{Timpul de rulare \acrfull{ci}.} Se compară timpul median de execuție al \gls{workflow}-ului \acrshort{ci} înainte și după extragerea pașilor recurenți (\texttt{setup}, \texttt{build}, \texttt{test}) în acțiuni compozite (\textit{composite actions}) reutilizabile; rulările de referință sunt cele de pe ramurile \texttt{test} și \texttt{main} din ultima săptămână de dezvoltare.
+
+\paragraph{Latența la stratul de persistență.} Ruta internă \texttt{/api/internal/bench-db} execută \(N=100\) interogări succesive de citire către \gls{cockroachdb}, respectiv \gls{redis}; se raportează media aritmetică, percentila 50 (\acrshort{p50}) și percentila 95 (\acrshort{p95}), separând explicit prima cerere --- rece (\textit{cold}) --- de cele subsecvente --- calde (\textit{warm}).
+
+\paragraph{Fiabilitatea testelor end-to-end (\acrshort{e2e}).} Rata de trecere a suitei \gls{playwright} pe Chromium, măsurată pe ultimele zece rulări de pe ramura \texttt{test}. Browserele Firefox și WebKit sunt configurate, dar nu rulează sistematic în \acrshort{ci} (sunt acoperite în execuții manuale înaintea promovărilor în \texttt{main}).
+
+\subsubsection{Rezultate}\label{subsec:rezultate}
+
+\begin{table}[H]
+\centering
+\caption{Sinteza rezultatelor pe cele trei dimensiuni măsurate.}
+\label{tab:rezultate}
+\begin{tabular}{lr}
+\toprule
+\textbf{Indicator} & \textbf{Valoare} \\
+\midrule
+\multicolumn{2}{l}{\textit{Latența la stratul de persistență (\(N=100\) citiri)}} \\
+\quad \gls{cockroachdb} --- medie & 2,55 ms \\
+\quad \gls{cockroachdb} --- \acrshort{p50} & 2,23 ms \\
+\quad \gls{cockroachdb} --- \acrshort{p95} & 3,52 ms \\
+\quad \gls{redis} --- medie & 1,20 ms \\
+\quad \gls{redis} --- \acrshort{p50} & 0,98 ms \\
+\quad \gls{redis} --- \acrshort{p95} & 1,52 ms \\
+\midrule
+\multicolumn{2}{l}{\textit{Timpul de rulare \acrshort{ci} (mediană)}} \\
+\quad Configurație monolitică & 4~min \\
+\quad După extragerea în acțiuni compozite & 3~min \\
+\quad Reducere relativă & \(\approx 25\,\%\) \\
+\midrule
+\multicolumn{2}{l}{\textit{Fiabilitatea testelor \acrshort{e2e}}} \\
+\quad Rată de trecere Chromium (10 rulări) & \(100\,\%\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Rezultatele sintetizate în \tabref{tab:rezultate} confirmă, în limitele explicate în \secref{subsec:discutie-limitari}, viabilitatea arhitecturii \gls{pan} pe cele trei axe de evaluare: latențe milisecundice la stratul de persistență, reducere semnificativă a timpului de rulare \acrshort{ci} prin extragerea pașilor recurenți, și fiabilitate completă a fluxurilor critice end-to-end pe browserul de referință.
+
+\subsubsection{Discuție și limitări}\label{subsec:discutie-limitari}
+
+Toate măsurătorile provin din mediul \textit{Preview}, în regiunea \texttt{fra1}, fără trafic concurent --- așadar nu surprind comportamentul stivei sub încărcare sau în regim multi-regional. Suita \acrshort{e2e} rulează doar pe Chromium în \acrshort{ci}, iar matricile de testare Firefox și WebKit sunt acoperite manual; o promovare automatizată a celor două ar mări încrederea în compatibilitatea inter-browser (\textit{cross-browser}). În plus, atât \gls{cockroachdb}, cât și \gls{redis} rulează pe planurile gratuite (cu cote de utilizare și ciclu de \textit{auto-suspendare} pentru \gls{redis}) și sunt măsurate fără trafic concurent, ceea ce face latențele raportate reprezentative pentru un regim singular, nu pentru producție la scară. Generalizarea acestor rezultate cere teste de încărcare dedicate și măsurători repetate într-un mediu de producție stabil.
+% 3-implementare.tex ends here
