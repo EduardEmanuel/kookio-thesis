@@ -14,7 +14,7 @@
 
 % Body font — Times-family (TeX Gyre Termes is the open-source clone of
 % Times New Roman, shipped with every modern TeX distribution).
-% FMI guide §"Recomandări privind formatul lucrării" specifies Times New
+% university's guide specifies Times New
 % Roman 12pt; Termes is metrically equivalent.
 \setmainfont{TeX Gyre Termes}
 
@@ -46,6 +46,8 @@
 % ------------------------------------------------------------------
 \usepackage{polyglossia}
 \setmainlanguage{romanian}
+% Override Romanian default "Tabela" → "Tabelul" to match in-text cross-references.
+\addto\captionsromanian{\renewcommand{\tablename}{Tabelul}}
 \usepackage{csquotes}
 
 % ------------------------------------------------------------------
@@ -60,7 +62,7 @@
 % ------------------------------------------------------------------
 \usepackage[a4paper, margin=2.5cm]{geometry}
 \usepackage{setspace}
-\onehalfspacing % FMI guide §"Recomandări privind formatul lucrării": spațiere 1.5 rânduri
+\onehalfspacing % university's guide: spațiere 1.5 rânduri
 \usepackage{microtype}
 \setlength{\emergencystretch}{3em}
 \setlength{\parskip}{0.5em}
@@ -76,6 +78,14 @@
 \graphicspath{{../images/}}
 \usepackage{float}
 \usepackage{subcaption}
+
+% Custom float type for code listings rendered via fancyvrb (Verbatim/BVerbatim).
+% Used instead of `lstlisting` for blocks that contain UTF-8 multi-byte chars
+% (Romanian diacritics inside code comments) — the `listings` package
+% mishandles them under LuaLaTeX regardless of literate/extendedchars config,
+% while fancyvrb passes them through to fontspec for native rendering.
+\newfloat{codlista}{H}{loa}
+\floatname{codlista}{Lista}
 
 % ------------------------------------------------------------------
 % URLs & hyperlinks
@@ -127,7 +137,7 @@
 }
 % \preto\chapter{\glsresetall} % commented in order to avoid hyperlink polution
 \makeglossaries
-\loadglsentries{5-glosar}
+\loadglsentries{6-glosar}
 
 % ------------------------------------------------------------------
 % Bibliography
@@ -147,6 +157,8 @@
 % Listings
 % ------------------------------------------------------------------
 \usepackage{listings}
+% Match the in-text reference "Lista N" — the listings default is "Listing N".
+\renewcommand{\lstlistingname}{Lista}
 \lstset{
   basicstyle=\ttfamily\footnotesize,
   breaklines=true,
@@ -222,6 +234,8 @@
 \newcommand{\figref}[1]{Figura~\ref{#1}}
 \newcommand{\tabref}[1]{Tabelul~\ref{#1}}
 \newcommand{\lstref}[1]{Lista~\ref{#1}}
+\newcommand{\capref}[1]{Capitolul~\ref{#1}}
+\newcommand{\anxref}[1]{Anexa~\ref{#1}}
 
 % ------------------------------------------------------------------
 % Document body
@@ -235,14 +249,14 @@
 \pagestyle{fancy}
 
 \input{0-abstract.tex}
-\clearpage % Rezumatul ocupă pagina i; cuprinsul începe pe pagina ii cu spațiu suficient
+\clearpage % ensure the abstract is on its own page, and the TOC starts on a fresh page
 
-% TOC stays single-spaced — the FMI 1.5-spacing rule applies to body text;
+% TOC stays single-spaced — university's 1.5-spacing rule applies to body text;
 % reference apparatus (TOC, glossary, bibliography) is conventionally tighter.
 % `tocdepth=2` keeps the TOC at section + subsection level. Subsubsections
 % remain in the body but are intentionally omitted from the TOC, both for
 % density (a 20-entry TOC clips lines at the page boundary regardless of
-% \raggedbottom + \singlespacing tweaks) and to match the FMI guide's TOC
+% \raggedbottom + \singlespacing tweaks) and to match the university guide's TOC
 % requirement of "titlurile capitolelor și subcapitolelor".
 \setcounter{tocdepth}{2}
 \raggedbottom
@@ -261,13 +275,15 @@
 
 \input{1-introducere.tex}
 \input{2-preliminarii.tex}
-\input{1-implementare.tex}
-\input{3-concluzii.tex}
+\input{3-implementare.tex}
+\input{4-concluzii.tex}
+\clearpage
 
 \begin{appendices}
-
-\input{4-anexe.tex}
-
+\input{5-anexa-a.tex}
+\clearpage
+\input{5-anexa-b.tex}
+\clearpage
 \end{appendices}
 
 % Glossary and bibliography stay single-spaced with ragged bottom — same
@@ -279,8 +295,16 @@
 \setlength{\parskip}{0pt}
 \glsaddall
 \printglossary[title={Glosar de termeni}]
+\clearpage
 \printglossary[type=\acronymtype,title={Lista de acronime}]
+\clearpage
 \printbibliography
 \endgroup
+% \end{document} internally calls \clearpage to flush remaining material.
+% After \printbibliography + \endgroup, the page builder has stashed
+% trailing glue/penalty that triggered a final blank page. Suppress the
+% extra flush — the bibliography page is already shipped by biblatex's
+% own page-finalising sequence.
+\let\clearpage\relax
 \end{document}
 % main.tex ends here

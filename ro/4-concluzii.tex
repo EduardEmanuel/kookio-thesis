@@ -1,0 +1,38 @@
+% 3-concluzii.tex starts here
+\section{Concluzii}\label{cap:concluzii}
+
+Am proiectat și implementat \textit{\gls{kookio}}, o aplicație \gls{web} \gls{fullstack} construită integral în ecosistemul \gls{typescript} pe arhitectura \textbf{\gls{pan}}.
+Pornind de la preferința pentru \gls{typescript} motivată în \capref{cap:preliminarii}, am tradus această preferință într-o stivă concretă: o singură aplicație \gls{analog} sub \texttt{apps/web}, cinci grupuri de biblioteci \gls{nx} (\texttt{core}, \texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) cu topologie aciclică aplicată de \texttt{enforce-module-boundaries} la \acrshort{ci}, și un flux cap-coadă \textit{\gls{analog}} \(\rightarrow\) \textit{\acrshort{trpc}} \(\rightarrow\) \textit{\gls{prisma}} descris în \secref{subsec:flux-capcoada}.
+
+Adoptarea arhitecturii \textbf{\gls{pan}} a permis eliminarea straturilor clasice de adaptare între \gls{frontend} și \gls{backend}.
+Procedurile \acrshort{trpc} apelează direct \texttt{ctx.prisma} fără un strat de \textit{repository} (\secref{subsec:topologie-biblioteci}), iar schemele \gls{zod} consumate de \gls{angular} sunt derivate din \texttt{schema.prisma} prin \texttt{prisma-zod-generator} --- o redenumire pe un câmp se propagă la compilare în toți consumatorii.
+Indexul public \texttt{@kookio/prisma-client} este sigur pentru execuție în browser (exportă numai tipuri și scheme \gls{zod}), iar instanța \texttt{PrismaClient} este izolată sub sub-calea \texttt{@kookio/prisma-client/server}, blocată de o regulă ESLint dedicată în codul de \gls{frontend}.
+
+Combinația dintre \textbf{\gls{angular}} și \textbf{\gls{analog}} a livrat \acrshort{ssr} ca mod implicit pentru toate rutele aplicației și \acrshort{ssg} doar pentru ruta \texttt{/about}, configurate într-un singur loc (\texttt{apps/web/vite.config.ts}).
+Configurația \acrshort{ssr} la nivel de aplicație este minimală --- \texttt{provideFileRouter()}, \texttt{provideHttpClient(\ldots)} și \texttt{provideClientHydration(\allowbreak withEventReplay())} ---, iar disciplina identificată în practică (\secref{subsec:angular-ssr-implementare}) este că fiecare import adăugat în \texttt{app.config.ts} are un cost amplificat pe traseul critic al fiecărei rute, motiv pentru care componentele Material grele rămân importate de la nivelul paginii care le folosește.
+
+Pe stratul de persistență, \textbf{\gls{prisma}} peste \textbf{\gls{cockroachdb}} a oferit beneficii observabile direct la nivelul codului.
+Generarea automată a clientului \gls{typescript} și a schemelor \gls{zod} din \texttt{schema.prisma} reduce contractul de date la o singură sursă de adevăr; constrângerile compuse declarate ca \texttt{@@unique} (\texttt{MealSlot} pe \texttt{userId}--\texttt{date}--\texttt{slotType}, \texttt{PantryItem} pe \texttt{userId}--\texttt{ingredientCatalogId}) sunt aplicate la nivelul bazei de date, iar interogările de căutare aferente folosesc forma cu cheie compusă generată automat.
+Pentru a tolera reluările pe care \gls{cockroachdb} le poate cere sub izolarea \textit{serializable} implicită, instanța \gls{prisma} este extinsă cu o reluare automată la conflict (\textit{retry-on-conflict}) pentru codurile \texttt{P2034} și \texttt{40001}; toate operațiile de scriere (\texttt{create}, \texttt{update}, \texttt{upsert}, \texttt{delete} și variantele \texttt{*Many}) trec prin acest \textit{wrapper} (înveliș de cod), declarat o singură dată.
+
+Procesul de testare a confirmat valoarea combinării a două niveluri distincte.
+Suita \textbf{\gls{vitest}} (orchestrată de \texttt{vitest.workspace.ts} la rădăcina \gls{repository}-ului) acoperă logica izolată prin fișiere de specificații colocate cu codul testat, iar \texttt{nx affected -t test} rulează doar spec-urile atinse de modificarea curentă.
+Suita \textbf{\gls{playwright}} de la \texttt{apps/web-e2e/} parcurge fluxurile critice (autentificare, \textit{onboarding}, cămară, planificator) prin Chromium și a obținut o rată de trecere de \(100\,\%\) pe cele zece rulări de referință (\tabref{tab:rezultate}).
+Două practici s-au consolidat din ciclurile concrete de \acrshort{ci}: pre-încălzirea rutelor în \texttt{global-setup.ts} înainte ca primul proces de lucru (\textit{worker}) să pornească, și \texttt{waitUntil: 'commit'} pentru rutele protejate, ca răspuns la eroarea \texttt{ERR\_ABORTED} produsă de redirecționările \gls{angular} în timpul hidratării.
+
+Din perspectiva obiectivelor declarate în \capref{cap:introducere}, am livrat un \acrlong{mvp} (\acrshort{mvp}) care acoperă fluxurile centrale ale aplicației: gestiunea cămării, planificarea zilnică a meselor, derivarea listei de cumpărături și \textit{onboarding}-ul utilizatorului.
+Structura de \gls{monorepo} pe felii verticale (\texttt{libs/feature/auth}, \texttt{onboarding}, \texttt{pantry}, \texttt{plan}, \texttt{recipes}\ldots), în care \texttt{libs/feature/X} nu poate importa din \texttt{libs/feature/Y} --- regulă verificată la \acrshort{ci} prin \texttt{enforce-module-boundaries} ---, permite extinderea cu fluxuri noi ca biblioteci adiționale, fără modificări structurale ale aplicației existente.
+
+În ansamblu, \textit{\gls{kookio}} arată că arhitectura \textbf{\gls{pan}} poate funcționa coerent pentru o aplicație \gls{web} \gls{fullstack} reală: latențele măsurate pe ruta \texttt{/api/internal/bench-db} (mediană \(2{,}23\)~ms pentru \gls{cockroachdb}, \(0{,}98\)~ms pentru \gls{redis} --- \tabref{tab:rezultate}), timpul median de \acrshort{ci} redus de la 4 la 3 minute după extragerea pașilor recurenți în acțiuni compozite (\textit{composite actions}) și rata de trecere de \(100\,\%\) a suitei \acrshort{e2e} pe Chromium susțin acest model în limitele explicate în \secref{subsec:discutie-limitari} --- mediul \textit{Preview}, regiune unică \texttt{fra1}, planuri gratuite pentru \gls{cockroachdb} și \gls{redis}, matricea de testare inter-browser (\textit{cross-browser}) acoperită manual.
+
+Contribuția principală a prezentei lucrări este propunerea și validarea empirică a arhitecturii \textbf{\gls{pan}} ca model coerent pentru aplicații \gls{web} \gls{fullstack} în ecosistemul \gls{angular}/\gls{typescript}, demonstrată printr-un studiu de caz funcțional în domeniul reducerii risipei alimentare la nivel casnic.
+
+\subsection{Direcții viitoare}\label{sec:directii-viitoare}
+
+Direcțiile naturale de evoluție pornesc de la limitele identificate în \secref{subsec:discutie-limitari}.
+La nivelul infrastructurii, promovarea \gls{cockroachdb}-ului și a \gls{redis}-ului pe planuri plătite, alături de activarea unei a doua regiuni dincolo de \texttt{fra1}, ar permite caracterizarea stivei sub trafic concurent.
+În domeniul testării, includerea sistematică a matricilor de testare Firefox și WebKit în \acrshort{ci} ar consolida încrederea în compatibilitatea inter-browser (\textit{cross-browser}) dincolo de Chromium.
+Pe planul funcționalității, infrastructura \gls{redis} existentă (folosită deocamdată pentru marcarea articolelor cumpărate din lista de cumpărături și pentru limitarea ratei pe ruta de benchmark --- \secref{subsec:rute-h3-redis}) poate fi extinsă cu un strat de \textit{caching} aplicativ pentru paginile publice, iar un modul de recomandare a rețetelor bazat pe inventarul din cămară și pe preferințele utilizatorului ar valorifica fluxul de \textit{onboarding} deja implementat.
+
+Topologia aciclică a \gls{monorepo}-ului face ca aceste extensii să poată fi realizate incremental: o nouă bibliotecă în \texttt{libs/feature/} cu propriul dispecer de rute \gls{trpc} se adaugă fără a atinge restul aplicației.
+% 3-concluzii.tex ends here

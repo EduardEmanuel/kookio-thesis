@@ -1,42 +1,45 @@
 % 1-introducere.tex starts here
-\section{Introducere}\label{ch:intro}
-\addcontentsline{toc}{subsection}{Motivație}
-\addcontentsline{toc}{subsection}{Scopul lucrării}
-\addcontentsline{toc}{subsection}{Contribuții ale lucrării}
+\section{Introducere}\label{cap:introducere}
 
-\subsection*{Motivație}
-În contextul vieții moderne, tot mai multe persoane caută soluții digitale care să simplifice organizarea meselor zilnice și gestionarea ingredientelor disponibile în gospodărie.
-Lipsa unei evidențe clare a ingredientelor conduce frecvent la achiziții redundante și, implicit, la risipă alimentară, fenomen cu impact atât economic, cât și social.
+\subsection{Motivație}\label{sec:motivatia-intro}
+Risipa alimentară reprezintă o problemă cu impact economic și social documentat la nivel global și european.
+Conform raportului \textit{UNEP Food Waste Index 2024}~\cite{unepFoodWaste2024}, gospodăriile au generat în 2022 peste 631 de milioane de tone de alimente irosite --- echivalentul a peste un miliard de mese aruncate zilnic și reprezentând \(60\,\%\) din risipa alimentară totală la nivel mondial.
+La nivelul Uniunii Europene, Eurostat estimează că fiecare locuitor a generat în medie 132 de kilograme de risipă alimentară în 2022, din care \(54\,\%\) provine din gospodării~\cite{eurostatFoodWaste2024}.
+Parlamentul European identifică între cauzele principale ale risipei la nivel de consumator: cumpărăturile impulsive, lipsa unei planificări adecvate a meselor și gestionarea deficitară a inventarului casnic de alimente~\cite{europarlFoodWaste2025}.
 
-În paralel, aplicațiile \gls{web} moderne se confruntă cu provocări tehnice semnificative.
-Printre acestea se numără performanța la încărcare, coerența dintre \gls{frontend} și \gls{backend}, precum și mentenanța pe termen lung a codului.
-Aceste dificultăți devin mai accentuate în aplicațiile \gls{fullstack}, unde o integrare deficitară a straturilor conduce la creșterea complexității și a costurilor de dezvoltare.
+În paralel, aplicațiile \gls{web} moderne ridică provocări tehnice semnificative, documentate atât în literatura academică, cât și în sondajele anuale ale comunității de dezvoltatori.
+Sondajul \textit{State of JavaScript 2024} identifică \emph{complexitatea excesivă}, \emph{supraîncărcarea cu opțiuni} și \emph{modificările care rup compatibilitatea} drept principalele puncte de durere semnalate de utilizatorii framework-urilor \gls{frontend}~\cite{stateOfJS2024}.
+Aceeași sursă indică o adopție în creștere a randării pe server (\acrshort{ssr}) --- \(59\,\%\) dintre respondenți o folosesc în 2024 --- și o consolidare a \gls{typescript} ca limbaj standard pentru aplicațiile de mare anvergură: conform sondajului \textit{JetBrains Developer Ecosystem 2024}, adopția \gls{typescript} a crescut de la \(12\,\%\) în 2017 la \(35\,\%\) în 2024, iar \(67\,\%\) dintre dezvoltatori scriu predominant \gls{typescript}~\cite{jetbrainsJsSurvey2024}.
+Aceste dificultăți se accentuează în aplicațiile \gls{fullstack}, unde integrarea deficitară a straturilor conduce la creșterea complexității și a costurilor de mentenanță pe termen lung.
 
-Proiectul \textit{\gls{kookio}} abordează aceste probleme prin adoptarea unei arhitecturi \gls{web} moderne, bazate pe ecosistemul \gls{typescript}.
-Această arhitectură integrează \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență într-un flux unitar de dezvoltare.
-În acest context, este analizată arhitectura \textbf{\gls{pan}} ca model pentru realizarea unor aplicații \gls{web} \gls{fullstack} coerente, extensibile și ușor de testat.
+Aceste două direcții --- necesitatea unei soluții digitale pentru reducerea risipei alimentare la nivel casnic și exigențele tehnice ale aplicațiilor \gls{web} \gls{fullstack} moderne --- converg în obiectivul prezentei lucrări.
 
-\subsection*{Scopul lucrării}
-Scopul acestei lucrări este proiectarea și implementarea unei aplicații \gls{web} \gls{fullstack} care permite gestionarea inventarului de ingrediente pentru utilizatori casnici.
-Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan} și pentru analiza impactului acesteia asupra dezvoltării aplicațiilor \gls{web} moderne.
+\subsection{Scopul lucrării}\label{sec:scop}
+Mi-am propus să construiesc \textit{\gls{kookio}} ca o aplicație \gls{web} care abordează problema risipei alimentare la nivel casnic printr-o arhitectură \gls{web} modernă, bazată pe ecosistemul \gls{typescript}.
+Arhitectura propusă integrează \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență într-un proces unitar de dezvoltare.
+La nivel funcțional, aplicația acoperă gestiunea cămării, planificarea zilnică a meselor și derivarea automată a listei de cumpărături pentru utilizatori casnici.
+Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan} într-un context reprezentativ pentru aplicațiile \gls{web} \gls{fullstack} moderne.
 
 În acest sens, lucrarea își propune:
 \begin{itemize}
-  \item realizarea unui sistem de gestiune a ingredientelor, cu persistență într-o bază de date relațională;
-  \item integrarea \gls{frontend}-ului și \gls{backend}-ului într-un flux de dezvoltare unitar, cu partajarea tipurilor și a mecanismelor de validare;
-  \item analiza beneficiilor arhitecturii \gls{pan} în ceea ce privește modularitatea, productivitatea și mentenanța aplicației;
-  \item validarea implementării prin \gls{unit}, \gls{integration} și \acrshort{e2e}.
+  \item implementarea unui flux funcțional integrat pentru cămară, planificator zilnic și listă de cumpărături derivată, cu persistență într-o bază de date relațională;
+  \item integrarea \gls{frontend}-ului și \gls{backend}-ului într-un proces de dezvoltare unitar, cu partajarea tipurilor și a mecanismelor de validare;
+  \item analiza caracteristicilor și a proprietăților structurale ale arhitecturii \gls{pan} în ceea ce privește modularitatea (topologie aciclică între biblioteci) și mentenanța aplicației (absența unui strat de \textit{repository});
+  \item construirea unui pipeline \acrshort{cicd} reutilizabil, organizat pe \glspl{workflow} și \glspl{compositeaction}, aliniat la țintele \gls{nx};
+  \item validarea implementării prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență și a timpului de rulare \acrshort{ci}.
 \end{itemize}
 
-\subsection*{Contribuții ale lucrării}
+\subsection{Contribuții ale lucrării}\label{sec:contributii}
 \begin{enumerate}
-  \item Un \emph{blueprint} \gls{pan} complet funcțional: \gls{analog} (\gls{angular} 20) cu \acrshort{ssr} peste \gls{nitro}, \acrshort{trpc} pentru \acrshort{api} tipizat și \gls{prisma} către \gls{cockroachdb}, într-un \gls{monorepo} \gls{nx}.
-  \item Tipare de partajare a contractelor (\glspl{dto} și scheme \gls{zod} generate din \gls{prisma}) reutilizabile în \gls{ui}, rute de server și teste.
-  \item Un pipeline \gls{cicd} modular, bazat pe \glspl{workflow} reutilizabile și \emph{\glspl{compositeaction}}, aliniat la țintele \gls{nx}; optimizări măsurabile ale timpului de rulare.
-  \item Metodologie de testare multi-nivel (\gls{unit}/\gls{integration}/\acrshort{e2e}) și practici de \gls{observability}/\gls{logging} coerente în întregul ecosistem.
+  \item \textbf{Aplicația \textit{\gls{kookio}} implementată ca \acrlong{mvp} (\acrshort{mvp}):} aplicație \gls{web} \gls{fullstack} funcțională pentru utilizatori casnici, care acoperă integrat gestiunea cămării, planificarea zilnică a meselor, derivarea automată a listei de cumpărături și fluxul de \textit{onboarding} (configurare profil), cu autentificare prin Firebase.
+  \item \textbf{Un model arhitectural \gls{pan} implementat:} \gls{analog} (\gls{angular} 20) cu randare pe server (\acrshort{ssr}) peste \gls{nitro}, \acrshort{trpc} pentru \acrshort{api} tipizat și \gls{prisma} către \gls{cockroachdb}, organizat într-un \gls{monorepo} \gls{nx} cu cinci grupuri de biblioteci și topologie aciclică aplicată la \acrshort{ci} prin regula \texttt{enforce-module-boundaries}.
+  \item \textbf{Tipare de partajare a contractelor de date dintr-o sursă unică de adevăr:} schemele \gls{zod} sunt generate automat din \texttt{schema.prisma} prin biblioteca \texttt{prisma-zod-generator}~\cite{prisma_zod_generator}, iar tipurile \gls{typescript} se derivă prin compoziție (\texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()}, \texttt{z.infer<>}) din aceste scheme; contractele rezultate sunt reutilizate în interfața de utilizator, în rutele de server și în teste, fără un strat de \textit{repository} între procedurile \acrshort{trpc} și clientul \gls{prisma}.
+  \item \textbf{Un flux automatizat \gls{cicd} modular:} bazat pe \glspl{workflow} reutilizabile și \emph{\glspl{compositeaction}} aliniate la țintele \gls{nx}; reducerea timpului mediu de rulare este măsurată în \tabref{tab:rezultate}.
+  \item \textbf{Metodologie de testare pe două niveluri distincte:} testare unitară cu \gls{vitest} și \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de practici concrete pentru pornirea la rece a serverului \gls{vite} (pre-încălzire în \texttt{global-setup}) și pentru navigarea către rute protejate (\texttt{waitUntil: 'commit'}).
+  \item \textbf{Evaluare empirică a stivei tehnologice implementate:} măsurători de latență la stratul de persistență (\gls{cockroachdb} și \gls{redis}) și a timpului de rulare \acrshort{ci} înainte și după extragerea pașilor recurenți în \glspl{compositeaction}, sintetizate în \tabref{tab:rezultate}.
 \end{enumerate}
 
 Aplicația este concepută ca un \gls{mvp}, care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi.
-Prin aceste extensii, aplicația poate contribui indirect la reducerea risipei alimentare.
-Detaliile privind implementarea sunt prezentate în secțiunea~\ref{ch:impl}.
+Aceste extensii pot consolida contribuția aplicației la reducerea risipei alimentare prin diminuarea achizițiilor redundante.
+Detaliile privind implementarea sunt prezentate în \secref{cap:implementare}, evaluarea empirică în \secref{ch:evaluare}, iar direcțiile concrete de evoluție în \secref{sec:directii-viitoare}.
 % 1-introducere.tex ends here

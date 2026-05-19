@@ -1,15 +1,16 @@
 % 0-abstract.tex starts here
 \section*{Rezumat}
 
-Această lucrare prezintă proiectarea și implementarea unei aplicații \gls{web} \gls{fullstack}, denumite \textit{\gls{kookio}}, realizată ca studiu de caz pentru analiza arhitecturii \textbf{\gls{pan}} în contextul aplicațiilor \gls{web} moderne.
-Aplicația are ca obiectiv gestionarea inventarului de ingrediente pentru utilizatori casnici, contribuind indirect la reducerea risipei alimentare printr-o organizare mai eficientă a resurselor disponibile.
+Această lucrare prezintă proiectarea și implementarea unei aplicații \gls{web} \gls{fullstack}, denumită \textit{\gls{kookio}}, realizată ca studiu de caz pentru analiza arhitecturii \textbf{\gls{pan}} (\acrlong{pan}) în contextul aplicațiilor \gls{web} moderne.
+Aplicația acoperă, într-un flux integrat, gestiunea cămării, planificarea zilnică a meselor și derivarea automată a listei de cumpărături pentru utilizatori casnici, cu potențial de a contribui la reducerea risipei alimentare prin diminuarea achizițiilor redundante.
 
-Motivația lucrării derivă din necesitatea adoptării unor arhitecturi \gls{web} capabile să ofere performanță ridicată, coerență între \gls{frontend} și \gls{backend} și un proces de dezvoltare unitar.
-În acest cadru, lucrarea investighează arhitectura \gls{pan} ca model \gls{fullstack} bazat pe ecosistemul \gls{typescript}, în care straturile aplicației sunt integrate într-un flux comun de dezvoltare.
+Motivația lucrării derivă din necesitatea unor arhitecturi \gls{web} care să asigure coerență între \gls{frontend} și \gls{backend}, precum și un proces de dezvoltare unitar.
+În acest cadru, lucrarea investighează arhitectura \gls{pan} ca model \gls{fullstack} bazat pe ecosistemul \gls{typescript}, în care straturile aplicației partajează tipuri și scheme de validare derivate dintr-o singură sursă de adevăr.
 
-Aplicația utilizează \acrshort{ssr} cu \gls{angular} prin meta-framework-ul \gls{analog}, comunicare \textit{type-safe} între client și server prin \acrshort{trpc} și persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
-Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} facilitează modularitatea, testarea automată și execuția incrementală a sarcinilor.
+Aplicația utilizează randare pe server (\acrshort{ssr}) cu \gls{angular} prin meta-framework-ul \gls{analog}, comunicare tipizată client--server prin \acrshort{trpc} și persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
+Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
 
-Implementarea este validată prin \gls{unit} și \acrshort{e2e}, folosind \gls{vitest} și \gls{playwright}, precum și prin rularea aplicației într-un mediu modern de \textit{deployment}.
-Rezultatele obținute indică faptul că arhitectura \gls{pan} constituie un model viabil pentru dezvoltarea aplicațiilor \gls{web} \gls{fullstack} scalabile, coerente și extensibile.
+Implementarea este validată prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență și a timpului de rulare \acrshort{ci}.
+Latența mediană măsurată a fost de 2,23\,ms pentru \gls{cockroachdb} și de 0,98\,ms pentru \gls{redis}, iar timpul mediu de rulare \acrshort{ci} s-a redus cu aproximativ \(25\,\%\) prin extragerea pașilor recurenți în acțiuni compozite reutilizabile.
+Rezultatele indică faptul că arhitectura \gls{pan} constituie un model coerent și extensibil pentru dezvoltarea aplicațiilor \gls{web} \gls{fullstack}.
 % 0-abstract.tex ends here
