@@ -16,22 +16,26 @@
  * Run via: npm run clean-catalog
  */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import type {
   CatalogSnapshot,
   IngredientCatalogRow,
   IngredientCategory,
   MergeCandidatesFile,
 } from './types.js';
+import {
+  cleanProseWhitespace,
+  readJsonFile,
+  runMain,
+  writeJsonFile,
+} from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const CATALOG_PATH = path.resolve(import.meta.dirname, 'raw-catalog.json');
-const CANDIDATES_PATH = path.resolve(import.meta.dirname, 'merge-candidates.json');
-const OUTPUT_PATH = path.resolve(import.meta.dirname, 'catalog.json');
+const CATALOG_FILE = 'raw-catalog.json';
+const CANDIDATES_FILE = 'merge-candidates.json';
+const OUTPUT_FILE = 'catalog.json';
 
 // ---------------------------------------------------------------------------
 // Auto-categorization
@@ -115,21 +119,6 @@ const autoCategory = (normalizedName: string): IngredientCategory | null => {
 };
 
 // ---------------------------------------------------------------------------
-// Description cleaner
-// ---------------------------------------------------------------------------
-
-const cleanDescription = (desc: string | null): string | null => {
-  if (!desc) return null;
-  return desc
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/[ \t]+\n/g, '\n')
-    .replace(/\n[ \t]+/g, '\n')
-    .trim();
-};
-
-// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -137,8 +126,14 @@ const main = (): void => {
   console.log('🧹 clean-catalog — Phase 1b: Clean & Normalize');
   console.log('');
 
-  const catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf-8')) as CatalogSnapshot;
-  const { candidates } = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf-8')) as MergeCandidatesFile;
+  const catalog = readJsonFile<CatalogSnapshot>(
+    CATALOG_FILE,
+    'Run fetch-catalog first.',
+  );
+  const { candidates } = readJsonFile<MergeCandidatesFile>(
+    CANDIDATES_FILE,
+    'Run generate-candidates first.',
+  );
 
   const approved = candidates.filter((c) => c.approve === true);
   const mergeMap = new Map<string, string>();
@@ -188,7 +183,7 @@ const main = (): void => {
       ...ing,
       name,
       normalizedName,
-      description: cleanDescription(ing.description),
+      description: cleanProseWhitespace(ing.description),
       category,
     });
   }
@@ -209,18 +204,15 @@ const main = (): void => {
     source: catalog.source,
     categories: catalog.categories.map((c) => ({
       ...c,
-      description: cleanDescription(c.description),
+      description: cleanProseWhitespace(c.description),
     })),
     areas: catalog.areas,
     ingredients: cleanedIngredients,
   };
 
-  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(cleanSnapshot, null, 2), 'utf-8');
-
-  console.log(`📁 Written to: ${OUTPUT_PATH}`);
+  writeJsonFile(OUTPUT_FILE, cleanSnapshot);
   console.log('');
   console.log('👉 Next: review catalog.json, then copy to kookio seed-data/');
 };
 
-main();
+runMain('clean-catalog', main);

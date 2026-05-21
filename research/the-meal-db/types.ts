@@ -98,7 +98,7 @@ export interface RecipeRow {
   slug: string;
   title: string;
   imageUrl: string | null;
-  youtubeUrl: string | null;
+  videoUrl: string | null;
   sourceUrl: string | null;
   instructions: string;
   categoryExternalId: string | null;
@@ -113,6 +113,55 @@ export interface RecipesSnapshot {
   totalFetched: number;
   totalSkipped: number;
   recipes: RecipeRow[];
+}
+
+// ---------------------------------------------------------------------------
+// Clean recipes snapshot (output of clean-recipes)
+// ---------------------------------------------------------------------------
+
+export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
+
+export interface RecipeStepRow {
+  order: number;
+  title: string | null;
+  content: string;
+}
+
+export interface CleanRecipeRow {
+  externalId: string;
+  slug: string;
+  title: string;
+  imageUrl: string | null;
+  videoUrl: string | null;
+  sourceUrl: string | null;
+  categoryExternalId: string | null;
+  areaExternalId: string | null;
+  servings: number;
+  difficulty: Difficulty | null;
+  steps: RecipeStepRow[];
+  tags: RecipeTagRow[];
+  ingredients: RecipeIngredientRow[];
+}
+
+export interface ReviewFlag {
+  externalId: string;
+  title: string;
+  reason: 'flat-instructions' | 'low-servings-confidence';
+}
+
+export interface RecipesCleanSnapshot {
+  fetchedAt: string;
+  cleanedAt: string;
+  source: string;
+  stats: {
+    total: number;
+    reviewFlagged: number;
+    medianComplexityScore: number;
+    difficultyDistribution: Record<Difficulty, number>;
+    servingsDistribution: Record<number, number>;
+  };
+  recipes: CleanRecipeRow[];
+  reviewFlagged: ReviewFlag[];
 }
 
 // ---------------------------------------------------------------------------

@@ -9,25 +9,25 @@
  * Run via: npm run fetch-catalog
  */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import type {
   MealCategoryRow,
   MealAreaRow,
   IngredientCatalogRow,
   CatalogSnapshot,
 } from './types.js';
+import {
+  normalizeIngredientName,
+  runMain,
+  themealdbBaseUrl,
+  writeJsonFile,
+} from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const API_KEY = process.env['THEMEALDB_API_KEY'];
-if (!API_KEY) throw new Error('Missing env var: THEMEALDB_API_KEY');
-
-const BASE_URL = `https://www.themealdb.com/api/json/v2/${API_KEY}`;
-
-const OUTPUT_PATH = path.resolve(import.meta.dirname, 'raw-catalog.json');
+const BASE_URL = themealdbBaseUrl();
+const OUTPUT_FILE = 'raw-catalog.json';
 
 // ---------------------------------------------------------------------------
 // TheMealDB response types (only fields we consume)
@@ -75,29 +75,6 @@ const fetchIngredients = async (): Promise<TmdbIngredient[]> => {
   const data = (await res.json()) as { meals: TmdbIngredient[] | null };
   return data.meals ?? [];
 };
-
-// ---------------------------------------------------------------------------
-// Normalizer
-// ---------------------------------------------------------------------------
-
-const normalizeIngredientName = (name: string): string =>
-  name
-    .toLowerCase()
-    .trim()
-    .replace(/[àáâãäå]/g, 'a')
-    .replace(/[èéêë]/g, 'e')
-    .replace(/[ìíîï]/g, 'i')
-    .replace(/[òóôõö]/g, 'o')
-    .replace(/[ùúûü]/g, 'u')
-    .replace(/ă/g, 'a')
-    .replace(/î/g, 'i')
-    .replace(/ș/g, 's')
-    .replace(/ț/g, 't')
-    .replace(/ñ/g, 'n')
-    .replace(/ç/g, 'c')
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, '_')
-    .replace(/^_+|_+$/g, '');
 
 // ---------------------------------------------------------------------------
 // Transform helpers
@@ -176,21 +153,15 @@ const main = async (): Promise<void> => {
     ingredients,
   };
 
-  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(snapshot, null, 2), 'utf-8');
-
   console.log('');
   console.log('📊 Summary:');
   console.log(`   Categories:  ${categories.length}`);
   console.log(`   Areas:       ${areas.length}`);
   console.log(`   Ingredients: ${ingredients.length}`);
   console.log('');
-  console.log(`📁 Written to: ${OUTPUT_PATH}`);
+  writeJsonFile(OUTPUT_FILE, snapshot);
   console.log('');
   console.log('👉 Next: review raw-catalog.json, then run clean-catalog');
 };
 
-main().catch((err) => {
-  console.error('❌ fetch-catalog failed:', err);
-  process.exit(1);
-});
+runMain('fetch-catalog', main);

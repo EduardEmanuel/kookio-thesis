@@ -13,7 +13,10 @@
     "fetch-catalog": "tsx ./research/the-meal-db/fetch-catalog.ts",
     "generate-candidates": "tsx ./research/the-meal-db/generate-merge-candidates.ts",
     "clean-catalog": "tsx ./research/the-meal-db/clean-catalog.ts",
-    "fetch-recipes": "tsx ./research/the-meal-db/fetch-recipes.ts"
+    "fetch-recipes": "tsx ./research/the-meal-db/fetch-recipes.ts",
+    "clean-recipes": "tsx ./research/the-meal-db/clean-recipes.ts",
+    "apply-flat-splits": "tsx ./research/the-meal-db/apply-flat-splits.ts",
+    "apply-residual-fixes": "tsx ./research/the-meal-db/apply-residual-fixes.ts"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

@@ -5,15 +5,13 @@
  *   1. Fetch all meal IDs via list.php?m=list (premium endpoint)
  *   2. Fetch full details for each meal via lookup.php?i={id}
  *   3. Transform to seed-compatible rows
- *   4. Write recipes.json to disk
+ *   4. Write raw-recipes.json to disk
  *
  * No database interaction — works entirely with local files.
  *
  * Run via: npm run fetch-recipes
  */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import type {
   MeasureUnit,
   RecipeIngredientRow,
@@ -21,20 +19,24 @@ import type {
   RecipeRow,
   RecipesSnapshot,
 } from './types.js';
+import {
+  cleanProseWhitespace,
+  normalizeIngredientName,
+  runMain,
+  sleep,
+  themealdbBaseUrl,
+  writeJsonFile,
+} from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const API_KEY = process.env['THEMEALDB_API_KEY'];
-if (!API_KEY) throw new Error('Missing env var: THEMEALDB_API_KEY');
-
-const BASE_URL = `https://www.themealdb.com/api/json/v2/${API_KEY}`;
+const BASE_URL = themealdbBaseUrl();
+const OUTPUT_FILE = 'raw-recipes.json';
 
 // Delay between requests to avoid rate limiting (ms)
 const REQUEST_DELAY_MS = 100;
-
-const OUTPUT_PATH = path.resolve(import.meta.dirname, 'recipes.json');
 
 // ---------------------------------------------------------------------------
 // TheMealDB response types
@@ -57,32 +59,6 @@ interface TmdbMealDetail {
   strSource: string | null;
   [key: string]: string | null | undefined;
 }
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
-const normalizeIngredientName = (name: string): string =>
-  name
-    .toLowerCase()
-    .trim()
-    .replace(/[àáâãäå]/g, 'a')
-    .replace(/[èéêë]/g, 'e')
-    .replace(/[ìíîï]/g, 'i')
-    .replace(/[òóôõö]/g, 'o')
-    .replace(/[ùúûü]/g, 'u')
-    .replace(/ă/g, 'a')
-    .replace(/î/g, 'i')
-    .replace(/ș/g, 's')
-    .replace(/ț/g, 't')
-    .replace(/ñ/g, 'n')
-    .replace(/ç/g, 'c')
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, '_')
-    .replace(/^_+|_+$/g, '');
 
 // ---------------------------------------------------------------------------
 // MeasureUnit parser
@@ -195,17 +171,6 @@ const fetchMealDetail = async (idMeal: string): Promise<TmdbMealDetail | null> =
 // Transform helpers
 // ---------------------------------------------------------------------------
 
-const cleanInstructions = (raw: string | null): string | null => {
-  if (!raw) return null;
-  return raw
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/[ \t]+\n/g, '\n')
-    .replace(/\n[ \t]+/g, '\n')
-    .trim();
-};
-
 const parseTags = (strTags: string | null): RecipeTagRow[] => {
   if (!strTags?.trim()) return [];
   return strTags
@@ -234,9 +199,9 @@ const transformMeal = (meal: TmdbMealDetail): RecipeRow => ({
   slug: meal.idMeal,
   title: meal.strMeal,
   imageUrl: meal.strMealThumb ?? null,
-  youtubeUrl: meal.strYoutube?.trim() || null,
+  videoUrl: meal.strYoutube?.trim() || null,
   sourceUrl: meal.strSource?.trim() || null,
-  instructions: cleanInstructions(meal.strInstructions) ?? '',
+  instructions: cleanProseWhitespace(meal.strInstructions) ?? '',
   categoryExternalId: meal.strCategory?.trim() || null,
   areaExternalId: meal.strArea?.trim() || null,
   tags: parseTags(meal.strTags),
@@ -295,16 +260,10 @@ const main = async (): Promise<void> => {
     recipes,
   };
 
-  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(snapshot, null, 2), 'utf-8');
-
   console.log('');
-  console.log(`📁 Written to: ${OUTPUT_PATH}`);
+  writeJsonFile(OUTPUT_FILE, snapshot);
   console.log('');
-  console.log('👉 Next: review recipes.json, then copy to kookio seed-data/');
+  console.log('👉 Next: review raw-recipes.json, then run clean-recipes');
 };
 
-main().catch((err) => {
-  console.error('❌ fetch-recipes failed:', err);
-  process.exit(1);
-});
+runMain('fetch-recipes', main);

@@ -7243,6 +7243,14 @@
       "description": "Dutch stroop (pronounced \"strohp\") simply means syrup in Dutch, but it refers to a specific, thick, caramel-like syrup made from sugar beet or cane sugar, used as the sweet, gooey filling in the famous stroopwafels, or syrup waffles, which are two thin waffles sandwiched together with this rich filling. Traditionally, stroop has a deep, molasses-like flavor, offering a complex sweetness rather than just pure sugar, and it's perfect for warming over a hot drink to soften.\nKey Characteristics of Stroop:\nSource: Traditionally derived from sugar beet syrup or reduced treacle, sometimes with added brown sugar and fructose.\nFlavor: Rich, deep, slightly tangy, and malty, distinct from standard caramel.\nTexture: Thick, sticky, and gooey when warm.\nStroopwafels (Syrup Waffles):\nOrigin: Invented in Gouda, Netherlands, centuries ago.\nHow to Eat: The classic way is to place a stroopwafel on top of a hot cup of coffee or tea for a few minutes, allowing the heat to soften the stroop filling, creating a gooey, delightful treat.\nIn essence, stroop is the essential sweet heart of the beloved stroopwafel, providing its signature texture and flavor.",
       "imageUrl": "https://www.themealdb.com/images/ingredients/Dutch%20Stroop-Small.png",
       "category": "CONDIMENTS"
+    },
+    {
+      "externalId": "916",
+      "name": "Gruyere Cheese",
+      "normalizedName": "gruyere_cheese",
+      "description": "Gruyère is a hard yellow Swiss cheese, originating from the cantons of Fribourg, Vaud, Neuchâtel, Jura, and Bern. Made from cow’s milk, it is sweet but slightly salty, with a flavor that varies widely with age. It is often described as creamy and nutty when young, becoming earthier, more assertive, and complex as it matures. Gruyère melts smoothly without becoming greasy, which makes it the canonical cheese for fondue, French onion soup, croque-monsieur, and gratin dishes.",
+      "imageUrl": "https://www.themealdb.com/images/ingredients/Gruyere%20Cheese-Small.png",
+      "category": "DAIRY"
     }
   ]
 }

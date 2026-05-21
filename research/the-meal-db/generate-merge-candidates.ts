@@ -14,16 +14,15 @@
  * Run via: npm run generate-candidates
  */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import type { CatalogSnapshot, MergeCandidatesFile, MergeCandidate } from './types.js';
+import { readJsonFile, runMain, writeJsonFile } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const CATALOG_PATH = path.resolve(import.meta.dirname, 'raw-catalog.json');
-const OUTPUT_PATH = path.resolve(import.meta.dirname, 'merge-candidates.json');
+const CATALOG_FILE = 'raw-catalog.json';
+const OUTPUT_FILE = 'merge-candidates.json';
 
 // ---------------------------------------------------------------------------
 // Detection rules
@@ -73,11 +72,10 @@ const main = (): void => {
   console.log('🔍 generate-merge-candidates — Phase 1a.2');
   console.log('');
 
-  if (!fs.existsSync(CATALOG_PATH)) {
-    throw new Error(`raw-catalog.json not found at ${CATALOG_PATH}\nRun fetch-catalog first.`);
-  }
-
-  const catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf-8')) as CatalogSnapshot;
+  const catalog = readJsonFile<CatalogSnapshot>(
+    CATALOG_FILE,
+    'Run fetch-catalog first.',
+  );
   const allNames = new Set(catalog.ingredients.map((i) => i.normalizedName));
 
   const candidates: MergeCandidate[] = [];
@@ -117,8 +115,6 @@ const main = (): void => {
     candidates,
   };
 
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2), 'utf-8');
-
   const mergeCount = candidates.filter((c) => c.action === 'MERGE').length;
   const renameCount = candidates.filter((c) => c.action === 'RENAME').length;
 
@@ -127,9 +123,9 @@ const main = (): void => {
   console.log(`   MERGE:            ${mergeCount}`);
   console.log(`   RENAME:           ${renameCount}`);
   console.log('');
-  console.log(`📁 Written to: ${OUTPUT_PATH}`);
+  writeJsonFile(OUTPUT_FILE, output);
   console.log('');
   console.log('👉 Next: review merge-candidates.json (set approve: true/false), then run clean-catalog');
 };
 
-main();
+runMain('generate-merge-candidates', main);
