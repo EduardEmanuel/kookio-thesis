@@ -116,6 +116,77 @@ export const runMain = (
 };
 
 // ────────────────────────────────────────────────────────────────────────────
+// Recipe data quality guards
+// ────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Recipe shapes vary across the pipeline:
+ *   - post-fetch: flat `instructions` text
+ *   - post-clean and onwards: structured `steps[]` with content per step
+ * This is the minimal common surface both stages share.
+ */
+type RecipeShape = {
+  externalId?: string | number | null;
+  title?: string | null;
+  steps?: Array<{ content?: string | null }>;
+  instructions?: string | null;
+};
+
+/**
+ * Returns true when the recipe has at least one usable instruction — either
+ * structured-step content or flat-instructions text. The cook session walks
+ * through steps one at a time, so a recipe that fails this check is a
+ * broken artifact (no instructions to follow).
+ */
+export const hasUsableInstructions = (r: RecipeShape): boolean => {
+  if (Array.isArray(r.steps) && r.steps.length > 0) {
+    return r.steps.some((s) => (s.content ?? '').trim().length > 0);
+  }
+  return Boolean(r.instructions?.trim());
+};
+
+/**
+ * Soft guard: warn + drop recipes that lack any usable instructions.
+ * Use at data-import boundaries (fetch, clean) where filtering out bad
+ * rows is the expected outcome. Returns the filtered array.
+ */
+export const filterUsableRecipes = <T extends RecipeShape>(
+  scriptName: string,
+  recipes: T[],
+): T[] => {
+  const dropped = recipes.filter((r) => !hasUsableInstructions(r));
+  if (dropped.length === 0) return recipes;
+  console.warn(
+    `⚠️  ${scriptName}: dropping ${dropped.length} recipe(s) with no usable instructions:`,
+  );
+  for (const r of dropped) {
+    console.warn(`     - ${r.externalId ?? '???'}: ${r.title ?? '???'}`);
+  }
+  return recipes.filter(hasUsableInstructions);
+};
+
+/**
+ * Hard guard: throw if any recipe lacks instructions. Use after
+ * transformation scripts (apply-flat-splits, apply-residual-fixes) that
+ * shouldn't ever produce step-less output — a hit here means the
+ * transform has a bug and the build should halt rather than ship a
+ * silently-broken dataset.
+ */
+export const assertRecipesHaveSteps = (
+  scriptName: string,
+  recipes: RecipeShape[],
+): void => {
+  const bad = recipes.filter((r) => !hasUsableInstructions(r));
+  if (bad.length === 0) return;
+  const list = bad
+    .map((r) => `  - ${r.externalId ?? '???'}: ${r.title ?? '???'}`)
+    .join('\n');
+  throw new Error(
+    `${scriptName}: ${bad.length} recipe(s) produced with no usable instructions:\n${list}`,
+  );
+};
+
+// ────────────────────────────────────────────────────────────────────────────
 // TheMealDB API
 // ────────────────────────────────────────────────────────────────────────────
 

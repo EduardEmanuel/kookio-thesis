@@ -31,6 +31,7 @@ import type {
 } from './types.js';
 import {
   cleanProseWhitespace,
+  filterUsableRecipes,
   readJsonFile,
   runMain,
   writeJsonFile,
@@ -950,18 +951,26 @@ const main = (): void => {
   }
 
   // ---- Write output ---------------------------------------------------------
+
+  // Safety net: parseSteps always emits at least one step (even the
+  // flat-fallback path), but the step content can still be the empty
+  // string if `cleanProseWhitespace` collapses everything away. Drop
+  // any such recipes so the downstream consumers (apply-* scripts,
+  // seed) never see a step-less row.
+  const usableRecipes = filterUsableRecipes('clean-recipes', cleanRecipes);
+
   const cleanSnapshot: RecipesCleanSnapshot = {
     fetchedAt: snapshot.fetchedAt,
     cleanedAt: new Date().toISOString(),
     source: snapshot.source,
     stats: {
-      total: cleanRecipes.length,
+      total: usableRecipes.length,
       reviewFlagged: reviewFlagged.length,
       medianComplexityScore: median,
       difficultyDistribution: difficultyDist,
       servingsDistribution: servingsDist,
     },
-    recipes: cleanRecipes,
+    recipes: usableRecipes,
     reviewFlagged,
   };
 

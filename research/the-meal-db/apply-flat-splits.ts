@@ -19,7 +19,12 @@ import type {
   RecipeStepRow,
   RecipesCleanSnapshot,
 } from './types.js';
-import { readJsonFile, runMain, writeJsonFile } from './utils.js';
+import {
+  assertRecipesHaveSteps,
+  readJsonFile,
+  runMain,
+  writeJsonFile,
+} from './utils.js';
 
 // Reads + writes clean-recipes.json (the pre-Phase-2d snapshot). The
 // canonical recipes.json is hand-refined and intentionally NOT touched
@@ -594,6 +599,13 @@ const main = (): void => {
   );
   if (missing > 0) console.log(`   Missing: ${missing}`);
   console.log('');
+
+  // Hard guard: this script REPLACES steps on specific recipes. If a
+  // hand-written split entry was empty or the replacement logic went
+  // wrong, we'd end up writing a step-less recipe back to disk. Halt
+  // before that lands rather than ship a broken dataset.
+  assertRecipesHaveSteps('apply-flat-splits', snapshot.recipes);
+
   writeJsonFile(RECIPES_FILE, snapshot);
 };
 

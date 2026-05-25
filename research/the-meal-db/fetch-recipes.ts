@@ -21,6 +21,7 @@ import type {
 } from './types.js';
 import {
   cleanProseWhitespace,
+  filterUsableRecipes,
   normalizeIngredientName,
   runMain,
   sleep,
@@ -252,12 +253,17 @@ const main = async (): Promise<void> => {
   console.log(`   Recipes collected:  ${recipes.length}`);
   console.log(`   Skipped:            ${skipped}`);
 
+  // The fetch loop already skips meals with empty `strInstructions` (see
+  // above), so this filter is a belt-and-suspenders safety net — if it
+  // ever fires, an upstream change weakened the in-loop guard.
+  const usableRecipes = filterUsableRecipes('fetch-recipes', recipes);
+
   const snapshot: RecipesSnapshot = {
     fetchedAt: new Date().toISOString(),
     source: 'https://www.themealdb.com',
-    totalFetched: recipes.length,
-    totalSkipped: skipped,
-    recipes,
+    totalFetched: usableRecipes.length,
+    totalSkipped: skipped + (recipes.length - usableRecipes.length),
+    recipes: usableRecipes,
   };
 
   console.log('');

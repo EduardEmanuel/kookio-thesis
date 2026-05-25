@@ -96,6 +96,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
+import { assertRecipesHaveSteps } from './utils.js';
+
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 const RECIPES_FILE = path.join(HERE, 'recipes.json');
 const CATALOG_FILE = path.join(HERE, 'catalog.json');
@@ -1952,6 +1954,13 @@ const main = (): void => {
   const difficultyStats = reclassifyDifficulty(
     recipesSnap as { recipes: Recipe[]; stats?: { medianComplexityScore?: number; difficultyDistribution?: Record<string, number> } },
   );
+
+  // Hard guard: residual-fixes applies many step-mutating transforms
+  // (rewrites, splits, dedup, normalizations). If any of them ended up
+  // emptying a step list, halt rather than write a step-less recipe
+  // into recipes.json — that file is the seed source of truth and the
+  // cook session breaks on step-less rows.
+  assertRecipesHaveSteps('apply-residual-fixes', recipesSnap.recipes);
 
   writeJson(RECIPES_FILE, recipesSnap);
   writeJson(CATALOG_FILE, catalog);
