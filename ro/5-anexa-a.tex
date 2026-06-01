@@ -4,8 +4,8 @@
 
 \subsection{Instrumente pentru redactare}\label{subsec:instrumente-redactare}
 
-Lucrarea a fost redactată cu motorul \gls{lualatex} (distribuit prin TeX Live 2025), folosind fonturi \gls{unicode} și pachetul \gls{biblatex} cu backend-ul \texttt{biber} pentru gestionarea bibliografiei.
-Alegerea \gls{lualatex} peste XeLaTeX a fost motivată de suportul nativ pentru extensii prin Lua și de gestionarea îmbunătățită a fonturilor OpenType, relevantă pentru caracterele \gls{unicode} speciale folosite în redarea structurii de fișiere.
+Lucrarea a fost redactată cu motorul LuaLaTeX (distribuit prin TeX Live 2025), folosind fonturi Unicode și pachetul biblatex cu backend-ul \texttt{biber} pentru gestionarea bibliografiei.
+Alegerea LuaLaTeX peste XeLaTeX a fost motivată de suportul nativ pentru extensii prin Lua și de gestionarea îmbunătățită a fonturilor OpenType, relevantă pentru caracterele Unicode speciale folosite în redarea structurii de fișiere.
 
 Pe partea de toolchain de dezvoltare, lucrarea a fost editată în Visual Studio Code cu extensia \textit{LaTeX Workshop}, configurată să ruleze pipeline-ul \texttt{lualatex} \(\rightarrow\) \texttt{makeglossaries} \(\rightarrow\) \texttt{biber} \(\rightarrow\) \texttt{lualatex} \(\rightarrow\) \texttt{lualatex} la fiecare invocare a fluxului automatizat.
 
@@ -13,7 +13,7 @@ Structura sursei este modulară: fiecare capitol este un fișier \texttt{.tex} s
 Imaginile sunt salvate în \texttt{images/}, iar citările se realizează prin macrocomanda \verb|\cite{cheie}| pe baza intrărilor din fișierul \texttt{bibliography.bib}.
 Glosarul de termeni și lista de acronime sunt gestionate prin pachetul \texttt{glossaries-extra}, cu intrările declarate în \texttt{5-glosar.tex}.
 
-Lucrarea este versionată în Git într-un \gls{repository} dedicat (\texttt{kookio-thesis}), separat de \gls{repository}-ul codului sursă al aplicației \textit{\gls{kookio}}, pentru a păstra istoricul de revizii al textului independent de cel al implementării.
+Lucrarea este versionată în Git într-un repository dedicat (\texttt{kookio-thesis}), separat de repository-ul codului sursă al aplicației \textit{\gls{kookio}}, pentru a păstra istoricul de revizii al textului independent de cel al implementării.
 
 \subsection{Automatizarea compilării și reproductibilitatea}\label{subsec:automatizare-build}
 
@@ -51,10 +51,10 @@ Configurațiile recomandate per platformă sunt următoarele:
   \item \textbf{Windows:} se instalează MikTeX de la \url{https://miktex.org/download}; distribuția MikTeX detectează și instalează automat pachetele lipsă la prima compilare, motiv pentru care scriptul \texttt{install-tex-deps.ts} nu este necesar pe această platformă.
 \end{itemize}
 
-Fontul \gls{freemono}, folosit în mediul \gls{treeverb} pentru caracterele \gls{unicode} de desenare a chenarelor (\textit{box-drawing}, intervalul \texttt{U+2500--U+257F}), este o componentă GNU FreeFont care se instalează la nivelul sistemului de operare prin \texttt{brew install --cask font-gnu-freefont-freemono} pe macOS sau \texttt{sudo apt install fonts-freefont-ttf} pe Ubuntu/Debian.
+Fontul FreeMono, folosit în mediul TreeVerb pentru caracterele Unicode de desenare a chenarelor (\textit{box-drawing}, intervalul \texttt{U+2500--U+257F}), este o componentă GNU FreeFont care se instalează la nivelul sistemului de operare prin \texttt{brew install --cask font-gnu-freefont-freemono} pe macOS sau \texttt{sudo apt install fonts-freefont-ttf} pe Ubuntu/Debian.
 
 \paragraph{Notă privind mediul TreeVerb.}
-Mediul \gls{treeverb} (definit local în preambulul lucrării, bazat pe \texttt{fvextra} și \texttt{fancyvrb}) utilizează fontul \gls{freemono} pentru redarea structurii de fișiere în \secref{subsec:structura-monorepo}.
+Mediul TreeVerb (definit local în preambulul lucrării, bazat pe \texttt{fvextra} și \texttt{fancyvrb}) utilizează fontul FreeMono pentru redarea structurii de fișiere în \secref{subsec:structura-monorepo}.
 
 
 % 5-anexa-a.tex ends here

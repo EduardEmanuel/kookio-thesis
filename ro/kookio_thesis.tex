@@ -267,7 +267,7 @@
 \endgroup
 \flushbottom % body text uses standard page-filling
 \newcommand{\glsunsetmany}[1]{\forcsvlist{\glsunset}{#1}}
-\glsunsetmany{avg,p50,p95,ssr,ssg,csr,api,db,orm,cicd,nx,analog,prisma,typescript,vitest,playwright,edgefunctions,serverless,hydration,monorepo,workflow,repository,github,gitlab}
+\glsunsetmany{p50,p95,ssr,ssg,csr,orm,cicd,nx,analog,prisma,typescript,vitest,playwright,hydration,monorepo,workflow}
 \clearpage
 
 \pagenumbering{arabic}
@@ -300,11 +300,5 @@
 \clearpage
 \printbibliography
 \endgroup
-% \end{document} internally calls \clearpage to flush remaining material.
-% After \printbibliography + \endgroup, the page builder has stashed
-% trailing glue/penalty that triggered a final blank page. Suppress the
-% extra flush — the bibliography page is already shipped by biblatex's
-% own page-finalising sequence.
-\let\clearpage\relax
 \end{document}
 % main.tex ends here

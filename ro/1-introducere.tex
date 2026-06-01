@@ -8,22 +8,22 @@ La nivelul Uniunii Europene, Eurostat estimează că fiecare locuitor a generat 
 Parlamentul European identifică între cauzele principale ale risipei la nivel de consumator: cumpărăturile impulsive, lipsa unei planificări adecvate a meselor și gestionarea deficitară a inventarului casnic de alimente~\cite{europarlFoodWaste2025}.
 
 În paralel, aplicațiile \gls{web} moderne ridică provocări tehnice semnificative, documentate atât în literatura academică, cât și în sondajele anuale ale comunității de dezvoltatori.
-Sondajul \textit{State of JavaScript 2024} identifică \emph{complexitatea excesivă}, \emph{supraîncărcarea cu opțiuni} și \emph{modificările care rup compatibilitatea} drept principalele puncte de durere semnalate de utilizatorii framework-urilor \gls{frontend}~\cite{stateOfJS2024}.
+Sondajul \textit{State of JavaScript 2024} identifică \emph{complexitatea excesivă}, \emph{supraîncărcarea cu opțiuni} și \emph{modificările care rup compatibilitatea} drept principalele puncte de durere semnalate de utilizatorii framework-urilor frontend~\cite{stateOfJS2024}.
 Aceeași sursă indică o adopție în creștere a randării pe server (\acrshort{ssr}) --- \(59\,\%\) dintre respondenți o folosesc în 2024 --- și o consolidare a \gls{typescript} ca limbaj standard pentru aplicațiile de mare anvergură: conform sondajului \textit{JetBrains Developer Ecosystem 2024}, adopția \gls{typescript} a crescut de la \(12\,\%\) în 2017 la \(35\,\%\) în 2024, iar \(67\,\%\) dintre dezvoltatori scriu predominant \gls{typescript}~\cite{jetbrainsJsSurvey2024}.
-Aceste dificultăți se accentuează în aplicațiile \gls{fullstack}, unde integrarea deficitară a straturilor conduce la creșterea complexității și a costurilor de mentenanță pe termen lung.
+Aceste dificultăți se accentuează în aplicațiile full-stack, unde integrarea deficitară a straturilor conduce la creșterea complexității și a costurilor de mentenanță pe termen lung.
 
-Aceste două direcții --- necesitatea unei soluții digitale pentru reducerea risipei alimentare la nivel casnic și exigențele tehnice ale aplicațiilor \gls{web} \gls{fullstack} moderne --- converg în obiectivul prezentei lucrări.
+Aceste două direcții --- necesitatea unei soluții digitale pentru reducerea risipei alimentare la nivel casnic și exigențele tehnice ale aplicațiilor \gls{web} full-stack moderne --- converg în obiectivul prezentei lucrări.
 
 \subsection{Scopul lucrării}\label{sec:scop}
 Mi-am propus să construiesc \textit{\gls{kookio}} ca o aplicație \gls{web} care abordează problema risipei alimentare la nivel casnic printr-o arhitectură \gls{web} modernă, bazată pe ecosistemul \gls{typescript}.
-Arhitectura propusă integrează \gls{frontend}-ul, \gls{backend}-ul și stratul de persistență într-un proces unitar de dezvoltare.
+Arhitectura propusă integrează frontend-ul, backend-ul și stratul de persistență într-un proces unitar de dezvoltare.
 La nivel funcțional, aplicația acoperă gestiunea cămării, planificarea zilnică a meselor și derivarea automată a listei de cumpărături pentru utilizatori casnici.
-Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan} într-un context reprezentativ pentru aplicațiile \gls{web} \gls{fullstack} moderne.
+Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan} într-un context reprezentativ pentru aplicațiile \gls{web} full-stack moderne.
 
 În acest sens, lucrarea își propune:
 \begin{itemize}
   \item implementarea unui flux funcțional integrat pentru cămară, planificator zilnic și listă de cumpărături derivată, cu persistență într-o bază de date relațională;
-  \item integrarea \gls{frontend}-ului și \gls{backend}-ului într-un proces de dezvoltare unitar, cu partajarea tipurilor și a mecanismelor de validare;
+  \item integrarea frontend-ului și backend-ului într-un proces de dezvoltare unitar, cu partajarea tipurilor și a mecanismelor de validare;
   \item analiza caracteristicilor și a proprietăților structurale ale arhitecturii \gls{pan} în ceea ce privește modularitatea (topologie aciclică între biblioteci) și mentenanța aplicației (absența unui strat de \textit{repository});
   \item construirea unui pipeline \acrshort{cicd} reutilizabil, organizat pe \glspl{workflow} și \glspl{compositeaction}, aliniat la țintele \gls{nx};
   \item validarea implementării prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență și a timpului de rulare \acrshort{ci}.
@@ -31,8 +31,8 @@ Aplicația servește drept studiu de caz pentru evaluarea arhitecturii \gls{pan}
 
 \subsection{Contribuții ale lucrării}\label{sec:contributii}
 \begin{enumerate}
-  \item \textbf{Aplicația \textit{\gls{kookio}} implementată ca \acrlong{mvp} (\acrshort{mvp}):} aplicație \gls{web} \gls{fullstack} funcțională pentru utilizatori casnici, care acoperă integrat gestiunea cămării, planificarea zilnică a meselor, derivarea automată a listei de cumpărături și fluxul de \textit{onboarding} (configurare profil), cu autentificare prin Firebase.
-  \item \textbf{Un model arhitectural \gls{pan} implementat:} \gls{analog} (\gls{angular} 20) cu randare pe server (\acrshort{ssr}) peste \gls{nitro}, \acrshort{trpc} pentru \acrshort{api} tipizat și \gls{prisma} către \gls{cockroachdb}, organizat într-un \gls{monorepo} \gls{nx} cu cinci grupuri de biblioteci și topologie aciclică aplicată la \acrshort{ci} prin regula \texttt{enforce-module-boundaries}.
+  \item \textbf{Aplicația \textit{\gls{kookio}} implementată ca \acrlong{mvp} (\acrshort{mvp}):} aplicație \gls{web} full-stack funcțională pentru utilizatori casnici, care acoperă integrat gestiunea cămării, planificarea zilnică a meselor, derivarea automată a listei de cumpărături și fluxul de \textit{onboarding} (configurare profil), cu autentificare prin Firebase.
+  \item \textbf{Un model arhitectural \gls{pan} implementat:} \gls{analog} (\gls{angular} 21) cu randare pe server (\acrshort{ssr}) peste \gls{nitro}, \acrshort{trpc} pentru API tipizat și \gls{prisma} către \gls{cockroachdb}, organizat într-un \gls{monorepo} \gls{nx} cu cinci grupuri de biblioteci și topologie aciclică aplicată la \acrshort{ci} prin regula \texttt{enforce-module-boundaries}.
   \item \textbf{Tipare de partajare a contractelor de date dintr-o sursă unică de adevăr:} schemele \gls{zod} sunt generate automat din \texttt{schema.prisma} prin biblioteca \texttt{prisma-zod-generator}~\cite{prisma_zod_generator}, iar tipurile \gls{typescript} se derivă prin compoziție (\texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()}, \texttt{z.infer<>}) din aceste scheme; contractele rezultate sunt reutilizate în interfața de utilizator, în rutele de server și în teste, fără un strat de \textit{repository} între procedurile \acrshort{trpc} și clientul \gls{prisma}.
   \item \textbf{Un flux automatizat \gls{cicd} modular:} bazat pe \glspl{workflow} reutilizabile și \emph{\glspl{compositeaction}} aliniate la țintele \gls{nx}; reducerea timpului mediu de rulare este măsurată în \tabref{tab:rezultate}.
   \item \textbf{Metodologie de testare pe două niveluri distincte:} testare unitară cu \gls{vitest} și \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de practici concrete pentru pornirea la rece a serverului \gls{vite} (pre-încălzire în \texttt{global-setup}) și pentru navigarea către rute protejate (\texttt{waitUntil: 'commit'}).

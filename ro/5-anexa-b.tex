@@ -1,8 +1,11 @@
 % 5-anexa-b.tex starts here
 % Keep \raggedbottom for this appendix too (same rationale as 5-anexa-a.tex):
-% several [H] floats here (tab:pan-stiva, fig:mean-vs-pan, tab:pan-vs-altele)
-% bump to the next page when they don't fit, and \flushbottom would stretch
-% the slack into subsection gaps rather than letting it settle at page bottom.
+% the floats here (tab:pan-stiva, tab:pan-tooling, fig:mean-vs-pan,
+% tab:pan-vs-altele) use [htbp] so a float too tall for the current page
+% drifts to the next and the following text flows up to fill the slack,
+% instead of the [H] standoff that left page-bottom holes. \flushbottom
+% would stretch any residual slack into subsection gaps rather than letting
+% it settle at the page bottom, so \raggedbottom stays.
 \raggedbottom
 
 \section{Manifest Arhitectural \acrshort{pan}}\label{anexa:manifest}
@@ -12,7 +15,7 @@ Spre deosebire de \secref{cap:preliminarii} (care narează drumul către \gls{pa
 
 \subsection{Definiție și principii structurale}\label{subsec:pan-definitie}
 
-\gls{pan} (\acrlong{pan}) este o arhitectură \gls{fullstack} monolitică modulară pentru aplicații \gls{web} construite integral în ecosistemul \gls{typescript}.
+\gls{pan} (\acrlong{pan}) este o arhitectură full-stack monolitică modulară pentru aplicații \gls{web} construite integral în ecosistemul \gls{typescript}.
 Cele trei componente eponime --- \gls{prisma} ca \gls{orm} declarativ, \gls{analog} ca \gls{metaframework} \gls{angular} cu suport \acrshort{ssr} și \gls{nx} ca orchestrator de \gls{monorepo} --- sunt elementele constitutive în jurul cărora se organizează o stivă coerentă cu cinci principii fundamentale:
 
 \begin{enumerate}
@@ -24,15 +27,15 @@ Cele trei componente eponime --- \gls{prisma} ca \gls{orm} declarativ, \gls{anal
 
   \item \textbf{Absența unui strat de \textit{repository} intermediar.} Procedurile \gls{trpc} apelează direct clientul \gls{prisma} (\texttt{ctx.prisma}), fără un strat intermediar de tip \textit{repository} orientat-obiect. Această decizie reduce numărul de straturi de adaptare și forțează ca logica de afaceri să se exprime în termenii primitivelor expuse de \gls{prisma} --- un compromis explicit între simplitate și abstracție.
 
-  \item \textbf{Randare pe server ca mod implicit.} Combinația \gls{angular} \(+\) \gls{analog} livrează \acrshort{ssr} drept comportament implicit pentru toate rutele, iar \acrshort{ssg} este folosit punctual pentru paginile cu conținut stabil. Astfel, prima impresie a utilizatorului depinde de un \acrshort{html} populat încă de la prima cerere, important atât pentru indexarea \acrshort{seo}, cât și pentru perceperea performanței.
+  \item \textbf{Randare pe server ca mod implicit.} Combinația \gls{angular} \(+\) \gls{analog} livrează \acrshort{ssr} drept comportament implicit pentru toate rutele, iar \acrshort{ssg} este folosit punctual pentru paginile cu conținut stabil. Astfel, prima impresie a utilizatorului depinde de un HTML populat încă de la prima cerere, important atât pentru indexarea \acrshort{seo}, cât și pentru perceperea performanței.
 \end{enumerate}
 
 \subsection{Stiva tehnologică detaliată}\label{subsec:pan-stiva}
 
 Fiecare nivel al stivei \gls{pan} este materializat de o tehnologie concretă, aleasă în raport cu alternative consacrate.
-Cele paisprezece niveluri sunt grupate în două tabele după responsabilitate: \tabref{tab:pan-stiva} acoperă componentele aplicative (\gls{frontend}, server, persistență), iar \tabref{tab:pan-tooling} acoperă tooling-ul de dezvoltare și operare.
+Cele paisprezece niveluri sunt grupate în două tabele după responsabilitate: \tabref{tab:pan-stiva} acoperă componentele aplicative (frontend, server, persistență), iar \tabref{tab:pan-tooling} acoperă tooling-ul de dezvoltare și operare.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Componentele aplicative ale arhitecturii \gls{pan} și justificarea fiecărei alegeri tehnologice.}
 \label{tab:pan-stiva}
@@ -41,10 +44,10 @@ Cele paisprezece niveluri sunt grupate în două tabele după responsabilitate: 
 \toprule
 \textbf{Nivel} & \textbf{Tehnologie} & \textbf{Justificare} \\
 \midrule
-Frontend         & \gls{angular} 20                  & Tipizare strictă nativă, ecosistem Material/CDK consistent, semnale reactive \\
+Frontend         & \gls{angular} 21                  & Tipizare strictă nativă, ecosistem Material/CDK consistent, semnale reactive \\
 Meta-framework   & \gls{analog}                      & Singura opțiune nativ-\gls{angular} cu \acrshort{ssr}, rutare pe fișiere și \textit{endpoint}-uri server integrate \\
 Server runtime   & \gls{nitro}                       & Adoptat de \gls{analog}, agnostic față de hosting (\gls{vercel}, Node.js, Bun, Deno) \\
-\acrshort{api}   & \gls{trpc}                        & Tipuri partajate de la capăt la capăt fără un strat suplimentar de definiții \\
+API   & \gls{trpc}                        & Tipuri partajate de la capăt la capăt fără un strat suplimentar de definiții \\
 Validare         & \gls{zod} via \texttt{prisma-zod-generator} & Generare automată din schema \gls{prisma}, integrare nativă cu \gls{trpc} \\
 \gls{orm}        & \gls{prisma}                      & Schemă declarativă, client \gls{typescript} generat, migrații versionate \\
 Bază de date     & \gls{cockroachdb}                 & Compatibilitate de protocol cu \gls{postgresql}, scalare orizontală nativă, nivel \textit{serverless} \\
@@ -53,7 +56,7 @@ Cache            & \gls{redis}                       & Suport nativ pentru \text
 \end{tabularx}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Tooling-ul de dezvoltare și operare al arhitecturii \gls{pan} și justificarea fiecărei alegeri tehnologice.}
 \label{tab:pan-tooling}
@@ -64,7 +67,7 @@ Cache            & \gls{redis}                       & Suport nativ pentru \text
 \midrule
 Monorepo         & \gls{nx}                          & Filiație \gls{angular} (Nrwl), cache distribuit, generatoare native, \texttt{enforce-module-boundaries} \\
 Build            & \gls{vite}                        & Suport \gls{typescript} nativ, \textit{hot module replacement} rapid, compatibilitate directă cu \gls{vitest} \\
-Test unitar      & \gls{vitest}                      & Rulează pe \gls{vite} (nu duplică configurația), \acrshort{api} compatibil Jest \\
+Test unitar      & \gls{vitest}                      & Rulează pe \gls{vite} (nu duplică configurația), API compatibil Jest \\
 Test \acrshort{e2e} & \gls{playwright}               & Suport multi-browser nativ, paralelism prin \textit{workers}, depanare cu \acrshort{ui} dedicată \\
 \acrshort{cicd}  & GitHub Actions cu \glspl{compositeaction} & Aliniere cu țintele \gls{nx}, reutilizare prin acțiuni compozite \\
 Hosting          & \gls{vercel}                      & Suport nativ pentru \gls{analog}/\gls{nitro}, mediu de previzualizare per ramură, variabile de mediu centralizate \\
@@ -74,12 +77,18 @@ Hosting          & \gls{vercel}                      & Suport nativ pentru \gls{
 
 \subsection{Comparație cu arhitecturi alternative}\label{subsec:pan-comparatie}
 
-\gls{pan} se înscrie într-o linie de arhitecturi \gls{fullstack} moștenite conceptual din \gls{mean}, propusă de Karpov în 2013~\cite{karpovMean2013}.
+\gls{pan} se înscrie într-o linie de arhitecturi full-stack moștenite conceptual din \gls{mean}, propusă de Karpov în 2013~\cite{karpovMean2013}.
 \figref{fig:mean-vs-pan} ilustrează paralela structurală între cele două.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{mean-vs-pan}
+  % The PNG carries ~5% baked-in white padding on each side (content occupies
+  % x[100..1898] of 2000px ≈ 89.9% width). Scaling to 1.11x makes the diagram's
+  % *content* span the text block; the padding overflows symmetrically into the
+  % 2.5cm page margin (~0.9cm each side, well within margin). \centering keeps
+  % the overflow balanced. Adjust the factor if the source PNG is re-exported
+  % with different padding.
+  \makebox[\textwidth]{\includegraphics[width=1.11\textwidth]{mean-vs-pan}}
   \caption{Paralelă structurală între arhitectura \gls{mean} (Karpov, 2013) și arhitectura \gls{pan} propusă în prezenta lucrare. Diagrama evidențiază maturizarea ecosistemului: \gls{analog} absoarbe rolurile distribuite în \gls{mean} între \textit{Express} și \gls{angular}, iar \gls{nx} adresează preocuparea organizării \gls{monorepo} care, în era \gls{mean}, nu era încă subiect de discuție arhitecturală.}
   \label{fig:mean-vs-pan}
 \end{figure}
@@ -90,7 +99,7 @@ Această convergență structurală reduce frecușul de integrare pe care \gls{m
 Stiva contemporană React (MERN + \gls{nextjs} + \textit{Turborepo}) ocupă același spațiu de soluții ca \gls{pan}, dar într-un alt ecosistem.
 \tabref{tab:pan-vs-altele} oferă o comparație directă.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Comparație între \gls{mean} (2013), stiva React modernă și arhitectura \gls{pan}.}
 \label{tab:pan-vs-altele}
@@ -99,10 +108,10 @@ Stiva contemporană React (MERN + \gls{nextjs} + \textit{Turborepo}) ocupă acel
 \toprule
 \textbf{Aspect} & \textbf{\gls{mean} (2013)} & \textbf{MERN + \gls{nextjs} + Turborepo} & \textbf{\gls{pan}} \\
 \midrule
-Frontend         & \gls{angular} (vechi)   & React                  & \gls{angular} 20 \\
+Frontend         & \gls{angular} (vechi)   & React                  & \gls{angular} 21 \\
 Meta-framework   & --- (Express)           & \gls{nextjs}           & \gls{analog} \\
 Server runtime   & Node.js + Express       & Node.js + \gls{nextjs} & \gls{nitro} \\
-\acrshort{api}   & REST manual             & API routes + \gls{trpc} opțional & \gls{trpc} obligatoriu \\
+API   & REST manual             & API routes + \gls{trpc} opțional & \gls{trpc} obligatoriu \\
 Tipuri partajate & Nu                      & Parțial (App Router)   & End-to-end automat \\
 Bază de date     & MongoDB                 & MongoDB sau \gls{postgresql} & \gls{cockroachdb} \\
 \gls{orm}        & Mongoose                & \gls{prisma} sau Drizzle & \gls{prisma} \\
@@ -115,7 +124,7 @@ Limbaj           & JavaScript              & \gls{typescript} parțial & \gls{ty
 Diferențele majore între \gls{pan} și stiva React modernă sunt:
 
 \begin{itemize}
-  \item \textbf{Comunitate.} \gls{pan} este construit pe \gls{angular}, \gls{framework} cu o cotă de utilizare mai mică decât a React (\(50{,}1\,\%\) față de \(81{,}1\,\%\) \textit{State of JavaScript 2024}~\cite{stateOfJS2024}). Această diferență este atât o limitare practică (mai puțini dezvoltatori disponibili, mai puține biblioteci de \acrshort{ui} \textit{third-party}), cât și o invitație la disciplină --- \gls{angular} impune o organizare mai structurată implicit, prin \textit{dependency injection} și module.
+  \item \textbf{Comunitate.} \gls{pan} este construit pe \gls{angular}, framework cu o cotă de utilizare mai mică decât a React (\(50{,}1\,\%\) față de \(81{,}1\,\%\) \textit{State of JavaScript 2024}~\cite{stateOfJS2024}). Această diferență este atât o limitare practică (mai puțini dezvoltatori disponibili, mai puține biblioteci de \acrshort{ui} \textit{third-party}), cât și o invitație la disciplină --- \gls{angular} impune o organizare mai structurată implicit, prin \textit{dependency injection} și module.
 
   \item \textbf{Maturitate.} \gls{nextjs} are aproape un deceniu de evoluție și o adopție extinsă în producție; \gls{analog} are sub trei ani și o comunitate mică. \gls{pan} compensează prin alegerea \gls{angular} și \gls{nitro} (ambele mature individual) ca platforme de bază, dar acceptă riscul comunitar al \gls{analog}.
 
@@ -132,7 +141,7 @@ Această subsecțiune le listează explicit, pentru ca un cititor care evalueaz�
 
   \item \textbf{Maturitate \gls{analog}.} \gls{analog} este, la momentul scrierii, un proiect cu o comunitate de câteva mii de utilizatori și fără adopție majoră în mediul corporativ. Riscul ca anumite probleme de producție să nu aibă răspuns documentat este real. Mitigarea folosită în prezenta lucrare a fost selectarea componentelor mature individual (\gls{angular}, \gls{nitro}) și acceptarea explicită a riscului pentru stratul de orchestrare \gls{analog}.
 
-  \item \textbf{Cuplaj la \gls{typescript}.} \gls{trpc} presupune că ambele capete ale comunicării sunt \gls{typescript}. \gls{pan} nu este o opțiune viabilă pentru aplicații care trebuie să expună un \acrshort{api} public consumat de clienți în alte limbaje (Java, Go, Python). În astfel de cazuri, GraphQL sau OpenAPI rămân alegeri mai potrivite.
+  \item \textbf{Cuplaj la \gls{typescript}.} \gls{trpc} presupune că ambele capete ale comunicării sunt \gls{typescript}. \gls{pan} nu este o opțiune viabilă pentru aplicații care trebuie să expună un API public consumat de clienți în alte limbaje (Java, Go, Python). În astfel de cazuri, GraphQL sau OpenAPI rămân alegeri mai potrivite.
 
   \item \textbf{Dependență moderată de furnizor.} Deși \gls{pan} poate fi publicat pe orice infrastructură compatibilă Node.js (\gls{nitro} suportă \gls{vercel}, Netlify, AWS, Cloudflare, Bun, Deno), integrarea cu \gls{vercel} este cea mai bine bătătorită. Migrarea către un alt furnizor este posibilă, dar nu este lipsită de efort.
 
@@ -140,6 +149,20 @@ Această subsecțiune le listează explicit, pentru ca un cititor care evalueaz�
 
   \item \textbf{Resurse de învățare limitate.} Conținutul comunitar (Stack Overflow, articole de blog, cursuri) pentru \gls{pan} ca atare nu există --- există doar pentru componentele individuale. Un dezvoltator care întâmpină o problemă specifică integrării \gls{analog} \(+\) \gls{trpc} \(+\) \gls{prisma} \(+\) \gls{nx} trebuie să își construiască soluția pornind de la primele principii.
 \end{itemize}
+
+\subsection{Pattern-uri descoperite în implementare}\label{subsec:pan-patterns}
+
+Pe lângă principiile structurale stabilite \textit{a priori} (\secref{subsec:pan-definitie}), implementarea aplicației \textit{\gls{kookio}} a expus trei tipare arhitecturale care nu erau predictibile din alegerile inițiale, dar care s-au consolidat ca lecții generalizabile pentru orice proiect \gls{pan}. Spre deosebire de limitările listate în \secref{subsec:pan-limitari} (constrângeri intrinseci ale stivei), pattern-urile descrise aici sunt \textit{soluții} reutilizabile, codificate în repository-ul de ghiduri al proiectului pentru a evita reapariția aceleași probleme:
+
+\begin{itemize}
+  \item \textbf{Încărcătoarele SSR autentificate cer hidratare client-side a datelor autentificate.} La prima descoperire, încărcătoarele \texttt{*.server.ts} colocate cu rutele dinamice apelau direct proceduri \acrshort{trpc} autentificate prin \texttt{appRouter.createCaller(ctx)}, presupunând că sesiunea Firebase din \texttt{createContext} este disponibilă atât la primul \acrshort{ssr}, cât și la navigarea ulterioară pe partea de client. Ipoteza era falsă: pe navigare pe partea de client, \gls{analog} execută \textit{loader}-ul ca un \texttt{fetch} obișnuit care nu propagă antetul \texttt{Authorization} cu \textit{ID token}-ul Firebase, iar procedurile autentificate răspund cu \texttt{401}. Pattern-ul corect, codificat în repository: \textit{loader}-ul încarcă doar date publice (\textit{recipes.byId}, \textit{about page content}), iar datele autentificate (disponibilitatea ingredientelor în cămară, starea de „salvat” pentru o rețetă, preferințele utilizatorului) sunt hidratate ulterior, din browser, prin clientul \gls{trpc} cu \texttt{authAwareFetch}. Pe planul aplicabilității generale, pattern-ul se reduce la observația că \acrshort{ssr} și autentificarea cu \textit{Bearer token} nu coabitează gratuit în nici un meta-framework hibrid --- orice cititor care evaluează \gls{pan} pentru un proiect propriu trebuie să auditeze această dimensiune înainte de a se baza pe \textit{loader}-i \acrshort{ssr} pentru date sensibile.
+
+  \item \textbf{Numele rutelor în routere bazate pe fișiere trebuie să fie semantice, nu numerice.} La construirea paginii pentru codul de eroare \texttt{500}, alegerea naturală a fost o rută \texttt{/500} (paralelă cu \texttt{/404} deja funcțională). La rulare, ruta nu se activa: serverul răspundea cu \texttt{200} și HTML-ul paginii principale. Cauza, descoperită prin investigare graduală, a fost o particularitate a router-ului bazat pe fișiere al \gls{analog}: segmentele \textit{all-numeric} sunt interpretate ca parametri dinamici nevalizi, iar \textit{matcher}-ul cade silentios prin lista de rute fără a semnala o eroare de configurare. Pattern-ul corect, codificat în repository: rutele numite \textit{semantic} (\texttt{/server-error}, \texttt{/not-found}, \texttt{/maintenance}) în locul codurilor numerice. Pe planul aplicabilității generale, pattern-ul se reduce la observația că orice convenție de routing bazată pe fișiere trebuie să separe \textit{coduri numerice} (artefacte de protocol HTTP) de \textit{nume de rute} (identificatori semantici pentru utilizator) --- chiar dacă, în lumea protocoalelor, cele două par interșanjabile.
+
+  \item \textbf{O singură euristică defensabilă pentru estimarea cantităților, doi consumatori.} Pe parcursul implementării au apărut două procese care necesitau aceeași euristică: pipeline-ul offline de curățare a datelor (etapa de \textit{seed}) pentru a estima greutățile lipsă din catalogul \textit{TheMealDB}, și logica de runtime pentru decrementarea cămării și derivarea listei de cumpărături. Inițial, fiecare proces folosea o variantă proprie a euristicii: pipeline-ul offline avea o tabelă manuală \texttt{INGREDIENT\_PIECE\_GRAMS}, iar runtime-ul avea \textit{carve-out}-uri separate pentru greutate, volum și unități neglijabile. Această stratificare ramifica fiecare extensie (suport pentru o unitate nouă necesita modificări în două locuri) și producea, în timp, divergențe de comportament. Pattern-ul corect, codificat în repository: \texttt{toGrams}/\texttt{fromGrams} ca pereche de funcții pure în \texttt{libs/shared/utility}, plus promovarea tabelei manuale la coloana \texttt{IngredientCatalog.pieceGrams} din schema bazei de date. Ambii consumatori (pipeline-ul offline și logica de runtime, \secref{subsec:algoritm-grame}) folosesc acum aceeași sursă de adevăr. Pe planul aplicabilității generale, pattern-ul se reduce la o regulă de proiectare: \textit{o singură euristică defensabilă, doi sau mai mulți consumatori, niciodată o euristică per consumator}. O critică a estimării (de exemplu, „densitatea apei este o aproximare slabă pentru uleiuri”) se aplică simultan tuturor consumatorilor; o îmbunătățire se propagă în același mod.
+\end{itemize}
+
+Cele trei pattern-uri împărtășesc o structură comună: fiecare a apărut din \textit{frecuș de implementare} (\textit{loader}-ul \acrshort{ssr} care răspundea cu \texttt{401}, ruta \texttt{/500} care nu se activa, două euristici aproape identice scrise separat), iar soluția nu a fost o adăugare de funcționalitate, ci o \textit{re-așezare} a piesei deja existente la un nivel mai apropiat de invariantul real al problemei. Pe planul auditului arhitectural, acest tipar de descoperire --- \textit{frecuș} \(\rightarrow\) \textit{lecție} \(\rightarrow\) \textit{codificare} --- a fost observat în literatura de inginerie software ca o caracteristică a sistemelor evolutive, în care invariantul corect este învățat din experiența implementării, nu impus din proiectul inițial.
 
 \subsection{Direcții de evoluție arhitecturală}\label{subsec:pan-evolutie}
 

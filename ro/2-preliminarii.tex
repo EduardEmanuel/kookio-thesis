@@ -22,12 +22,12 @@ Ca implementare concretă a serviciului m-am orientat spre \gls{cockroachdb}~\ci
 
 \subsubsection*{Cadrul frontend și organizarea codului}
 
-Pentru interfața clientului, alegerea \gls{framework}-ului \gls{angular} a venit firesc, dat fiind angajamentul față de \gls{typescript}~\cite{angular_signals}.
+Pentru interfața clientului, alegerea framework-ului \gls{angular} a venit firesc, dat fiind angajamentul față de \gls{typescript}~\cite{angular_signals}.
 Pasul următor a fost identificarea unei opțiuni potrivite pentru codul ce urma să ruleze pe server.
 Aici am avut mai multe variante valide, majoritatea moștenitori conceptuali ai celebrei arhitecturi \textbf{MERN} (\textit{MongoDB}, \textit{Express}, \textit{React}, \textit{Node.js}), care în ultimii ani a migrat firesc către stive bazate pe \gls{nextjs} și \textit{Turborepo} --- ambele dezvoltate de \gls{vercel}.
 Totuși, această direcție m-ar fi împins către ecosistemul \textit{React} și sintaxa \textit{TSX}, abandonând decizia inițială de a folosi \gls{angular}.
 
-Pe parcursul cercetării am descoperit comunitatea \textbf{\gls{analog}}~\cite{analog}, un \gls{metaframework} care extinde \gls{angular} cu capabilități de server (randare pe server, rutare bazată pe fișiere, puncte finale \acrshort{api}) --- practic, echivalentul \gls{angular} al lui \gls{nextjs}.
+Pe parcursul cercetării am descoperit comunitatea \textbf{\gls{analog}}~\cite{analog}, un \gls{metaframework} care extinde \gls{angular} cu capabilități de server (randare pe server, rutare bazată pe fișiere, puncte finale API) --- practic, echivalentul \gls{angular} al lui \gls{nextjs}.
 \gls{analog} beneficiază de sprijinul direct al comunității \textbf{\gls{nx}}~\cite{nx}, o unealtă de gestionare a \gls{monorepo}-urilor dezvoltată de compania Nrwl, fondată de foști ingineri ai echipei \gls{angular} de la Google.
 Această filiație explică de ce \gls{nx} are, în esența sa, ADN \gls{angular} și de ce oferă suport de primă mână pentru proiecte \gls{analog}: generatoare native, sistem de cache distribuit pentru sarcinile de construire și șabloane care accelerează crearea bibliotecilor specializate pe fiecare funcționalitate de bază a aplicației.
 
@@ -40,23 +40,23 @@ Manifestul arhitectural complet, împreună cu avantajele comparative și direc�
 
 \subsubsection{Arhitecturi web moderne}\label{subsec:arhitecturi-web}
 
-Pentru o aplicație culinară în care prima impresie a utilizatorului depinde de un \acrshort{html} populat încă de la prima vizită, modelul de randare pe client (\acrshort{csr}) al unui \acrshort{spa} \gls{angular} clasic nu era suficient.
+Pentru o aplicație culinară în care prima impresie a utilizatorului depinde de un HTML populat încă de la prima vizită, modelul de randare pe client (\acrshort{csr}) al unui \acrshort{spa} \gls{angular} clasic nu era suficient.
 Cerințele de afișare rapidă, \acrshort{seo} pentru rețete publice și interactivitate ulterioară pe pagină au condus la o arhitectură care împarte sarcinile de \gls{randare} între server și client~\cite{analog,nitro}.
 
 Strategiile de \gls{randare} relevante pentru proiect sunt:
 \begin{itemize}
   \item \textbf{\acrshort{csr}} (randare pe client) --- folosit în \textit{\gls{kookio}} pentru ecranele autentificate (planificator, cămară), unde interactivitatea primează;
-  \item \textbf{\acrshort{ssr}} (randare pe server) --- pentru pagini publice cu conținut dinamic (feed de rețete, profile), unde \acrshort{html}-ul inițial trebuie să fie complet;
+  \item \textbf{\acrshort{ssr}} (randare pe server) --- pentru pagini publice cu conținut dinamic (feed de rețete, profile), unde HTML-ul inițial trebuie să fie complet;
   \item \textbf{\acrshort{ssg}} (generare statică de pagini) --- pentru pagini cu conținut stabil (legal, atribuții), prerandate la build;
   \item \textbf{arhitecturi hibride} --- combinarea celor trei pe rute diferite, în funcție de natura conținutului~\cite{analog}.
 \end{itemize}
 
-Am ales o arhitectură \gls{fullstack} hibridă în care \gls{frontend}-ul și \gls{backend}-ul rulează în aceeași bază de cod \gls{typescript}.
+Am ales o arhitectură full-stack hibridă în care frontend-ul și backend-ul rulează în aceeași bază de cod \gls{typescript}.
 Decizia este motivată practic: tipurile și schemele de validare (\gls{trpc} cu validare prin scheme \gls{zod}) sunt partajate la nivel de modul, iar un singur pas de construcție livrează ambele straturi~\cite{trpc,zod}.
 
 \subsubsection{Angular și randare server-side}\label{subsec:angular-ssr}
 
-Am ales \gls{angular} ca \gls{framework} de \gls{frontend} pentru că ecosistemul său oferă în mod nativ piesele de care aveam nevoie pentru \textit{\gls{kookio}}: tipizare strictă, componente \emph{standalone}, \gls{angular} Signals (semnale reactive) și setul de componente \gls{angular} Material/CDK, consistent în privința accesibilității~\cite{angular_signals,angular_material}.
+Am ales \gls{angular} ca framework de frontend pentru că ecosistemul său oferă în mod nativ piesele de care aveam nevoie pentru \textit{\gls{kookio}}: tipizare strictă, componente \emph{standalone}, \gls{angular} Signals (semnale reactive) și setul de componente \gls{angular} Material/CDK, consistent în privința accesibilității~\cite{angular_signals,angular_material}.
 
 Suportul pentru \acrshort{ssr} din \textit{\gls{kookio}} provine din \textbf{\gls{analog}}, un \gls{metaframework} care extinde \gls{angular} cu:
 \begin{itemize}
@@ -65,7 +65,7 @@ Suportul pentru \acrshort{ssr} din \textit{\gls{kookio}} provine din \textbf{\gl
   \item integrarea logicii de server (\gls{nitro}, \gls{trpc}) în același proiect~\cite{analog,analog_routing,nitro}.
 \end{itemize}
 
-Pentru o pagină de rețetă publică, \acrshort{ssr} face diferența între un document \acrshort{html} minimal până la \gls{hydration} și un \acrshort{html} populat încă de la prima cerere --- important atât pentru utilizator, cât și pentru indexarea \acrshort{seo} pe care se sprijină distribuția organică a conținutului~\cite{analog}.
+Pentru o pagină de rețetă publică, \acrshort{ssr} face diferența între un document HTML minimal până la \gls{hydration} și un HTML populat încă de la prima cerere --- important atât pentru utilizator, cât și pentru indexarea \acrshort{seo} pe care se sprijină distribuția organică a conținutului~\cite{analog}.
 
 \subsubsection{Monorepo și orchestrare cu Nx}\label{subsec:monorepo-nx}
 
@@ -84,7 +84,7 @@ Peste această structură, \gls{nx} oferă două mecanisme esențiale folosite s
 
 \subsubsection{tRPC și partajarea tipurilor}\label{subsec:trpc}
 
-Comunicarea client--server din \textit{\gls{kookio}} folosește \textbf{\gls{trpc}} (\emph{TypeScript Remote Procedure Call} --- apeluri de proceduri la distanță tipizate pentru \gls{typescript}): procedurile sunt declarate o singură dată, în \gls{typescript}, pe server, iar clientul \gls{angular} le invocă direct, fără un strat suplimentar de definiții \acrshort{api}~\cite{trpc}.
+Comunicarea client--server din \textit{\gls{kookio}} folosește \textbf{\gls{trpc}} (\emph{TypeScript Remote Procedure Call} --- apeluri de proceduri la distanță tipizate pentru \gls{typescript}): procedurile sunt declarate o singură dată, în \gls{typescript}, pe server, iar clientul \gls{angular} le invocă direct, fără un strat suplimentar de definiții API~\cite{trpc}.
 
 Avantajele concrete pe care le-am observat:
 \begin{itemize}
@@ -98,12 +98,12 @@ Pentru \textit{\gls{kookio}} aceasta s-a tradus, în practică, în eliminarea a
 \subsubsection{Persistență: Prisma și CockroachDB}\label{subsec:persistenta}
 
 Pentru persistență am ales \textbf{\gls{cockroachdb}} ca bază de date și \textbf{\gls{prisma}} drept \gls{orm}~\cite{prisma_orm,cockroachdb}.
-\gls{cockroachdb} este compatibil cu protocolul de legătură \gls{postgresql}, ceea ce înseamnă că ecosistemul de unelte \acrshort{sql} (drivere, clienți \texttt{psql}, \gls{prisma}) funcționează fără adaptări, oferind în plus capacități native de scalare orizontală.
+\gls{cockroachdb} este compatibil cu protocolul de legătură \gls{postgresql}, ceea ce înseamnă că ecosistemul de unelte SQL (drivere, clienți \texttt{psql}, \gls{prisma}) funcționează fără adaptări, oferind în plus capacități native de scalare orizontală.
 \gls{postgresql} standard se concentrează pe replicare verticală, în timp ce \gls{cockroachdb} adaugă peste protocol scalare orizontală nativă~\cite{cockroachdb}.
 
 \gls{prisma} acoperă, în proiect, trei responsabilități: declararea schemei în \texttt{schema.prisma}, generarea unui client \gls{typescript} cu tipuri exacte pentru fiecare model și gestionarea migrațiilor versionate aplicate la \texttt{deploy}~\cite{prisma_orm}.
 
-La generarea schemelor \gls{zod} folosesc \texttt{prisma-zod-generator}, care expune o copie validabilă a fiecărui model --- sursa de adevăr este schema \gls{prisma}, iar straturile \acrshort{api} și \acrshort{ui} consumă derivate ale ei~\cite{prisma_zod_generator}.
+La generarea schemelor \gls{zod} folosesc \texttt{prisma-zod-generator}, care expune o copie validabilă a fiecărui model --- sursa de adevăr este schema \gls{prisma}, iar straturile API și \acrshort{ui} consumă derivate ale ei~\cite{prisma_zod_generator}.
 
 \subsubsection{Testare automată: Vitest și Playwright}\label{subsec:testare}
 
@@ -116,7 +116,7 @@ Suita rulează în \acrshort{ci} pe fiecare \acrshort{pr} către \texttt{test} �
 
 \subsubsection{Managementul configurației și mediilor}\label{subsec:configuratie}
 
-Variabilele de mediu (chei Firebase, \acrshort{url}-uri \gls{redis}, secrete \gls{vercel}) sunt definite o singură dată în panoul \gls{vercel}, separat pe medii (\texttt{development}, \texttt{preview}, \texttt{production})~\cite{vercel_cli}.
+Variabilele de mediu (chei Firebase, URL-uri \gls{redis}, secrete \gls{vercel}) sunt definite o singură dată în panoul \gls{vercel}, separat pe medii (\texttt{development}, \texttt{preview}, \texttt{production})~\cite{vercel_cli}.
 Această centralizare elimină fișierele \texttt{.env} adăugate accidental în istoricul Git și menține sincronizate toate ramurile.
 
 Local, sincronizarea se face cu \texttt{vercel env pull}, care scrie un \texttt{.env.local} (exclus din versionare prin \texttt{.gitignore}) cu valorile mediului curent --- niciun secret nu este versionat în Git~\cite{vercel_cli}.
