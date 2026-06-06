@@ -32,3 +32,6 @@ ignored/
 
 # Node modules
 **/node_modules
+
+# macOS finder noise
+.DS_Store

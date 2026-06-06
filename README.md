@@ -14,7 +14,7 @@ Kookio: A Modular Full-Stack Gastronomic Service Built on the PAN Architecture (
 | Tool | Purpose | How to Install |
 |------|---------|----------------|
 | **LuaLaTeX** (via TeX Live, MacTeX, or MikTeX) | Compile thesis in LaTeX | See [LaTeX Installation](#-latex-installation) below |
-| **Node.js** ≥ 20.11.1 + **npm** | Run TypeScript build scripts and research tools | [nodejs.org](https://nodejs.org) |
+| **Node.js** ≥ 20.19.0 + **npm** | Run TypeScript build scripts and research tools | [nodejs.org](https://nodejs.org) |
 | **TheMealDB** | Open, crowd-sourced recipe database | Premium API key $10 lifetime — [themealdb.com](https://www.themealdb.com) |
 
 ### 📌 LaTeX Installation
