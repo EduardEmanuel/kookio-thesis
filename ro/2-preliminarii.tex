@@ -25,7 +25,7 @@ Această caracteristică a modelului de date a făcut ca o bază relațională c
 
 Pentru abstractizarea limbajului bazei de date am ales \gls{prisma}~\cite{prisma_orm} --- o mapare obiect-relațională (\acrshort{orm}) care oferă siguranță a tipurilor de la capăt la capăt în \gls{typescript}, generând clientul de acces direct din schema declarativă.
 Ca implementare concretă a serviciului m-am orientat spre \gls{cockroachdb}~\cite{cockroachdb}, o bază de date distribuită compatibilă cu protocolul de legătură \gls{postgresql}~\cite{postgresql} --- astfel încât \gls{prisma} și întregul ecosistem de unelte funcționează nealterat.
-\gls{cockroachdb} adaugă peste \gls{postgresql} scalare orizontală nativă, consistență puternică prin algoritmul de consens Raft, precum și un nivel de servire fără infrastructură proprie gestionată (\emph{serverless}), potrivit pentru un proiect academic care poate evolua către un mediu de producție.
+\gls{cockroachdb} adaugă peste \gls{postgresql} scalare orizontală nativă, consistență puternică prin algoritmul de consens Raft, precum și un nivel de servire fără infrastructură proprie gestionată (\textit{serverless}), potrivit pentru un proiect academic care poate evolua către un mediu de producție.
 
 \subsubsection*{Cadrul frontend și organizarea codului}
 
@@ -63,7 +63,7 @@ Decizia este motivată practic: tipurile și schemele de validare (\gls{trpc} cu
 
 \subsubsection{Angular și randare server-side}\label{subsec:angular-ssr}
 
-Am ales \gls{angular} ca framework de frontend pentru că ecosistemul său oferă în mod nativ piesele de care aveam nevoie pentru \textit{\gls{kookio}}: tipizare strictă, componente \emph{standalone}, \gls{angular} Signals (semnale reactive) și setul de componente \gls{angular} Material/CDK, consistent în privința accesibilității~\cite{angular_signals,angular_material}.
+Am ales \gls{angular} ca framework de frontend pentru că ecosistemul său oferă în mod nativ piesele de care aveam nevoie pentru \textit{\gls{kookio}}: tipizare strictă, componente \textit{standalone}, \gls{angular} Signals (semnale reactive) și setul de componente \gls{angular} Material/CDK, consistent în privința accesibilității~\cite{angular_signals,angular_material}.
 
 Suportul pentru \acrshort{ssr} din \textit{\gls{kookio}} provine din \textbf{\gls{analog}}, un \gls{metaframework} care extinde \gls{angular} cu:
 \begin{itemize}
@@ -84,14 +84,14 @@ Bibliotecile sunt grupate pe roluri:
   \item \texttt{feature/} --- fluxuri de utilizator (\texttt{auth}, \texttt{shell}),
   \item \texttt{prisma/client} --- schema, clientul generat, schemele \gls{zod},
   \item \texttt{server/} --- context \gls{trpc}, middleware-uri, funcții utilitare de runtime server,
-  \item \texttt{shared/} --- \acrshort{ui}, utilitare, date simulate (\emph{mock}).
+  \item \texttt{shared/} --- \acrshort{ui}, utilitare, date simulate (\textit{mock}).
 \end{itemize}
 
 Peste această structură, \gls{nx} oferă două mecanisme esențiale folosite sistematic în proiect: \texttt{nx affected} rulează numai sarcinile (\texttt{lint}, \texttt{test}, \texttt{build}) atinse de modificările curente, iar regula \texttt{enforce-module-boundaries} respinge la \acrshort{ci} importurile care încalcă topologia de biblioteci~\cite{nx}.
 
 \subsubsection{tRPC și partajarea tipurilor}\label{subsec:trpc}
 
-Comunicarea client--server din \textit{\gls{kookio}} folosește \textbf{\gls{trpc}} (\emph{TypeScript Remote Procedure Call} --- apeluri de proceduri la distanță tipizate pentru \gls{typescript}): procedurile sunt declarate o singură dată, în \gls{typescript}, pe server, iar clientul \gls{angular} le invocă direct, fără un strat suplimentar de definiții API~\cite{trpc}.
+Comunicarea client--server din \textit{\gls{kookio}} folosește \textbf{\gls{trpc}} (\textit{TypeScript Remote Procedure Call} --- apeluri de proceduri la distanță tipizate pentru \gls{typescript}): procedurile sunt declarate o singură dată, în \gls{typescript}, pe server, iar clientul \gls{angular} le invocă direct, fără un strat suplimentar de definiții API~\cite{trpc}.
 
 Avantajele concrete pe care le-am observat:
 \begin{itemize}
