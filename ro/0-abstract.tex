@@ -7,7 +7,7 @@ Aplicația acoperă, într-un flux integrat, gestiunea cămării, planificarea z
 Motivația lucrării derivă din necesitatea unor arhitecturi \gls{web} care să asigure coerență între frontend și backend, precum și un proces de dezvoltare unitar.
 În acest cadru, lucrarea investighează arhitectura \gls{pan} ca model full-stack bazat pe ecosistemul \gls{typescript}, în care straturile aplicației partajează tipuri și scheme de validare derivate dintr-o singură sursă de adevăr.
 
-Aplicația utilizează randare pe server (\acrshort{ssr}) cu \gls{angular} prin meta-framework-ul \gls{analog}, comunicare tipizată client--server prin \acrshort{trpc} și persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
+Concret, fiecare strat al acestei stive unitare \gls{typescript} acoperă o responsabilitate distinctă: randarea pe server (\acrshort{ssr}) este asigurată de \gls{angular} prin meta-framework-ul \gls{analog}, comunicarea tipizată client--server prin \acrshort{trpc}, iar persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
 Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
 
 Implementarea este validată prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență și a timpului de rulare \acrshort{ci}.
