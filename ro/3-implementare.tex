@@ -233,19 +233,21 @@ Starea de „cumpărat” pentru fiecare articol este persistată în \gls{redis
 
 Toate măsurătorile au fost realizate în mediul \textit{Preview} al \gls{vercel} (regiunea \texttt{fra1}, Frankfurt), cu \gls{cockroachdb} Serverless și \gls{redis} Cloud în aceeași regiune; stiva rulează \gls{analog} peste \gls{nitro}, cu \acrshort{ssr} la prima cerere și \gls{hydration} la client. Setul de date provine din seturi deterministe de date de test (\textit{fixture}-uri, \texttt{libs/shared/mock/}) și din scripturile de inițializare (\textit{seed}, \texttt{libs/\allowbreak prisma/\allowbreak client/\allowbreak seed-data/\allowbreak catalog.json}, \texttt{recipes.json}).
 
-Toate procedurile de măsurare sunt versionate în repository-ul lucrării: ruta de benchmark este definită în \texttt{apps/\allowbreak web/\allowbreak src/\allowbreak server/\allowbreak routes/\allowbreak api/\allowbreak internal/\allowbreak bench-db.get.ts}, fluxurile de \acrshort{ci} sunt în \texttt{.github/workflows/}, iar configurația suitei \acrshort{e2e} este în \texttt{apps/web-e2e/playwright.config.ts}. Rezultatele de latență pot fi reproduse executând \texttt{npm run bench:preview} local (cu credențialele de acces \gls{vercel} corespunzătoare), iar metricile de \acrshort{ci} și \acrshort{e2e} prin declanșarea fluxului automatizat pe orice ramură de dezvoltare.
+Toate procedurile de măsurare sunt versionate în repository-ul lucrării: ruta de benchmark este definită în \texttt{apps/\allowbreak web/\allowbreak src/\allowbreak server/\allowbreak routes/\allowbreak api/\allowbreak internal/\allowbreak bench-db.get.ts}, fluxurile de \acrshort{ci} sunt în \texttt{.github/workflows/}, iar configurația suitei \acrshort{e2e} este în \texttt{apps/web-e2e/playwright.config.ts}. Fiecare dimensiune se reproduce printr-un script dedicat din \texttt{scripts/}: latența la persistență prin \texttt{npm run bench:preview}, acoperirea testelor prin \texttt{npm run bench:coverage}, iar performanța front-end --- scorurile \gls{lighthouse} și payload-ul imaginilor --- prin \texttt{npm run bench:lighthouse}, respectiv \texttt{npm run bench:images}; scripturile care interoghează mediul \gls{vercel} necesită credențialele de acces corespunzătoare.
 
 \subsubsection{Indicatori și proceduri}\label{subsec:indicatori-proceduri}
 
-\paragraph{Timpul de rulare \acrfull{ci}.} Se compară timpul median de execuție al \gls{workflow}-ului \acrshort{ci} înainte și după extragerea pașilor recurenți (\texttt{setup}, \texttt{build}, \texttt{test}) în acțiuni compozite (\textit{composite actions}) reutilizabile; rulările de referință sunt cele de pe ramurile \texttt{test} și \texttt{main} din ultima săptămână de dezvoltare.
+\paragraph{Latența la stratul de persistență.} Ruta internă \texttt{/api/internal/bench-db} execută, la fiecare apel, \(N=100\) interogări succesive de citire către \gls{cockroachdb}, respectiv \gls{redis}, raportând media aritmetică, percentila 50 (\acrshort{p50}) și percentila 95 (\acrshort{p95}). Distincția rece/cald (\textit{cold}/\textit{warm}) operează la nivelul invocării funcției \textit{serverless}: primul apel plătește pornirea la rece a instanței și a fondului de conexiuni (\textit{connection pool}) către baza de date, în timp ce apelurile ulterioare ating instanța deja încălzită. Se raportează apelul rece separat de mediana apelurilor calde.
 
-\paragraph{Latența la stratul de persistență.} Ruta internă \texttt{/api/internal/bench-db} execută \(N=100\) interogări succesive de citire către \gls{cockroachdb}, respectiv \gls{redis}; se raportează media aritmetică, percentila 50 (\acrshort{p50}) și percentila 95 (\acrshort{p95}), separând explicit prima cerere --- rece (\textit{cold}) --- de cele subsecvente --- calde (\textit{warm}).
+\paragraph{Fiabilitatea testelor end-to-end (\acrshort{e2e}).} Rata de trecere a suitei \gls{playwright} pe Chromium, măsurată pe ultimele zece rulări de pe ramura \texttt{test}. WebKit trece de asemenea integral, iar Firefox rulează majoritatea testelor, cu excepția câtorva teste de autentificare (marcate \texttt{@no-firefox}), excluse din cauza unei curse de sincronizare la nivelul cererilor \textit{fetch} în mediul de dezvoltare local. În \acrshort{ci} rulează sistematic doar Chromium; Firefox și WebKit sunt acoperite în execuții manuale înaintea promovărilor în \texttt{main}.
 
-\paragraph{Fiabilitatea testelor end-to-end (\acrshort{e2e}).} Rata de trecere a suitei \gls{playwright} pe Chromium, măsurată pe ultimele zece rulări de pe ramura \texttt{test}. Browserele Firefox și WebKit sunt configurate, dar nu rulează sistematic în \acrshort{ci} (sunt acoperite în execuții manuale înaintea promovărilor în \texttt{main}).
+\paragraph{Performanță front-end.} Se rulează \gls{lighthouse} pe pagina de pornire a aplicației publicate la \texttt{kookio.app}, în profil desktop și mobil (acesta din urmă cu \textit{throttling} de rețea și de procesor), raportând mediana mai multor rulări pentru scorul de performanță și pentru metricile \gls{lcp}, \gls{cls} și \gls{tbt}. Separat, se cuantifică reducerea de payload a optimizării de imagini: pentru fiecare dintre cele 594 de imagini ale catalogului se compară fișierul JPEG original cu varianta \gls{avif} livrată de optimizatorul \gls{vercel} la lățimea maximă configurată (\(w=960\)) --- o margine conservatoare, întrucât lățimile responsive mai mici economisesc și mai mult.
+
+\paragraph{Acoperirea testelor unitare.} Se raportează acoperirea de linii pe întreg codul-sursă al bibliotecilor (\textit{all-source}: fișierele neacoperite de niciun test sunt numărate ca \(0\,\%\), nu omise), agregată din rapoartele \gls{vitest} per proiect. Aplicația \texttt{web} este exclusă din această cifră, deoarece mediul său de testare expiră sub instrumentarea de acoperire; fluxurile sale de utilizator sunt validate de suita \acrshort{e2e}.
 
 \subsubsection{Rezultate}\label{subsec:rezultate}
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Sinteza rezultatelor pe cele trei dimensiuni măsurate.}
 \label{tab:rezultate}
@@ -253,28 +255,36 @@ Toate procedurile de măsurare sunt versionate în repository-ul lucrării: ruta
 \toprule
 \textbf{Indicator} & \textbf{Valoare} \\
 \midrule
-\multicolumn{2}{l}{\textit{Latența la stratul de persistență (\(N=100\) citiri)}} \\
-\quad \gls{cockroachdb} --- medie & 2,55 ms \\
-\quad \gls{cockroachdb} --- \acrshort{p50} & 2,23 ms \\
-\quad \gls{cockroachdb} --- \acrshort{p95} & 3,52 ms \\
-\quad \gls{redis} --- medie & 1,20 ms \\
-\quad \gls{redis} --- \acrshort{p50} & 0,98 ms \\
-\quad \gls{redis} --- \acrshort{p95} & 1,52 ms \\
+\multicolumn{2}{l}{\textit{Latența la stratul de persistență (\(N=100\) sonde/apel, mediană pe apelurile calde)}} \\
+\quad \gls{cockroachdb} (cald) --- medie & 1,79 ms \\
+\quad \gls{cockroachdb} (cald) --- \acrshort{p50} & 1,71 ms \\
+\quad \gls{cockroachdb} (cald) --- \acrshort{p95} & 2,07 ms \\
+\quad \gls{cockroachdb} (rece, \textit{cold start}) --- \acrshort{p50} / \acrshort{p95} & 2,6 / 6,4 ms \\
+\quad \gls{redis} (cald) --- medie & 0,59 ms \\
+\quad \gls{redis} (cald) --- \acrshort{p50} & 0,56 ms \\
+\quad \gls{redis} (cald) --- \acrshort{p95} & 0,77 ms \\
 \midrule
-\multicolumn{2}{l}{\textit{Timpul de rulare \acrshort{ci} (mediană)}} \\
-\quad Configurație monolitică & 4~min \\
-\quad După extragerea în acțiuni compozite & 3~min \\
-\quad Reducere relativă & \(\approx 25\,\%\) \\
+\multicolumn{2}{l}{\textit{Performanță front-end (\gls{lighthouse}, mediană)}} \\
+\quad Scor desktop & 93 \\
+\quad Scor mobil (cu \textit{throttling}) & 58 \\
+\quad \acrshort{lcp} desktop / mobil & 1,5 / 8,3 s \\
+\quad \acrshort{cls} (desktop / mobil) & 0,055 / 0 \\
+\quad Reducere payload imagini (594 imagini, \(w=960\)) & \(-60{,}5\,\%\) \\
 \midrule
-\multicolumn{2}{l}{\textit{Fiabilitatea testelor \acrshort{e2e}}} \\
-\quad Rată de trecere Chromium (10 rulări) & \(100\,\%\) \\
+\multicolumn{2}{l}{\textit{Acoperire și testare}} \\
+\quad Acoperire linii (cod sursă biblioteci) & \(73{,}2\,\%\) \\
+\quad Teste unitare (\gls{vitest}) & 824 / 96 fișiere \\
+\quad Teste \acrshort{e2e} (\gls{playwright}) & 14 / 7 fluxuri \\
+\quad Rată de trecere \acrshort{e2e} Chromium & \(100\,\%\) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Rezultatele sintetizate în \tabref{tab:rezultate} confirmă, în limitele explicate în \secref{subsec:discutie-limitari}, viabilitatea arhitecturii \gls{pan} pe cele trei axe de evaluare: latențe milisecundice la stratul de persistență, reducere semnificativă a timpului de rulare \acrshort{ci} prin extragerea pașilor recurenți, și fiabilitate completă a fluxurilor critice end-to-end pe browserul de referință.
+Rezultatele sintetizate în \tabref{tab:rezultate} confirmă, în limitele explicate în \secref{subsec:discutie-limitari}, viabilitatea arhitecturii \gls{pan} pe cele trei axe de evaluare: latențe milisecundice la stratul de persistență, performanță front-end solidă pe desktop (scor 93, \gls{cls} nul) cu un decalaj asumat în profilul mobil cu \textit{throttling}, o reducere de aproximativ \(60\,\%\) a payload-ului de imagini pe întregul catalog, o acoperire de \(73{,}2\,\%\) a codului bibliotecilor și fiabilitate completă a fluxurilor critice end-to-end pe browserul de referință.
 
 \subsubsection{Discuție și limitări}\label{subsec:discutie-limitari}
 
 Toate măsurătorile provin din mediul \textit{Preview}, în regiunea \texttt{fra1}, fără trafic concurent --- așadar nu surprind comportamentul stivei sub încărcare sau în regim multi-regional. Suita \acrshort{e2e} rulează doar pe Chromium în \acrshort{ci}, iar matricile de testare Firefox și WebKit sunt acoperite manual; o promovare automatizată a celor două ar mări încrederea în compatibilitatea inter-browser (\textit{cross-browser}). În plus, atât \gls{cockroachdb}, cât și \gls{redis} rulează pe planurile gratuite (cu cote de utilizare și ciclu de \textit{auto-suspendare} pentru \gls{redis}) și sunt măsurate fără trafic concurent, ceea ce face latențele raportate reprezentative pentru un regim singular, nu pentru producție la scară. Generalizarea acestor rezultate cere teste de încărcare dedicate și măsurători repetate într-un mediu de producție stabil.
+
+Trei limitări specifice noilor măsurători merită semnalate. Întâi, latențele la persistență variază sensibil între seturile de măsurători --- mediana \acrshort{p50} pentru \gls{cockroachdb} a oscilat între aproximativ \(1{,}4\) și \(2{,}6\) ms ---, consecință a planurilor gratuite, a regiunii unice și a încărcării variabile; valoarea raportată în \tabref{tab:rezultate} este mediana unui set de apeluri calde, nu o constantă. Apoi, scorul \gls{lighthouse} pe profilul mobil reflectă \textit{throttling}-ul agresiv aplicat de unealtă (rețea lentă și procesor încetinit de patru ori), nu performanța percepută pe un dispozitiv real --- profilul desktop rămâne în zona bună. În fine, acoperirea de \(73{,}2\,\%\) privește exclusiv codul bibliotecilor, aplicația \texttt{web} fiind exclusă din motivele explicate în \secref{subsec:indicatori-proceduri}.
 % 3-implementare.tex ends here

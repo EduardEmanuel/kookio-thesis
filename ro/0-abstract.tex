@@ -10,7 +10,7 @@ Motivația lucrării derivă din necesitatea unor arhitecturi \gls{web} care să
 Concret, fiecare strat al acestei stive unitare \gls{typescript} acoperă o responsabilitate distinctă: randarea pe server (\acrshort{ssr}) este asigurată de \gls{angular} prin meta-framework-ul \gls{analog}, comunicarea tipizată client--server prin \acrshort{trpc}, iar persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
 Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
 
-Implementarea este validată prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență și a timpului de rulare \acrshort{ci}.
-Latența mediană măsurată a fost de 2,23\,ms pentru \gls{cockroachdb} și de 0,98\,ms pentru \gls{redis}, iar timpul mediu de rulare \acrshort{ci} s-a redus cu aproximativ \(25\,\%\) prin extragerea pașilor recurenți în acțiuni compozite reutilizabile.
+Implementarea este validată prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență, a performanței front-end și a acoperirii testelor.
+Latența mediană măsurată (apeluri calde) a fost de 1,71\,ms pentru \gls{cockroachdb} și de 0,56\,ms pentru \gls{redis}, iar optimizarea imaginilor reduce payload-ul livrat cu aproximativ \(60\,\%\) pe întregul catalog.
 Rezultatele indică faptul că arhitectura \gls{pan} constituie un model coerent și extensibil pentru dezvoltarea aplicațiilor \gls{web} full-stack.
 % 0-abstract.tex ends here
