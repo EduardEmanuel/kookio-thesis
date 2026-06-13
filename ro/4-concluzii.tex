@@ -2,7 +2,7 @@
 \section{Concluzii}\label{cap:concluzii}
 
 Am proiectat și implementat \textit{\gls{kookio}}, o aplicație \gls{web} full-stack construită integral în ecosistemul \gls{typescript} pe arhitectura \textbf{\gls{pan}}.
-Pornind de la preferința pentru \gls{typescript} motivată în \capref{cap:preliminarii}, am tradus această preferință într-o stivă concretă: o singură aplicație \gls{analog} sub \texttt{apps/web}, cinci grupuri de biblioteci \gls{nx} (\texttt{core}, \texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) cu topologie aciclică aplicată de \texttt{enforce-module-boundaries} la \acrshort{ci}, și un flux cap-coadă \textit{\gls{analog}} \(\rightarrow\) \textit{\acrshort{trpc}} \(\rightarrow\) \textit{\gls{prisma}} descris în \secref{subsec:flux-capcoada}.
+Pornind de la preferința pentru \gls{typescript} motivată în \capref{cap:preliminarii}, am tradus această preferință într-o stivă concretă: o singură aplicație \gls{analog} sub \texttt{apps/web}, patru grupuri de biblioteci \gls{nx} (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) cu topologie aciclică aplicată de \texttt{enforce-module-boundaries} la \acrshort{ci}, și un flux cap-coadă \textit{\gls{analog}} \(\rightarrow\) \textit{\acrshort{trpc}} \(\rightarrow\) \textit{\gls{prisma}} descris în \secref{subsec:flux-capcoada}.
 
 Adoptarea arhitecturii \textbf{\gls{pan}} a permis eliminarea straturilor clasice de adaptare între frontend și backend.
 Procedurile \acrshort{trpc} apelează direct \texttt{ctx.prisma} fără un strat de \textit{repository} (\secref{subsec:topologie-biblioteci}), iar schemele \gls{zod} consumate de \gls{angular} sunt derivate din \texttt{schema.prisma} prin \texttt{prisma-zod-generator} --- o redenumire pe un câmp se propagă la compilare în toți consumatorii.
@@ -29,11 +29,11 @@ Contribuția principală a prezentei lucrări este propunerea și validarea empi
 
 \subsection{Decizii arhitecturale}\label{subsec:decizii-arhitecturale}
 
-Pe parcursul implementării, mai multe decizii inițiale au fost rafinate, eliminate sau reconfigurate ca răspuns la frecușul de implementare. Cele opt decizii arhitecturale documentate în repository-ul proiectului se grupează în trei categorii distincte, prezentate sintetic în \tabref{tab:decizii-arhitecturale}: trei \textit{simplificări} (eliminarea unor sisteme construite, dar fără consumator real), trei \textit{unificări} (pattern-uri descoperite din frecuș și codificate ca regulă, prezentate detaliat în \secref{subsec:pan-patterns}) și două \textit{decizii de design} (alegeri de interfață revizuite post-implementare).
+Pe parcursul implementării, mai multe decizii inițiale au fost rafinate, eliminate sau reconfigurate ca răspuns la frecușul de implementare. Cele nouă decizii arhitecturale documentate în repository-ul proiectului se grupează în trei categorii distincte, prezentate sintetic în \tabref{tab:decizii-arhitecturale}: patru \textit{simplificări} (eliminarea unor sisteme construite, dar fără consumator real), trei \textit{unificări} (pattern-uri descoperite din frecuș și codificate ca regulă, prezentate detaliat în \secref{subsec:pan-patterns}) și două \textit{decizii de design} (alegeri de interfață revizuite post-implementare).
 
 \begin{table}[htbp]
 \centering
-\caption{Cele opt decizii arhitecturale documentate, organizate pe categorii.}
+\caption{Cele nouă decizii arhitecturale documentate, organizate pe categorii.}
 \label{tab:decizii-arhitecturale}
 \small
 \begin{tabularx}{\textwidth}{lYY}
@@ -44,15 +44,16 @@ Pe parcursul implementării, mai multe decizii inițiale au fost rafinate, elimi
 \quad 1 & Eliminarea autentificării biometrice (\textit{WebAuthn}) & Sistemul a fost construit ca răspuns la o cerință anticipată, nu observată; nicio interfață nu îl consuma efectiv. \\
 \quad 2 & Eliminarea infrastructurii de roluri (control de acces bazat pe roluri) & Singurul consumator era o pagină stub pentru administrator; eliminarea a redus enum-ul \texttt{Role}, coloana \texttt{User.role} și \textit{builder}-ul \texttt{roleProcedure}. \\
 \quad 3 & Aplatizarea agregatului \texttt{MealPlan} & Aggregate-ul intermediar nu avea consumator real; \acrshort{ui}-ul lucra direct cu \texttt{MealSlot} pe \texttt{(userId, date, slotType)}. Eliminarea a redus cu unul numărul de modele din schemă. \\
+\quad 4 & Eliminarea grupului de biblioteci \texttt{core/} & Subsistemul de \textit{feature flags} și preocupările de configurare/securitate erau complet cablate, dar fără consumator (router-ul nu era montat, \textit{guard}-ul nu păzea nicio rută); eliminarea a șters bibliotecile \texttt{core/config} și \texttt{core/security} plus tokenul \texttt{APP\_TRPC}, iar \texttt{core/logging} a fost absorbit în \texttt{server/logger} --- taxonomia a trecut de la cinci la patru grupuri. \\
 \midrule
 \multicolumn{3}{l}{\textit{Unificări --- frecuș de implementare, lecție codificată} (\secref{subsec:pan-patterns})} \\
-\quad 4 & Încărcătoarele \acrshort{ssr} cer hidratare client-side a datelor autentificate & \textit{Bearer token}-ul Firebase nu se propagă prin \texttt{fetch} pe navigare client-side; loader-ele apelează doar proceduri publice. \\
-\quad 5 & Rutele numite semantic, nu prin coduri numerice & Router-ul bazat pe fișiere al \gls{analog} cade silentios pe segmente \textit{all-numeric}; soluția: \texttt{/server-error} în loc de \texttt{/500}. \\
-\quad 6 & O singură euristică pentru estimarea cantităților, doi consumatori & Pipeline-ul de curățare offline și logica de runtime consumă acum aceeași pereche \texttt{toGrams}/\texttt{fromGrams} (\secref{subsec:algoritm-grame}). \\
+\quad 5 & Încărcătoarele \acrshort{ssr} cer hidratare client-side a datelor autentificate & \textit{Bearer token}-ul Firebase nu se propagă prin \texttt{fetch} pe navigare client-side; loader-ele apelează doar proceduri publice. \\
+\quad 6 & Rutele numite semantic, nu prin coduri numerice & Router-ul bazat pe fișiere al \gls{analog} cade silentios pe segmente \textit{all-numeric}; soluția: \texttt{/server-error} în loc de \texttt{/500}. \\
+\quad 7 & O singură euristică pentru estimarea cantităților, doi consumatori & Pipeline-ul de curățare offline și logica de runtime consumă acum aceeași pereche \texttt{toGrams}/\texttt{fromGrams} (\secref{subsec:algoritm-grame}). \\
 \midrule
 \multicolumn{3}{l}{\textit{Decizii de design --- propunere inițială, validare la utilizare ulterioară}} \\
-\quad 7 & Buton \textit{Cook now} mutat din \acrshort{ui}-componenta \textit{FAB} în topbar & Componenta \textit{FAB} (\textit{floating action button}) ocupa spațiu fără a oferi un avantaj de vizibilitate față de un buton în topbar. \\
-\quad 8 & Widget-ul \textit{Quick actions} eliminat din pagina principală & Acțiunile rapide propuse erau redundante cu bara de navigare de jos plus butonul \textit{Cook now}; eliminarea a redus zgomotul vizual al paginii principale. \\
+\quad 8 & Buton \textit{Cook now} mutat din \acrshort{ui}-componenta \textit{FAB} în topbar & Componenta \textit{FAB} (\textit{floating action button}) ocupa spațiu fără a oferi un avantaj de vizibilitate față de un buton în topbar. \\
+\quad 9 & Widget-ul \textit{Quick actions} eliminat din pagina principală & Acțiunile rapide propuse erau redundante cu bara de navigare de jos plus butonul \textit{Cook now}; eliminarea a redus zgomotul vizual al paginii principale. \\
 \bottomrule
 \end{tabularx}
 \end{table}

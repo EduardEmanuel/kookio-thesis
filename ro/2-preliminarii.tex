@@ -78,14 +78,13 @@ Pentru o pagină de rețetă publică, \acrshort{ssr} face diferența între un 
 
 \subsubsection{Monorepo și orchestrare cu Nx}\label{subsec:monorepo-nx}
 
-Am organizat \textit{\gls{kookio}} ca \gls{monorepo} folosind \textbf{\gls{nx}}: o singură aplicație (\texttt{apps/web}) și un set de biblioteci segmentate pe responsabilități (\texttt{core}, \texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared})~\cite{nx}.
+Am organizat \textit{\gls{kookio}} ca \gls{monorepo} folosind \textbf{\gls{nx}}: o singură aplicație (\texttt{apps/web}) și un set de biblioteci segmentate pe responsabilități (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared})~\cite{nx}.
 
 Bibliotecile sunt grupate pe roluri:
 \begin{itemize}
-  \item \texttt{core/} --- configurație, logare, securitate (preocupări transversale),
   \item \texttt{feature/} --- fluxuri de utilizator (\texttt{auth}, \texttt{shell}),
   \item \texttt{prisma/client} --- schema, clientul generat, schemele \gls{zod},
-  \item \texttt{server/} --- context \gls{trpc}, middleware-uri, funcții utilitare de runtime server,
+  \item \texttt{server/} --- context \gls{trpc}, jurnalizare, middleware-uri, funcții utilitare de runtime server,
   \item \texttt{shared/} --- \acrshort{ui}, utilitare, date simulate (\textit{mock}).
 \end{itemize}
 
