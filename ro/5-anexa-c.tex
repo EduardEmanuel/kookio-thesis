@@ -1,0 +1,31 @@
+% 5-anexa-c.tex starts here
+
+\section{Modelul de date}\label{anexa:model-date}
+
+Schema completă a bazei de date --- cele 20 de modele \gls{prisma} --- este
+redată în \figref{fig:er-diagram} ca diagramă entitate-relație. Diagrama este
+generată automat din \texttt{schema.prisma} (cu \textit{prisma-dbml-generator})
+și randată cu \textit{dbdocs.io}, rămânând astfel sincronizată cu modelul de
+date efectiv. Cheile primare sunt marcate cu simbolul cheii, cheile externe cu
+simbolul de legătură, iar conectorii dintre tabele redau relațiile dintre
+entități; tabelele de joncțiune (de exemplu \texttt{UserDietaryRestriction},
+\texttt{RecipeCollectionEntry}) sunt așezate lângă entitățile pe care le leagă.
+
+\begin{figure}[p]
+  \centering
+  % Image is the dbdocs PDF export cropped to its content with `pdfcrop` ---
+  % the raw export carries a full-canvas white border that wastes ~1/3 of the
+  % page. Re-crop after any re-export. keepaspectratio + the height cap keep
+  % the diagram inside the text block.
+  \makebox[\textwidth]{%
+    \includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{kookio-er-diagram}}
+  \caption[Diagrama entitate-relație a bazei de date]{Diagrama
+    entitate-relație a schemei de date: cele 20 de modele și relațiile dintre
+    ele, generate din \texttt{schema.prisma} și publicate pe
+    \textit{dbdocs.io}. Versiunea interactivă, navigabilă:
+    \url{https://dbdocs.io/dinea.eduard/kookio-db} (parolă de acces:
+    \texttt{FMI\_2026}).}
+  \label{fig:er-diagram}
+\end{figure}
+
+% 5-anexa-c.tex ends here

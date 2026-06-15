@@ -23,9 +23,10 @@
 latex.out/
 _build/
 
-# Ignore all PDFs, excepts those from ```dist/``` folder
+# Ignore all PDFs, excepts those from ```dist/``` & ```images/``` folders
 *.pdf
 !dist/*.pdf
+!images/*.pdf
 
 # Ignore resources under the ```ignored/``` folder
 ignored/
