@@ -59,7 +59,21 @@ Pe ramura \acrshort{ssr}, distincția dintre rutele publice (\texttt{/recipes}, 
 
 \subsubsection{Topologia bibliotecilor și absența unui strat de repository}\label{subsec:topologie-biblioteci}
 
-Bibliotecile \textit{feature} ale aplicației sunt felii verticale (\textit{vertical slices}): fiecare reprezintă un flux utilizator complet (\texttt{auth}, \texttt{onboarding}, \texttt{pantry}, \texttt{plan}, \texttt{recipes}) și conține componentele, magazinele de stare (\textit{store}-uri NgRx Signals) și serviciile de care depinde acel flux. Topologia impusă de \texttt{enforce-module-boundaries} este aciclică: \texttt{apps/} \(\rightarrow\) \texttt{libs/feature/} \(\rightarrow\) \texttt{libs/server/}, \texttt{libs/shared/}, \texttt{libs/prisma-client}, iar \texttt{libs/feature/X} nu poate importa din \texttt{libs/feature/Y}. Comunicarea între feature-uri se face prin magazine de stare \texttt{providedIn: 'root'} sau prin procedurile \gls{trpc} expuse de \texttt{libs/server/trpc} \cite{nx,nx_boundaries,trpc}.
+Bibliotecile \textit{feature} ale aplicației sunt felii verticale (\textit{vertical slices}): fiecare reprezintă un flux utilizator complet (\texttt{auth}, \texttt{onboarding}, \texttt{pantry}, \texttt{plan}, \texttt{recipes}) și conține componentele, magazinele de stare (\textit{store}-uri NgRx Signals) și serviciile de care depinde acel flux. Topologia impusă de \texttt{enforce-module-boundaries} este aciclică: \texttt{apps/} \(\rightarrow\) \texttt{libs/feature/} \(\rightarrow\) \texttt{libs/server/}, \texttt{libs/shared/}, \texttt{libs/prisma-client}, iar \texttt{libs/feature/X} nu poate importa din \texttt{libs/feature/Y}. Comunicarea între feature-uri se face prin magazine de stare \texttt{providedIn: 'root'} sau prin procedurile \gls{trpc} expuse de \texttt{libs/server/trpc} \cite{nx,nx_boundaries,trpc}. Graful de dependențe al proiectului, colapsat pe cele patru domenii de \textit{scope}, este redat în \figref{fig:nx-graph}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{graph-all}
+  \caption[Graful de dependențe \gls{nx} al proiectului]{Graful de dependențe
+    al proiectului (\gls{nx}), colapsat pe cele patru domenii de \textit{scope}:
+    \texttt{feature} (9 biblioteci), \texttt{server} (3), \texttt{shared} (4) și
+    \texttt{prisma-client}, plus aplicațiile \texttt{web} și \texttt{web-e2e}.
+    Săgețile redau relația de dependență; topologia este aciclică
+    (\texttt{apps} \(\rightarrow\) \texttt{feature} \(\rightarrow\)
+    \texttt{server}, \texttt{shared}, \texttt{prisma-client}), straturile
+    inferioare neavând dependențe către cele superioare.}
+  \label{fig:nx-graph}
+\end{figure}
 
 Organizarea bibliotecilor feature ca felii verticale (fiecare un flux complet de utilizator --- \texttt{auth}, \texttt{pantry}, \texttt{plan}), și nu ca straturi orizontale corespunzătoare etapelor de procesare, reflectă concluzia centrală a lui Parnas: este aproape întotdeauna greșit să se înceapă descompunerea unui sistem pe baza unei diagrame de flux \cite{parnas1972}. Parnas opune cele două modularizări ale sistemului KWIC --- una pe etape (input \(\rightarrow\) shift circular \(\rightarrow\) alfabetizare \(\rightarrow\) output), cealaltă pe ascunderea deciziilor --- și arată că în prima o schimbare precum formatul de stocare se propagă în fiecare modul, pe când în a doua rămâne confinată într-unul singur. Deoarece deciziile de proiectare transcend ordinea în timp a execuției, modulele nu corespund pașilor de procesare. În \gls{pan}, observația se traduce în interdicția structurală \texttt{feature/X} \(\not\rightarrow\) \texttt{feature/Y}: feliile comunică prin proceduri \gls{trpc} sau magazine de stare la nivel de rădăcină, nu pe orizontală prin etape.
 
