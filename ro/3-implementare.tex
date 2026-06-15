@@ -45,7 +45,46 @@ kookio/
 
 \subsubsection{Fluxul aplicației cap-coadă}\label{subsec:flux-capcoada}
 
-La nivel de ansamblu, o cerere parcurge trei straturi: \textit{\Gls{analog} (\acrshort{ui} și \acrshort{ssr})} \(\rightarrow\) \textit{\acrshort{trpc} (API tipizat)} \(\rightarrow\) \textit{\gls{prisma} (acces la date)} \cite{analog,trpc,prisma_orm}. Tranzițiile dintre straturi nu trec printr-un strat suplimentar de serializare manuală --- tipurile \gls{typescript} sunt partajate de la capăt la capăt, iar validarea de intrare la frontiera \gls{trpc} folosește scheme \gls{zod} derivate din schema \gls{prisma} \cite{trpc,zod,prisma_zod_generator}. Detalierea pe etape a unei cereri concrete (de la \acrshort{ssr} inițial până la apelurile ulterioare din browser) se găsește în \secref{subsec:flux-executie}.
+La nivel de ansamblu, o cerere parcurge trei straturi: \textit{\Gls{analog} (\acrshort{ui} și \acrshort{ssr})} \(\rightarrow\) \textit{\acrshort{trpc} (API tipizat)} \(\rightarrow\) \textit{\gls{prisma} (acces la date)} \cite{analog,trpc,prisma_orm}. Tranzițiile dintre straturi nu trec printr-un strat suplimentar de serializare manuală --- tipurile \gls{typescript} sunt partajate de la capăt la capăt, iar validarea de intrare la frontiera \gls{trpc} folosește scheme \gls{zod} derivate din schema \gls{prisma} \cite{trpc,zod,prisma_zod_generator}. Detalierea pe etape a unei cereri concrete (de la \acrshort{ssr} inițial până la apelurile ulterioare din browser) se găsește în \secref{subsec:flux-executie}, iar diagrama de secvență corespunzătoare în \figref{fig:flux-executie}. Imaginea de ansamblu a componentelor și a serviciilor gestionate extern este redată în \figref{fig:arhitectura}.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    font=\footnotesize,
+    >={Stealth[length=2mm]},
+    L/.style={draw, rounded corners, align=center, minimum height=8mm, inner sep=4pt},
+  ]
+    \node[L, fill=blue!5, minimum width=128mm] (client)
+      {\textbf{Browser} \;---\; Angular 21 · Material · Tailwind · NgRx Signals};
+
+    \node[L, fill=black!8, minimum width=30mm, below=20mm of client] (trpc) {tRPC · Zod};
+    \node[L, fill=black!8, minimum width=34mm, left=8mm of trpc] (analog) {Analog / Nitro\\\acrshort{ssr} + serverless};
+    \node[L, fill=black!8, minimum width=26mm, right=8mm of trpc] (prisma) {Prisma};
+    \begin{scope}[on background layer]
+      \node[draw, dashed, rounded corners, fit=(analog)(trpc)(prisma), inner sep=4mm] (vercel) {};
+    \end{scope}
+    \node[anchor=south west, font=\bfseries] at (vercel.north west) {Vercel};
+
+    \node[L, fill=orange!18, minimum width=26mm, below=20mm of analog] (fb) {Firebase Auth};
+    \node[L, fill=green!12, minimum width=22mm, below=20mm of trpc] (redis) {Redis};
+    \node[L, fill=green!12, minimum width=28mm, below=20mm of prisma] (db) {CockroachDB};
+    \node[L, fill=red!12, minimum width=20mm, right=8mm of db] (sentry) {Sentry};
+
+    \draw[<->] (client.south) -- node[right=1pt]{HTTPS} (vercel.north);
+    \draw[->] (analog.south) -- (fb.north);
+    \draw[->] (trpc.south) -- (redis.north);
+    \draw[->] (prisma.south) -- (db.north);
+    \draw[->, dashed] (vercel.south east) -- (sentry.north);
+  \end{tikzpicture}
+  \caption[Arhitectura de ansamblu a aplicației]{Arhitectura de ansamblu:
+    browserul (\gls{angular}) comunică prin HTTPS cu platforma \gls{vercel}, care
+    găzduiește runtime-ul \gls{analog}/\gls{nitro} (\acrshort{ssr} + funcții
+    serverless), stratul \gls{trpc} (cu validare \gls{zod}) și clientul
+    \gls{prisma}. Persistența și serviciile transversale sunt gestionate extern:
+    \gls{cockroachdb} (date), \gls{redis} (cache, \textit{rate-limiting}),
+    Firebase (autentificare) și \gls{sentry} (monitorizarea erorilor).}
+  \label{fig:arhitectura}
+\end{figure}
 
 \subsection{Implementarea aplicației}
 
@@ -137,7 +176,41 @@ Detalierea fluxului rezumat în \secref{subsec:flux-capcoada} se desfășoară p
 
 \textbf{Etapa~2 (interogarea persistenței).} Componentele \gls{angular} declanșează apeluri către procedurile \gls{trpc} ale stratului server-side; fiecare procedură își validează intrările cu o schemă \gls{zod} derivată din schema \gls{prisma} și folosește \texttt{ctx.prisma} pentru a interoga \gls{cockroachdb} \cite{trpc,zod,prisma_zod_generator,prisma_cockroachdb}. Rezultatele se propagă înapoi prin stratul \gls{trpc} către componentele care participă la randarea inițială.
 
-\textbf{Etapa~3 (hidratare și interacțiune ulterioară).} HTML-ul randat ajunge la browser, iar instanța \gls{angular} preia controlul prin \gls{hydration} --- arborele DOM produs pe server este reutilizat, iar evenimentele capturate în interval sunt rerulate de \texttt{withEventReplay()} \cite{analog}. De aici, interacțiunile ulterioare apelează direct procedurile \gls{trpc} din browser, fără o nouă \gls{randare} pe server \cite{trpc}.
+\textbf{Etapa~3 (hidratare și interacțiune ulterioară).} HTML-ul randat ajunge la browser, iar instanța \gls{angular} preia controlul prin \gls{hydration} --- arborele DOM produs pe server este reutilizat, iar evenimentele capturate în interval sunt rerulate de \texttt{withEventReplay()} \cite{analog}. De aici, interacțiunile ulterioare apelează direct procedurile \gls{trpc} din browser, fără o nouă \gls{randare} pe server \cite{trpc}. \figref{fig:flux-executie} redă acest flux ca diagramă de secvență.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{br}{Browser}
+    \newinst[2.5]{sv}{Analog / Nitro}
+    \newinst[2.5]{tr}{tRPC}
+    \newinst[2]{pr}{Prisma}
+    \newinst[2]{db}{CockroachDB}
+
+    \begin{call}{br}{HTTP GET /rută}{sv}{HTML inițial}
+      \begin{call}{sv}{procedură (validare Zod)}{tr}{rezultat (SuperJSON)}
+        \begin{call}{tr}{ctx.prisma.<op>}{pr}{date}
+          \begin{call}{pr}{SQL}{db}{rânduri}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{call}
+    \postlevel
+    \begin{call}{br}{apel tRPC direct (post-hidratare)}{tr}{răspuns}
+      \begin{call}{tr}{ctx.prisma.<op>}{pr}{date}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}}
+  \caption[Diagrama de secvență a unei cereri]{Diagrama de secvență a unei
+    cereri. \textbf{Randare inițială (\acrshort{ssr}):} cererea HTTP ajunge la
+    runtime-ul \gls{analog}/\gls{nitro}, care interoghează persistența prin
+    straturile \gls{trpc} (cu validare \gls{zod}) \(\rightarrow\) \gls{prisma}
+    \(\rightarrow\) \gls{cockroachdb} și returnează HTML-ul inițial.
+    \textbf{Interacțiune ulterioară:} după hidratare, apelurile pleacă direct
+    din browser către \gls{trpc}, fără o nouă randare pe server.}
+  \label{fig:flux-executie}
+\end{figure}
 
 \subsubsection{Testare și validare}\label{subsec:testare-validare}
 
