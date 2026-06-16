@@ -8,9 +8,9 @@ Motivația lucrării derivă din necesitatea unor arhitecturi \gls{web} care să
 În acest cadru, lucrarea investighează arhitectura \gls{pan} ca model full-stack bazat pe ecosistemul \gls{typescript}, în care straturile aplicației partajează tipuri și scheme de validare derivate dintr-o singură sursă de adevăr.
 
 Concret, fiecare strat al acestei stive unitare \gls{typescript} acoperă o responsabilitate distinctă: randarea pe server (\acrshort{ssr}) este asigurată de \gls{angular} prin meta-framework-ul \gls{analog}, comunicarea tipizată client--server prin \acrshort{trpc}, iar persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
-Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
+Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries} a \gls{nx}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
 
 Implementarea este validată prin teste unitare cu \gls{vitest} și prin \acrlong{e2e} (\acrshort{e2e}) cu \gls{playwright}, însoțită de o evaluare empirică a latențelor stratului de persistență, a performanței front-end și a acoperirii testelor.
 Latența mediană măsurată (apeluri calde) a fost de 1,71\,ms pentru \gls{cockroachdb} și de 0,56\,ms pentru \gls{redis}, iar optimizarea imaginilor reduce payload-ul livrat cu aproximativ \(60\,\%\) pe întregul catalog.
-Rezultatele indică faptul că arhitectura \gls{pan} constituie un model coerent și extensibil pentru dezvoltarea aplicațiilor \gls{web} full-stack.
+Evaluarea arată că stiva implementată atinge performanțe adecvate unui mediu de producție; coerența și extensibilitatea arhitecturii \gls{pan} sunt însă proprietăți structurale --- susținute de topologia aciclică verificată la \acrshort{ci} și de derivarea contractelor dintr-o sursă unică de adevăr ---, dar nu consecințe ale acestor măsurători de latență.
 % 0-abstract.tex ends here
