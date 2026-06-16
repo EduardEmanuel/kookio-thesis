@@ -1,0 +1,106 @@
+% 5-anexa-demo.tex starts here
+% \raggedbottom for this appendix: the screenshot figures use [htbp] and the
+% walkthrough paragraphs are short, so \flushbottom from the body would stretch
+% inter-paragraph glue into gaps. Same rationale as the data-model appendix.
+\raggedbottom
+
+% Placeholder for screenshots not yet captured. Replace each \demoplaceholder
+% with \includegraphics[width=0.85\textwidth]{kookio-demo-<flow>} once the PNG
+% is added under images/. The box keeps the document compiling in the meantime.
+\newcommand{\demoplaceholder}[1]{%
+  \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering\itshape [Captură de ecran: #1]}}%
+}
+
+\section{Demonstrarea aplicației \textit{\gls{kookio}}}\label{anexa:demo}
+
+Această anexă documentează fluxul funcțional principal al aplicației \textit{\gls{kookio}}, ca dovadă a faptului că \acrlong{mvp}-ul (\acrshort{mvp}) descris în \secref{cap:implementare} este operațional de la un capăt la altul. Capturile de ecran surprind parcursul real al unui utilizator --- de la inventarul cămării, prin planificarea meselor și lista de cumpărături, până la sesiunea de gătit care decrementează stocul. Secțiunea finală relochează aici detaliul de implementare al pipeline-ului de conversie a unităților, păstrat în corpul lucrării doar la nivelul deciziei de proiectare (\secref{subsec:algoritm-grame}).
+
+\subsection{Fluxul principal: de la cămară la gătit}\label{anexa:demo-flux}
+
+Parcursul demonstrat urmează lanțul de valoare al aplicației: utilizatorul declară ce are în cămară, aplicația îi arată ce poate găti, el planifică mesele, derivă lista de cumpărături pentru ce lipsește și, după gătit, stocul se actualizează automat.
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{cămara --- lista de ingrediente cu cantități și unități de măsură}
+  \caption{Cămara (\texttt{/pantry}): inventarul utilizatorului, cu fiecare ingredient stocat în unitatea sa de afișare. Acesta este punctul de pornire al fluxului --- sursa de adevăr pentru ce este disponibil acasă.}
+  \label{fig:demo-pantry}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{filtrarea progresivă a rețetelor --- nivelurile \textit{Alright} / \textit{Almost} / \textit{All}}
+  \caption{Filtrarea progresivă (\texttt{/recipes/match}): catalogul partiționat după gradul de acoperire din cămară (\secref{subsec:filtru-progresiv}). Nivelul \textit{Alright} listează rețetele complet acoperite, \textit{Almost} pe cele cărora le lipsesc unu--trei ingrediente.}
+  \label{fig:demo-match}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{planificatorul de mese --- slot-uri pe zile}
+  \caption{Planificatorul (\texttt{/plan}): rețetele se atribuie pe slot-uri \texttt{(dată, tip de masă)}, modelate ca \texttt{MealSlot} cu constrângerea \texttt{@@unique} descrisă în \secref{subsec:gestionarea-datelor}.}
+  \label{fig:demo-plan}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{lista de cumpărături derivată din plan minus cămară}
+  \caption{Lista de cumpărături (\texttt{/groceries}): diferența de mulțimi între ingredientele slot-urilor planificate și conținutul cămării (\secref{subsec:lista-cumparaturi}). Articolele bifate ca „cumpărate” se pot îmbina înapoi în cămară.}
+  \label{fig:demo-groceries}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{sesiunea de gătit --- dialogul de confirmare a cantităților consumate}
+  \caption{Sesiunea de gătit (\texttt{/cook/:recipeId}): la final, dialogul propune cantitățile consumate pre-completate, iar confirmarea declanșează decrementarea tranzacțională a cămării (\secref{subsec:sesiune-gatit}).}
+  \label{fig:demo-cook}
+\end{figure}
+
+\subsection{Detaliul pipeline-ului de conversie a unităților}\label{anexa:grams-detail}
+
+Corpul lucrării (\secref{subsec:algoritm-grame}) reține pipeline-ul de conversie a unităților la nivelul deciziei de proiectare --- perechea de funcții pure \texttt{toGrams}/\texttt{fromGrams} ca aplicare a ascunderii informației. Detaliul concret al regulilor de conversie este relocat aici, fiind un detaliu de implementare specific aplicației, util ca referință, dar nu necesar argumentului arhitectural.
+
+Pipeline-ul rezolvă patru clase de unități, fiecare cu o regulă explicită:
+
+\begin{itemize}
+  \item \textbf{Greutate} (\texttt{G}, \texttt{KG}, \texttt{OZ}, \texttt{LB}): conversie directă prin factori constanți.
+  \item \textbf{Volum} (\texttt{ML}, \texttt{L}, \texttt{TSP}, \texttt{TBSP}, \texttt{CUP}): conversie prin densitatea apei (\texttt{1 ml} \(\approx\) \texttt{1 g}), aproximare acceptabilă pentru ingredientele uzuale din gătitul casnic.
+  \item \textbf{Bucăți} (\texttt{PIECE}, \texttt{SLICE}, \texttt{CLOVE}, \texttt{BUNCH}, \texttt{OTHER}): conversie prin \texttt{IngredientCatalog.\allowbreak pieceGrams}, o coloană opțională (\texttt{Float?}) populată cu 32 de valori (\texttt{egg: 60}, \texttt{garlic clove: 5}, \texttt{lemon: 100} etc.).
+  \item \textbf{Gust și ornament} (\texttt{TO\_TASTE}, \texttt{TO\_SERVE}, \texttt{GARNISH}): tratate ca \texttt{0 g} și excluse din lista de cumpărături. Distincția față de \texttt{PINCH} nu este una de mărime, ci de natură: \texttt{PINCH} este o cantitate specificată de autorul rețetei (o ciupitură), pe când unitățile de gust și ornament exprimă o instrucțiune --- „după gust”, „pentru servire” --- a cărei cantitate este lăsată deliberat la latitudinea celui care gătește. Valoarea \texttt{0 g} este, prin urmare, o convenție de modelare aleasă conștient, nu o necunoaștere: ea onorează intenția autorului (a atribui un gram-echivalent ar suprascrie o decizie lăsată explicit deschisă), evită zgomotul în aval (o jumătate de gram de sare decrementată la fiecare gătit, sau condimentele de bază listate la cumpărături, nu sunt informație utilă într-o aplicație centrată pe risipa de alimente în vrac) și păstrează o poziție neutră față de aportul dietetic, pe care aplicația nu este în măsură să îl prescrie. Pentru \texttt{PINCH}, în schimb, o convenție stabilește \texttt{0,5 g} per bucată --- masă mică, dar reală, suficientă pentru a permite ștergerea rândurilor sub-ciupitură din cămară.
+\end{itemize}
+
+Pentru ingredientele de tip bucată fără valoare \texttt{pieceGrams} populată, funcția întoarce \texttt{null}, semnalând apelantului că nu poate produce o estimare. Un parametru opțional \texttt{allowDefault} schimbă acest comportament: când este activat explicit, funcția returnează \texttt{DEFAULT\_PIECE\_GRAMS = 100} g per bucată. Valoarea de \(100\) g este o aproximare grosieră, aleasă ca ordin de mărime plauzibil pentru o bucată oarecare, nu o medie măsurată empiric; rolul ei este de plasă de siguranță, nu de estimare exactă --- de aceea ea nu este aplicată implicit, ci doar la cererea explicită a apelantului. Această opțiune protejează apelanții care preferă eroarea explicită (sesiunea de gătit, unde un consum nefondat ar corupe inventarul) de a accepta tăcut estimări nesigure, dar permite consumatorilor care preferă degradarea elegantă (lista de cumpărături, unde o estimare aproximativă este preferabilă unui eșec total) să continue procesarea.
+
+\lstref{lst:to-grams} prezintă funcția \texttt{toGrams}. Implementarea completă, alături de inversa \texttt{fromGrams}, se află în \texttt{libs/\allowbreak shared/\allowbreak utility/\allowbreak src/\allowbreak lib/\allowbreak labeling/\allowbreak measure-unit-labels.ts}.
+
+% Code listing — manual numbering via the codlista float counter
+% (\refstepcounter{codlista} + minipage + Verbatim from fancyvrb), keeping a
+% single listing style across the document.
+\refstepcounter{codlista}\label{lst:to-grams}
+\par\medskip
+\noindent\begin{minipage}{\linewidth}
+\textbf{Lista \thecodlista:} Funcția \texttt{toGrams} --- normalizarea cantităților la grame.
+\begin{Verbatim}[fontsize=\small]
+export const toGrams = (
+  amount: number,
+  unit: MeasureUnit,
+  pieceGrams: number | null = null,
+  opts: GramsConversionOptions = {},
+): number | null => {
+  if (FLAVOUR_ONLY_UNITS.has(unit)) return 0;
+
+  const fixed = UNIT_TO_GRAMS_FIXED[unit];
+  if (fixed !== undefined) return amount * fixed;
+
+  // Piece-class: PIECE, SLICE, CLOVE, BUNCH, OTHER.
+  const piece =
+    pieceGrams !== null && pieceGrams > 0
+      ? pieceGrams
+      : opts.allowDefault
+        ? DEFAULT_PIECE_GRAMS
+        : null;
+  if (piece === null) return null;
+  return amount * piece;
+};
+\end{Verbatim}
+\end{minipage}
+\par\medskip
+% 5-anexa-demo.tex ends here

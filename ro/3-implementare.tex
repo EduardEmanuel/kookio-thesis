@@ -270,53 +270,11 @@ Două detalii de implementare merită menționate. Primul, decrementarea se face
 
 Cele două fluxuri anterioare --- filtrarea progresivă (\secref{subsec:filtru-progresiv}) și sesiunea de gătit (\secref{subsec:sesiune-gatit}) --- depind de aceeași întrebare practică: \textit{cum convertim cantități între unități eterogene?} Rețeta cere \texttt{1 cup} de zahăr și cămara are \texttt{500 g}; rețeta cere \texttt{2 lemons}, dar cămara are doar \texttt{1 piece}. O abordare clasică ar separa fiecare caz (\textit{carve-out}): convertor pentru greutăți, convertor pentru volume, regulă specială pentru bucăți. O astfel de stratificare produce, în timp, ramificații care cresc cu fiecare unitate adăugată.
 
-Soluția adoptată în \textit{\gls{kookio}} este o pereche de funcții pure --- \texttt{toGrams} și \texttt{fromGrams} --- care normalizează toate cantitățile la grame înainte de orice operație și convertesc înapoi la unitatea de afișare doar la final. Pipeline-ul rezolvă patru clase de unități, fiecare cu o regulă explicită:
+Soluția adoptată în \textit{\gls{kookio}} este o pereche de funcții pure --- \texttt{toGrams} și \texttt{fromGrams} --- care normalizează toate cantitățile la grame înainte de orice operație și convertesc înapoi la unitatea de afișare doar la final. Pipeline-ul rezolvă patru clase de unități --- greutate, volum, bucăți și gust/ornament ---, fiecare cu o regulă de conversie explicită; regulile per clasă, opțiunea \texttt{allowDefault} pentru bucățile fără greutate cunoscută și implementarea funcției \texttt{toGrams} sunt detaliate în \secref{anexa:grams-detail}.
 
-\begin{itemize}
-  \item \textbf{Greutate} (\texttt{G}, \texttt{KG}, \texttt{OZ}, \texttt{LB}): conversie directă prin factori constanți.
-  \item \textbf{Volum} (\texttt{ML}, \texttt{L}, \texttt{TSP}, \texttt{TBSP}, \texttt{CUP}): conversie prin densitatea apei (\texttt{1 ml} \(\approx\) \texttt{1 g}), aproximare acceptabilă pentru ingredientele uzuale din gătitul casnic.
-  \item \textbf{Bucăți} (\texttt{PIECE}, \texttt{SLICE}, \texttt{CLOVE}, \texttt{BUNCH}, \texttt{OTHER}): conversie prin \texttt{IngredientCatalog.\allowbreak pieceGrams}, o coloană opțională (\texttt{Float?}) populată cu 32 de valori (\texttt{egg: 60}, \texttt{garlic clove: 5}, \texttt{lemon: 100} etc.).
-  \item \textbf{Gust și ornament} (\texttt{TO\_TASTE}, \texttt{TO\_SERVE}, \texttt{GARNISH}): tratate ca \texttt{0 g} și excluse din lista de cumpărături. Distincția față de \texttt{PINCH} nu este una de mărime, ci de natură: \texttt{PINCH} este o cantitate specificată de autorul rețetei (o ciupitură), pe când unitățile de gust și ornament exprimă o instrucțiune --- „după gust”, „pentru servire” --- a cărei cantitate este lăsată deliberat la latitudinea celui care gătește. Valoarea \texttt{0 g} este, prin urmare, o convenție de modelare aleasă conștient, nu o necunoaștere: ea onorează intenția autorului (a atribui un gram-echivalent ar suprascrie o decizie lăsată explicit deschisă), evită zgomotul în aval (o jumătate de gram de sare decrementată la fiecare gătit, sau condimentele de bază listate la cumpărături, nu sunt informație utilă într-o aplicație centrată pe risipa de alimente în vrac) și păstrează o poziție neutră față de aportul dietetic, pe care aplicația nu este în măsură să îl prescrie. Pentru \texttt{PINCH}, în schimb, o convenție stabilește \texttt{0,5 g} per bucată --- masă mică, dar reală, suficientă pentru a permite ștergerea rândurilor sub-ciupitură din cămară.
-\end{itemize}
-
-Pentru ingredientele de tip bucată fără valoare \texttt{pieceGrams} populată, funcția întoarce \texttt{null}, semnalând apelantului că nu poate produce o estimare. Un parametru opțional \texttt{allowDefault} schimbă acest comportament: când este activat explicit, funcția returnează \texttt{DEFAULT\_PIECE\_GRAMS = 100} g per bucată. Valoarea de \(100\) g este o aproximare grosieră, aleasă ca ordin de mărime plauzibil pentru o bucată oarecare, nu o medie măsurată empiric; rolul ei este de plasă de siguranță, nu de estimare exactă --- de aceea ea nu este aplicată implicit, ci doar la cererea explicită a apelantului. Această opțiune protejează apelanții care preferă eroarea explicită (sesiunea de gătit, unde un consum nefondat ar corupe inventarul) de a accepta tăcut estimări nesigure, dar permite consumatorilor care preferă degradarea elegantă (lista de cumpărături, unde o estimare aproximativă este preferabilă unui eșec total) să continue procesarea.
+Un singur caz merită reținut aici, fiind o decizie de proiectare, nu un simplu detaliu de conversie: unitățile de gust și ornament (\texttt{TO\_TASTE}, \texttt{TO\_SERVE}, \texttt{GARNISH}) sunt tratate ca \texttt{0 g} și excluse din lista de cumpărături. Valoarea \texttt{0 g} este o convenție de modelare aleasă conștient, nu o necunoaștere: ea onorează intenția autorului rețetei (cantitatea este lăsată deliberat „după gust”), evită zgomotul în aval (condimentele de bază decrementate la fiecare gătit sau listate la cumpărături nu sunt informație utilă într-o aplicație centrată pe risipa de alimente în vrac) și păstrează o poziție neutră față de aportul dietetic, pe care aplicația nu este în măsură să îl prescrie.
 
 Convenția \texttt{0 g} are însă o limitare cunoscută, care decurge direct din ea: ingredientele de bază asezonate „după gust” (sare, ulei, piper) nu sunt urmărite la nivel de cantitate, deci epuizarea lor treptată --- prin folosiri mici și repetate --- nu este semnalată utilizatorului. Soluția corectă pentru această lacună nu este atribuirea unei valori nenule arbitrare (care ar reintroduce zgomotul descris mai sus și ar produce, în lipsa unei infrastructuri de avertizare, date pe care nimic nu le consumă), ci un mecanism dedicat de urmărire a consumabilelor, bazat pe stare (\textit{în stoc} / \textit{pe terminate} / \textit{epuizat}) marcată de utilizator, nu pe masă estimată. Un astfel de modul --- prefigurat de marcajul manual „pe terminate” deja prezent în interfața cămării --- este descris ca direcție de evoluție în \secref{sec:directii-viitoare}.
-
-\lstref{lst:to-grams} prezintă funcția \texttt{toGrams}. Implementarea completă, alături de inversa \texttt{fromGrams}, se află în \texttt{libs/\allowbreak shared/\allowbreak utility/\allowbreak src/\allowbreak lib/\allowbreak labeling/\allowbreak measure-unit-labels.ts}.
-
-% Code listing — manual numbering via the codlista float counter
-% (\refstepcounter{codlista} + minipage + Verbatim from fancyvrb), keeping a
-% single listing style across the document.
-\refstepcounter{codlista}\label{lst:to-grams}
-\par\medskip
-\noindent\begin{minipage}{\linewidth}
-\textbf{Lista \thecodlista:} Funcția \texttt{toGrams} --- normalizarea cantităților la grame.
-\begin{Verbatim}[fontsize=\small]
-export const toGrams = (
-  amount: number,
-  unit: MeasureUnit,
-  pieceGrams: number | null = null,
-  opts: GramsConversionOptions = {},
-): number | null => {
-  if (FLAVOUR_ONLY_UNITS.has(unit)) return 0;
-
-  const fixed = UNIT_TO_GRAMS_FIXED[unit];
-  if (fixed !== undefined) return amount * fixed;
-
-  // Piece-class: PIECE, SLICE, CLOVE, BUNCH, OTHER.
-  const piece =
-    pieceGrams !== null && pieceGrams > 0
-      ? pieceGrams
-      : opts.allowDefault
-        ? DEFAULT_PIECE_GRAMS
-        : null;
-  if (piece === null) return null;
-  return amount * piece;
-};
-\end{Verbatim}
-\end{minipage}
-\par\medskip
 
 Decizia structurală pe care o reprezintă acest pipeline depășește detaliul implementării: este o \textit{unificare} între două procese care, anterior, foloseau euristici similare dar separate. La generarea seturilor inițiale de date (\textit{seed}-uri), un pipeline offline de curățare a importat catalogul \textit{TheMealDB} și a estimat greutățile lipsă folosind o tabelă manuală \texttt{INGREDIENT\_PIECE\_GRAMS} construită pentru această etapă. La runtime, decrementarea cămării (\secref{subsec:sesiune-gatit}) și derivarea listei de cumpărături (\secref{subsec:lista-cumparaturi}) cereau aceleași conversii, dar prin cod scris separat. Prin extragerea funcțiilor \texttt{toGrams}/\texttt{fromGrams} într-o bibliotecă comună (\texttt{libs/shared/utility}) și prin promovarea tabelei manuale la coloana \texttt{IngredientCatalog.pieceGrams}, ambele procese consumă acum aceeași sursă de adevăr. Pe planul auditului, o critică a estimării (de exemplu, „densitatea apei este o aproximare slabă pentru uleiuri”) se aplică simultan ambilor consumatori; pe planul evoluției, o îmbunătățire (un strat de densități per categorie de ingrediente) se propagă în același mod. Această lecție de proiectare este formulată ca pattern arhitectural generalizabil în \secref{subsec:pan-patterns}.
 
