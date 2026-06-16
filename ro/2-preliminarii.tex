@@ -41,20 +41,7 @@ Pe parcursul cercetării am descoperit comunitatea \textbf{\gls{analog}}~\cite{a
 Această filiație explică de ce \gls{nx} are, în esența sa, ADN \gls{angular} și de ce oferă suport de primă mână pentru proiecte \gls{analog}: generatoare native, sistem de cache distribuit pentru sarcinile de construire și șabloane care accelerează crearea bibliotecilor specializate pe fiecare funcționalitate de bază a aplicației.
 
 Astfel s-a conturat o paralelă structurală cu arhitectura \textbf{\gls{mean}} (\textit{MongoDB}, \textit{Express}, \gls{angular}, \textit{Node.js})~\cite{karpovMean2013}, arhitectura \gls{pan} reflectând maturizarea ecosistemului: \gls{analog} absoarbe rolurile pe care \gls{mean} le distribuia între \textit{Express} și \gls{angular}, iar \gls{nx} adresează o preocupare arhitecturală --- organizarea \gls{monorepo} cu cache distribuit --- care, în perioada \gls{mean}, nu era încă subiect de discuție.
-\figref{fig:mean-vs-pan} ilustrează această paralelă structurală, iar o comparație detaliată cu stiva \textit{React} modernă (MERN + \gls{nextjs} + Turborepo) urmează în \secref{subsec:pan-comparatie}.
-
-\begin{figure}[htbp]
-  \centering
-  % The PNG carries ~5% baked-in white padding on each side (content occupies
-  % x[100..1898] of 2000px ≈ 89.9% width). Scaling to 1.11x makes the diagram's
-  % *content* span the text block; the padding overflows symmetrically into the
-  % 2.5cm page margin (~0.9cm each side, well within margin). \centering keeps
-  % the overflow balanced. Adjust the factor if the source PNG is re-exported
-  % with different padding.
-  \makebox[\textwidth]{\includegraphics[width=1.11\textwidth]{mean-vs-pan}}
-  \caption{Paralelă structurală între arhitectura \gls{mean} (Karpov, 2013) și arhitectura \gls{pan} propusă în prezenta lucrare. Diagrama evidențiază maturizarea ecosistemului: \gls{analog} absoarbe rolurile distribuite în \gls{mean} între \textit{Express} și \gls{angular}, iar \gls{nx} adresează preocuparea organizării \gls{monorepo} care, în perioada \gls{mean}, nu era încă subiect de discuție arhitecturală.}
-  \label{fig:mean-vs-pan}
-\end{figure}
+Această paralelă, împreună cu o comparație detaliată față de stiva \textit{React} modernă (MERN + \gls{nextjs} + Turborepo), este prezentată în \secref{subsec:pan-comparatie}.
 
 De remarcat că \gls{pan} nu răspunde durerilor de complexitate semnalate în \secref{cap:introducere} prin reducerea numărului de unelte --- stiva rămâne una bogată ---, ci prin integrarea lor sub un singur limbaj și prin formalizarea granițelor dintre ele. Punctul de durere identificat de sondaje nu este numărul de unelte în sine, ci integrarea deficitară dintre straturi; \gls{pan} atacă exact această integrare, lăsând complexitatea structurată și verificată automat, nu eliminată.
 
@@ -78,7 +65,20 @@ Cele trei componente eponime --- \gls{prisma} ca \gls{orm} declarativ, \gls{anal
 \subsubsection{Comparație cu stiva React modernă}\label{subsec:pan-comparatie}
 
 Stiva contemporană React (MERN + \gls{nextjs} + \textit{Turborepo}) ocupă același spațiu de soluții ca \gls{pan}, dar într-un alt ecosistem.
-\tabref{tab:pan-vs-altele} oferă o comparație directă.
+\figref{fig:mean-vs-pan} rezumă vizual maturizarea de la \gls{mean} la \gls{pan}, iar \tabref{tab:pan-vs-altele} extinde comparația la stiva React modernă.
+
+\begin{figure}[htbp]
+  \centering
+  % The PNG carries ~5% baked-in white padding on each side (content occupies
+  % x[100..1898] of 2000px ≈ 89.9% width). Scaling to 1.11x makes the diagram's
+  % *content* span the text block; the padding overflows symmetrically into the
+  % 2.5cm page margin (~0.9cm each side, well within margin). \centering keeps
+  % the overflow balanced. Adjust the factor if the source PNG is re-exported
+  % with different padding.
+  \makebox[\textwidth]{\includegraphics[width=1.11\textwidth]{mean-vs-pan}}
+  \caption{Paralelă structurală între arhitectura \gls{mean} (Karpov, 2013) și arhitectura \gls{pan} propusă în prezenta lucrare. Diagrama evidențiază maturizarea ecosistemului: \gls{analog} absoarbe rolurile distribuite în \gls{mean} între \textit{Express} și \gls{angular}, iar \gls{nx} adresează preocuparea organizării \gls{monorepo} care, în perioada \gls{mean}, nu era încă subiect de discuție arhitecturală.}
+  \label{fig:mean-vs-pan}
+\end{figure}
 
 \begin{table}[htbp]
 \centering
