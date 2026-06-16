@@ -95,7 +95,7 @@ Dacă secțiunea anterioară a justificat alegerile tehnologice, cea de față a
 
 \subsubsection{Arhitecturi web moderne}\label{subsec:arhitecturi-implementare}
 
-Configurarea de \gls{randare} a \textit{\gls{kookio}} este concentrată în \texttt{apps/web/vite.config.ts}: plugin-ul \texttt{analog} este apelat cu \texttt{ssr: true} și o singură rută declarată în \texttt{prerender.routes}, anume \texttt{/about}. Practic, \acrshort{ssr} este modul implicit pentru toate rutele aplicației, iar \acrshort{ssg} este folosit punctual pentru singurele pagini al căror conținut nu depinde de cerere \cite{analog}.
+Configurarea de \gls{randare} a \textit{\gls{kookio}} este concentrată în \texttt{apps/web/vite.config.ts}: plugin-ul \texttt{analog} este apelat cu \texttt{ssr: true}, fără rute prerandate. Astfel, \acrshort{ssr} este modul de randare pentru toate rutele aplicației, inclusiv pentru paginile cu conținut stabil precum \texttt{/about}; \acrshort{ssg}, deși suportată de \gls{analog}, nu este folosită, pentru ca fiecare răspuns să treacă uniform prin runtime-ul server \cite{analog}.
 
 Pe ramura \acrshort{ssr}, distincția dintre rutele publice (\texttt{/recipes}, \texttt{/legal/attributions}) și cele autentificate (\texttt{/pantry}, \texttt{/plan}) nu se manifestă în strategia de \gls{randare}, ci în ceea ce execută serverul înainte de a servi pagina: rutele autentificate trec printr-un \textit{guard} (interceptor de rută) care emite o redirecționare către \texttt{/login} dacă sesiunea Firebase lipsește, vizibilă pentru \gls{playwright} drept \texttt{ERR\_ABORTED} pe Chromium și gestionată prin \texttt{waitUntil: 'commit'} în testele \acrshort{e2e}.
 

@@ -59,7 +59,7 @@ Cele trei componente eponime --- \gls{prisma} ca \gls{orm} declarativ, \gls{anal
 
   \item \textbf{Absența unui strat de \textit{repository} intermediar.} Procedurile \gls{trpc} apelează direct clientul \gls{prisma} (\texttt{ctx.prisma}), fără un strat intermediar de tip \textit{repository} orientat-obiect. Această decizie reduce numărul de straturi de adaptare și forțează ca logica de afaceri să se exprime în termenii primitivelor expuse de \gls{prisma} --- un compromis explicit între simplitate și abstracție.
 
-  \item \textbf{Randare pe server ca mod implicit.} Combinația \gls{angular} \(+\) \gls{analog} livrează \acrshort{ssr} drept comportament implicit pentru toate rutele, iar \acrshort{ssg} este folosit punctual pentru paginile cu conținut stabil. Astfel, prima impresie a utilizatorului depinde de un HTML populat încă de la prima cerere, important atât pentru indexarea \acrshort{seo}, cât și pentru perceperea performanței.
+  \item \textbf{Randare pe server ca mod implicit.} Combinația \gls{angular} \(+\) \gls{analog} livrează \acrshort{ssr} drept comportament implicit pentru toate rutele. Astfel, prima impresie a utilizatorului depinde de un HTML populat încă de la prima cerere, important atât pentru indexarea \acrshort{seo}, cât și pentru perceperea performanței.
 \end{enumerate}
 
 \subsubsection{Comparație cu stiva React modernă}\label{subsec:pan-comparatie}
@@ -123,8 +123,8 @@ Strategiile de \gls{randare} relevante pentru proiect sunt:
 \begin{itemize}
   \item \textbf{\acrshort{csr}} (randare pe client) --- folosit în \textit{\gls{kookio}} pentru ecranele autentificate (planificator, cămară), unde interactivitatea primează;
   \item \textbf{\acrshort{ssr}} (randare pe server) --- pentru pagini publice cu conținut dinamic (feed de rețete, profile), unde HTML-ul inițial trebuie să fie complet;
-  \item \textbf{\acrshort{ssg}} (generare statică de pagini) --- pentru pagini cu conținut stabil (legal, atribuții), prerandate la build;
-  \item \textbf{arhitecturi hibride} --- combinarea celor trei pe rute diferite, în funcție de natura conținutului~\cite{analog}.
+  \item \textbf{\acrshort{ssg}} (generare statică de pagini) --- prerandarea la \textit{build} a paginilor cu conținut complet stabil; este suportată de \gls{analog}, dar nu este folosită în versiunea curentă a aplicației, în care și paginile statice sunt randate pe server;
+  \item \textbf{arhitecturi hibride} --- combinarea acestor strategii pe rute diferite, în funcție de natura conținutului~\cite{analog}.
 \end{itemize}
 
 Am ales o arhitectură full-stack hibridă în care frontend-ul și backend-ul rulează în aceeași bază de cod \gls{typescript}.
