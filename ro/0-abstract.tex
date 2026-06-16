@@ -1,11 +1,12 @@
 % 0-abstract.tex starts here
 \section*{Rezumat}
 
-Această lucrare prezintă proiectarea și implementarea unei aplicații \gls{web} full-stack, denumită \textit{\gls{kookio}}, realizată ca studiu de caz pentru analiza arhitecturii \textbf{\gls{pan}} (\acrlong{pan}) în contextul aplicațiilor \gls{web} moderne.
-Aplicația acoperă, într-un flux integrat, gestiunea cămării, planificarea zilnică a meselor și derivarea automată a listei de cumpărături pentru utilizatori casnici, cu potențial de a contribui la reducerea risipei alimentare prin diminuarea achizițiilor redundante.
+Această lucrare propune și analizează arhitectura \textbf{\gls{pan}} (\acrlong{pan}), un model full-stack pentru aplicații \gls{web} moderne construit integral în ecosistemul \gls{typescript}, în care straturile aplicației partajează tipuri și scheme de validare derivate dintr-o singură sursă de adevăr.
+Pentru a valida acest model, am proiectat și implementat \textit{\gls{kookio}}, o aplicație \gls{web} full-stack care servește drept studiu de caz al arhitecturii \gls{pan}.
+\textit{\gls{kookio}} adresează un factor concret al risipei alimentare la nivel casnic --- achiziția de alimente în absența unui plan al meselor --- printr-un flux integrat de gestiune a cămării, planificare a meselor și derivare automată a listei de cumpărături, astfel încât achizițiile se raportează la mesele planificate, nu se acumulează redundant.
 
-Motivația lucrării derivă din necesitatea unor arhitecturi \gls{web} care să asigure coerență între frontend și backend, precum și un proces de dezvoltare unitar.
-În acest cadru, lucrarea investighează arhitectura \gls{pan} ca model full-stack bazat pe ecosistemul \gls{typescript}, în care straturile aplicației partajează tipuri și scheme de validare derivate dintr-o singură sursă de adevăr.
+Motivația arhitecturală derivă din necesitatea unor stive \gls{web} care să asigure coerență între frontend și backend, precum și un proces de dezvoltare unitar.
+\gls{pan} răspunde acestei nevoi nu prin reducerea numărului de unelte, ci prin integrarea lor sub un singur limbaj și prin formalizarea granițelor dintre componente.
 
 Concret, fiecare strat al acestei stive unitare \gls{typescript} acoperă o responsabilitate distinctă: randarea pe server (\acrshort{ssr}) este asigurată de \gls{angular} prin meta-framework-ul \gls{analog}, comunicarea tipizată client--server prin \acrshort{trpc}, iar persistența datelor prin \gls{prisma} și \gls{cockroachdb}.
 Organizarea proiectului într-un \gls{monorepo} gestionat cu \gls{nx} impune o topologie aciclică a bibliotecilor, verificată la integrarea continuă (\acrshort{ci}) prin regula \texttt{enforce-module-boundaries} a \gls{nx}, și permite eliminarea stratului de \textit{repository} dintre procedurile \acrshort{trpc} și clientul \gls{prisma}.
