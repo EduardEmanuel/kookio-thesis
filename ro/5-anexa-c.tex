@@ -1,4 +1,9 @@
 % 5-anexa-c.tex starts here
+% \raggedbottom for the appendix: the intro paragraph shares a page with no
+% float (the ER diagram is [p], on its own page), so \flushbottom from the body
+% would stretch that short paragraph's vertical glue into big gaps. Previously
+% set by the now-removed LaTeX-tooling and PAN-manifest appendices.
+\raggedbottom
 
 \section{Modelul de date}\label{anexa:model-date}
 
