@@ -5,6 +5,9 @@
 
 Capitolul precedent a stabilit alegerile tehnologice care formează arhitectura \textbf{\gls{pan}} (definită în \secref{subsec:pan-definitie}). În cele ce urmează descriu cum se traduce acest tipar în structura efectivă a repository-ului: o singură aplicație \gls{analog} sub \texttt{apps/}, un set de biblioteci \gls{nx} grupate pe responsabilități sub \texttt{libs/} și un lanț unitar de execuție prin care o cerere ajunge de la runtime-ul server-side al \gls{analog} către straturile \gls{trpc} și \gls{prisma}.
 
+% Keep the heading + the ~14cm file tree together: if less than 15cm is left on
+% the current page, start them on the next one rather than splitting the tree.
+\needspace{15cm}
 \subsubsection{Structura monorepo-ului Nx}\label{subsec:structura-monorepo}
 \vspace{0.3cm}
 \begin{TreeVerb}
