@@ -42,7 +42,7 @@ Astfel, \textit{\gls{kookio}} servește drept studiu de caz pentru evaluarea arh
   \item \textbf{Evaluare empirică a stivei tehnologice implementate:} măsurători de latență la stratul de persistență (\gls{cockroachdb} și \gls{redis}), de performanță front-end (\gls{lighthouse} și optimizarea imaginilor) și de acoperire a testelor, sintetizate în \tabref{tab:rezultate}.
 \end{enumerate}
 
-Aplicația este concepută ca un \gls{mvp}, care poate fi extins ulterior cu funcționalități precum recomandarea de rețete sau integrarea cu furnizori externi.
+Aplicația este implementată ca un \gls{mvp} funcțional: recomandarea rețetelor pe baza inventarului din cămară este deja operațională prin filtrarea progresivă (\secref{subsec:filtru-progresiv}), iar extinderile identificate vizează rafinarea acestei recomandări cu restricțiile dietetice colectate la \textit{onboarding} și un mecanism de urmărire a consumabilelor de bază.
 Aceste extensii pot consolida contribuția aplicației la reducerea risipei alimentare prin diminuarea achizițiilor redundante.
 Detaliile privind implementarea sunt prezentate în \secref{cap:implementare}, evaluarea empirică în \secref{ch:evaluare}, iar direcțiile concrete de evoluție în \secref{sec:directii-viitoare}.
 % 1-introducere.tex ends here
