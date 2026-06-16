@@ -15,9 +15,23 @@
 
 Această anexă documentează fluxul funcțional principal al aplicației \textit{\gls{kookio}}, ca dovadă a faptului că \acrlong{mvp}-ul (\acrshort{mvp}) descris în \secref{cap:implementare} este operațional de la un capăt la altul. Capturile de ecran surprind parcursul real al unui utilizator --- de la inventarul cămării, prin planificarea meselor și lista de cumpărături, până la sesiunea de gătit care decrementează stocul. Secțiunea finală relochează aici detaliul de implementare al pipeline-ului de conversie a unităților, păstrat în corpul lucrării doar la nivelul deciziei de proiectare (\secref{subsec:algoritm-grame}).
 
-\subsection{Fluxul principal: de la cămară la gătit}\label{anexa:demo-flux}
+\subsection{Fluxul principal: de la configurare la gătit}\label{anexa:demo-flux}
 
-Parcursul demonstrat urmează lanțul de valoare al aplicației: utilizatorul declară ce are în cămară, aplicația îi arată ce poate găti, el planifică mesele, derivă lista de cumpărături pentru ce lipsește și, după gătit, stocul se actualizează automat.
+Parcursul demonstrat acoperă lanțul de valoare al aplicației, de la configurarea inițială a contului până la actualizarea automată a stocului după gătit: utilizatorul își stabilește preferințele, declară ce are în cămară, vede ce poate găti, planifică mesele, derivă lista de cumpărături pentru ce lipsește și, după gătit, cămara se decrementează.
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{fluxul de onboarding --- pașii de configurare a preferințelor}
+  \caption{Onboarding (\texttt{/onboarding}): pașii de configurare inițială --- preferințe culinare (categorii și arii), restricții dietetice și ustensile disponibile --- persistați la finalizare și folosiți ulterior în filtrarea rețetelor.}
+  \label{fig:demo-onboarding}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{panoul principal --- punctul de intrare după autentificare}
+  \caption{Panoul principal (\texttt{/dashboard}): punctul de intrare după autentificare, cu acces către fluxurile aplicației și un rezumat al stării curente.}
+  \label{fig:demo-dashboard}
+\end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -31,6 +45,13 @@ Parcursul demonstrat urmează lanțul de valoare al aplicației: utilizatorul de
   \demoplaceholder{filtrarea progresivă a rețetelor --- nivelurile \textit{Alright} / \textit{Almost} / \textit{All}}
   \caption{Filtrarea progresivă (\texttt{/recipes/match}): catalogul partiționat după gradul de acoperire din cămară (\secref{subsec:filtru-progresiv}). Nivelul \textit{Alright} listează rețetele complet acoperite, \textit{Almost} pe cele cărora le lipsesc unu--trei ingrediente.}
   \label{fig:demo-match}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \demoplaceholder{rețetele salvate --- colecția marcată de utilizator}
+  \caption{Rețete salvate (\texttt{/saved}): colecția de rețete marcate de utilizator pentru acces ulterior, independentă de gradul de acoperire din cămară.}
+  \label{fig:demo-saved}
 \end{figure}
 
 \begin{figure}[htbp]
