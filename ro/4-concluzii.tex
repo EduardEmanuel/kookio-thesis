@@ -1,7 +1,7 @@
 % 3-concluzii.tex starts here
 \section{Concluzii}\label{cap:concluzii}
 
-Am proiectat și implementat \textit{\gls{kookio}}, o aplicație \gls{web} full-stack construită integral în ecosistemul \gls{typescript} pe arhitectura \textbf{\gls{pan}}.
+Am propus arhitectura \textbf{\gls{pan}} și am validat-o implementând \textit{\gls{kookio}}, o aplicație \gls{web} full-stack construită integral în ecosistemul \gls{typescript} pe acest model.
 Pornind de la preferința pentru \gls{typescript} motivată în \capref{cap:preliminarii}, am tradus această preferință într-o stivă concretă: o singură aplicație \gls{analog} sub \texttt{apps/web}, patru grupuri de biblioteci \gls{nx} (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) cu topologie aciclică aplicată de \texttt{enforce-module-boundaries} la \acrshort{ci}, și un flux cap-coadă \textit{\gls{analog}} \(\rightarrow\) \textit{\acrshort{trpc}} \(\rightarrow\) \textit{\gls{prisma}} descris în \secref{subsec:flux-capcoada}.
 
 Adoptarea arhitecturii \textbf{\gls{pan}} a permis eliminarea straturilor clasice de adaptare între frontend și backend.
