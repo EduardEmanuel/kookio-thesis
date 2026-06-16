@@ -4,12 +4,6 @@
 % inter-paragraph glue into gaps. Same rationale as the data-model appendix.
 \raggedbottom
 
-% Placeholder for screenshots not yet captured. Replace each \demoplaceholder
-% with \includegraphics[width=0.85\textwidth]{kookio-demo-<flow>} once the PNG
-% is added under images/. The box keeps the document compiling in the meantime.
-\newcommand{\demoplaceholder}[1]{%
-  \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering\itshape [Captură de ecran: #1]}}%
-}
 
 \section{Demonstrarea aplicației \textit{\gls{kookio}}}\label{anexa:demo}
 
@@ -21,56 +15,56 @@ Parcursul demonstrat acoperă lanțul de valoare al aplicației, de la configura
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{fluxul de onboarding --- pașii de configurare a preferințelor}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-onboarding}
   \caption{Onboarding (\texttt{/onboarding}): pașii de configurare inițială --- preferințe culinare (categorii și arii), restricții dietetice și ustensile disponibile --- persistați la finalizare și folosiți ulterior în filtrarea rețetelor.}
   \label{fig:demo-onboarding}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{panoul principal --- punctul de intrare după autentificare}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-dashboard}
   \caption{Panoul principal (\texttt{/dashboard}): punctul de intrare după autentificare, cu acces către fluxurile aplicației și un rezumat al stării curente.}
   \label{fig:demo-dashboard}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{cămara --- lista de ingrediente cu cantități și unități de măsură}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-pantry}
   \caption{Cămara (\texttt{/pantry}): inventarul utilizatorului, cu fiecare ingredient stocat în unitatea sa de afișare. Acesta este punctul de pornire al fluxului --- sursa de adevăr pentru ce este disponibil acasă.}
   \label{fig:demo-pantry}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{filtrarea progresivă a rețetelor --- nivelurile \textit{Alright} / \textit{Almost} / \textit{All}}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-match}
   \caption{Filtrarea progresivă (\texttt{/recipes/match}): catalogul partiționat după gradul de acoperire din cămară (\secref{subsec:filtru-progresiv}). Nivelul \textit{Alright} listează rețetele complet acoperite, \textit{Almost} pe cele cărora le lipsesc unu--trei ingrediente.}
   \label{fig:demo-match}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{rețetele salvate --- colecția marcată de utilizator}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-saved}
   \caption{Rețete salvate (\texttt{/recipes/saved}): colecția de rețete marcate de utilizator pentru acces ulterior, independentă de gradul de acoperire din cămară.}
   \label{fig:demo-saved}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{planificatorul de mese --- slot-uri pe zile}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-plan}
   \caption{Planificatorul (\texttt{/plan}): rețetele se atribuie pe slot-uri \texttt{(dată, tip de masă)}, modelate ca \texttt{MealSlot} cu constrângerea \texttt{@@unique} descrisă în \secref{subsec:gestionarea-datelor}.}
   \label{fig:demo-plan}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{lista de cumpărături derivată din plan minus cămară}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-groceries}
   \caption{Lista de cumpărături (\texttt{/groceries}): diferența de mulțimi între ingredientele slot-urilor planificate și conținutul cămării (\secref{subsec:lista-cumparaturi}). Articolele bifate ca „cumpărate” se pot îmbina înapoi în cămară.}
   \label{fig:demo-groceries}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \demoplaceholder{sesiunea de gătit --- dialogul de confirmare a cantităților consumate}
+  \includegraphics[width=0.85\textwidth]{kookio-demo-cook}
   \caption{Sesiunea de gătit (\texttt{/cook/:recipeId}): la final, dialogul propune cantitățile consumate pre-completate, iar confirmarea declanșează decrementarea tranzacțională a cămării (\secref{subsec:sesiune-gatit}).}
   \label{fig:demo-cook}
 \end{figure}
