@@ -13,5 +13,5 @@ Organizing the project as a \gls{monorepo} managed with \gls{nx} enforces an acy
 
 The implementation is validated through unit tests with \gls{vitest} and \acrlong{e2e} (\acrshort{e2e}) with \gls{playwright}, together with an empirical evaluation of the persistence-layer latencies, front-end performance and test coverage.
 The measured median latency (warm calls) was 1.71\,ms for \gls{cockroachdb} and 0.56\,ms for \gls{redis}, while image optimization reduces the delivered payload by approximately \(60\,\%\) across the entire catalog.
-The evaluation shows that the implemented stack achieves performance suitable for a production environment; the coherence and extensibility of the \gls{pan} architecture, however, are structural properties --- supported by the acyclic topology checked in \acrshort{ci} and by deriving the contracts from a single source of truth ---, not consequences of these latency measurements.
+The evaluation shows that the implemented stack achieves performance suitable for a production environment; the coherence and extensibility of the \gls{pan} architecture, however, are structural properties --- supported by the acyclic topology checked in \acrshort{ci} and by deriving the contracts from a single source of truth --- not consequences of these latency measurements.
 % 0-abstract.tex ends here
