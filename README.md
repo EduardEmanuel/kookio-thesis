@@ -344,3 +344,9 @@ kookio-thesis/
 └── research/
     └── the-meal-db/         # Data acquisition scripts (see Research Scripts above)
 ```
+
+## 📜 License
+
+- **Thesis text and figures** — the LaTeX sources in `ro/` and `en/`, the images in `images/` and the thesis PDFs in `dist/` — are licensed under [CC BY-SA 4.0](LICENSE-CC-BY-SA-4.0).
+- **Code** — the build scripts and the TypeScript research scripts in `research/` — is licensed under [Apache-2.0](LICENSE).
+- **Third-party material is covered by neither license:** the University of Bucharest and FMI logos (`images/logo-ub.png`, `images/logo-fmi.png`) belong to the university, and the recipe data in `research/the-meal-db/` — including the recipe photos visible in the app screenshots — comes from [TheMealDB](https://www.themealdb.com) under its own terms.
