@@ -1,6 +1,6 @@
 # 🏛️ Kookio Thesis · University of Bucharest
 
-Kookio: A Modular Full-Stack Gastronomic Service Built on the PAN Architecture (Prisma – Analog – Nx)
+The PAN Architecture as a Model for Full-Stack Web Applications: A Case Study on Reducing Food Waste
 
 > 📁 This repository contains the academic thesis associated with the [Kookio application](https://github.com/EduardEmanuel/kookio), including:
 >
@@ -107,11 +107,13 @@ Conf. univ. dr. Marius Iulian Mihăilescu
 
 ## 📄 Thesis Abstract
 
-This thesis presents the design and implementation of Kookio, a full-stack web application developed as a case study for analyzing the PAN architecture in the context of modern web applications. Kookio combines three core domestic flows — pantry management, daily meal planning, and automated derivation of grocery lists — with the intent of indirectly reducing household food waste through more efficient organization of available resources.
+This thesis proposes and analyzes the **PAN** (Prisma–Analog–Nx) architecture, a full-stack model for modern web applications built entirely within the TypeScript ecosystem, in which the application layers share types and validation schemas derived from a single source of truth. To validate this model, I designed and implemented *Kookio*, a full-stack web application that serves as a case study of the PAN architecture. *Kookio* addresses a concrete driver of household food waste — buying food without a meal plan — through an integrated flow of pantry management, meal planning and automatic derivation of the shopping list, so that purchases are tied to the planned meals instead of accumulating redundantly.
 
-The PAN architecture is investigated as a full-stack model grounded in the TypeScript ecosystem, in which application layers share types and validation schemas derived from a single source of truth. The application uses SSR with Angular through the Analog meta-framework, type-safe client–server communication via tRPC, and data persistence through Prisma and CockroachDB. The project is organized as an Nx monorepo with an acyclic library topology enforced at CI via `enforce-module-boundaries`, eliminating the intermediate repository layer between tRPC procedures and the Prisma client.
+The architectural motivation stems from the need for web stacks that ensure coherence between frontend and backend, as well as a unified development process. PAN answers this need not by reducing the number of tools, but by integrating them under a single language and by formalizing the boundaries between components.
 
-The implementation is validated through unit tests with Vitest and end-to-end tests with Playwright, accompanied by an empirical evaluation of persistence-layer latencies and CI runtime. Measured results indicate that the PAN architecture constitutes a coherent and extensible model for full-stack web application development.
+Concretely, each layer of this unified TypeScript stack covers a distinct responsibility: server-side rendering (SSR) is provided by Angular through the Analog meta-framework, typed client–server communication by tRPC, and data persistence by Prisma and CockroachDB. Organizing the project as a monorepo managed with Nx enforces an acyclic library topology, checked in continuous integration (CI) by the Nx `enforce-module-boundaries` rule, and makes it possible to drop the *repository* layer between the tRPC procedures and the Prisma client.
+
+The implementation is validated through unit tests with Vitest and end-to-end testing (E2E) with Playwright, together with an empirical evaluation of the persistence-layer latencies, front-end performance and test coverage. The measured median latency (warm calls) was 1.71 ms for CockroachDB and 0.56 ms for Redis, while image optimization reduces the delivered payload by approximately 60% across the entire catalog. The evaluation shows that the implemented stack achieves performance suitable for a production environment; the coherence and extensibility of the PAN architecture, however, are structural properties — supported by the acyclic topology checked in CI and by deriving the contracts from a single source of truth — not consequences of these latency measurements.
 
 All academic materials — manuscript, bibliography, LaTeX sources, and compiled PDFs — are maintained in the [`kookio-thesis`](https://github.com/EduardEmanuel/kookio-thesis) repository to ensure version control and integrity prior to public defense.
 
