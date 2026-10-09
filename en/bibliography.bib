@@ -1,0 +1,386 @@
+% bibliography.bib starts here
+% ===============================
+% Official Documentation Sources
+% ===============================
+
+@online{angular_signals,
+  author     = {{Google Angular Team}},
+  title      = {Signals Overview},
+  titleaddon = {{Angular} Documentation},
+  date       = {2026},
+  url        = {https://angular.dev/guide/signals},
+  urldate    = {2026-05-18},
+  note       = {Official Angular documentation; cited for the reactivity model (Signals) used in standalone components and in the context of server-side rendering (SSR).},
+  langid     = {english}
+}
+
+@online{nx,
+  author     = {{Nrwl Team}},
+  title      = {What is {Nx}?},
+  titleaddon = {{Nx} Documentation},
+  date       = {2026},
+  url        = {https://nx.dev/docs/features/ci-features/affected},
+  urldate    = {2026-05-18},
+  note       = {Official Nx documentation; cited for monorepo orchestration, affected runs, caching and the project graph.},
+  langid     = {english}
+}
+
+@online{prisma_orm,
+  author     = {{Prisma Labs}},
+  title      = {{Prisma} {Client} — Generating the Typed Client and Queries},
+  titleaddon = {{Prisma} {ORM} Documentation},
+  date       = {2026},
+  url        = {https://www.prisma.io/docs/orm/prisma-client},
+  urldate    = {2026-05-18},
+  note       = {Official Prisma documentation; cited for generating the TypeScript client from \texttt{schema.prisma}, managing versioned migrations and type inference for each model.},
+  langid     = {english}
+}
+
+@online{prisma_cockroachdb,
+  author     = {{Prisma Labs}},
+  title      = {Connecting {Prisma} to {CockroachDB}},
+  titleaddon = {{Prisma} {ORM} Documentation},
+  date       = {2026},
+  url        = {https://www.prisma.io/docs/orm/overview/databases/cockroachdb},
+  urldate    = {2026-05-18},
+  note       = {Official Prisma documentation; cited for the integration with \texttt{CockroachDB} through the PostgreSQL wire protocol and for the particularities of distributed support.},
+  langid     = {english}
+}
+
+@online{prisma_transactions,
+  author     = {{Prisma Labs}},
+  title      = {Transactions and Batch Queries},
+  titleaddon = {{Prisma} {Client} Documentation},
+  date       = {2026},
+  url        = {https://www.prisma.io/docs/orm/prisma-client/queries/transactions},
+  urldate    = {2026-05-18},
+  note       = {Official Prisma documentation; cited for \texttt{prisma.\$transaction}, handling \emph{serializable} conflicts (code \texttt{P2034}) and automatic retry strategies in distributed databases.},
+  langid     = {english}
+}
+
+@online{nx_boundaries,
+  author     = {{Nrwl Team}},
+  title      = {Enforce Module Boundaries — {ESLint} Rule for Architectural Constraints},
+  titleaddon = {{Nx} Documentation},
+  date       = {2026},
+  url        = {https://nx.dev/docs/features/enforce-module-boundaries},
+  urldate    = {2026-05-18},
+  note       = {Official Nx documentation; cited for the \texttt{@nx/enforce-module-boundaries} rule, which rejects in \acrshort{ci} the imports that violate the topology between library groups.},
+  langid     = {english}
+}
+
+@online{analog_routing,
+  author     = {{AnalogJS Contributors}},
+  title      = {Routing — File-Based Routing},
+  titleaddon = {{Analog} Documentation},
+  date       = {2026},
+  url        = {https://analogjs.org/docs/features/routing/overview},
+  urldate    = {2026-05-18},
+  note       = {Official Analog documentation; cited for \emph{filesystem-based} routing (\texttt{*.page.ts}, dynamic routes with parameters, co-locating server logic in \texttt{*.server.ts}).},
+  langid     = {english}
+}
+
+@online{trpc_middleware,
+  author     = {{The tRPC Project}},
+  title      = {Middlewares — Procedure Builders and Composing Authorization},
+  titleaddon = {{tRPC} Documentation},
+  date       = {2026},
+  url        = {https://trpc.io/docs/server/middlewares},
+  urldate    = {2026-05-18},
+  note       = {Official tRPC documentation; cited for the compositional procedure builders (\texttt{publicProcedure}, \texttt{protectedProcedure}) and for identity verification in the context.},
+  langid     = {english}
+}
+
+@online{angular_material,
+  author     = {{Google Angular Team}},
+  title      = {{Angular} {Material} — Components with Built-in Accessibility},
+  titleaddon = {{Angular} {Material}/{CDK} Documentation},
+  date       = {2026},
+  url        = {https://material.angular.dev/},
+  urldate    = {2026-05-18},
+  note       = {Official Angular Material documentation; cited for the \acrshort{ui} component set and for the \texttt{Angular CDK}, consistent with respect to accessibility (\emph{a11y}).},
+  langid     = {english}
+}
+
+@online{analog,
+  author     = {{AnalogJS Contributors}},
+  title      = {{Analog} – The Full-Stack Meta-Framework for {Angular}},
+  titleaddon = {{Analog} Documentation},
+  date       = {2026},
+  url        = {https://analogjs.org/docs/features/server-side-rendering},
+  urldate    = {2026-05-18},
+  note       = {Official Analog documentation; cited for SSR, file-based routing and the Nitro/tRPC integration in Angular applications.},
+  langid     = {english}
+}
+
+@online{trpc,
+  author     = {{The tRPC Project}},
+  title      = {{tRPC} Documentation — End-to-End {Type-Safe} {APIs}},
+  titleaddon = {{tRPC} Documentation},
+  date       = {2026},
+  url        = {https://trpc.io/docs/server/procedures},
+  urldate    = {2026-05-18},
+  note       = {Official tRPC documentation; cited for the type contracts between client and server and for the router/context structure.},
+  langid     = {english}
+}
+
+@online{nitro,
+  author     = {{UnJS Team}},
+  title      = {{Nitro}: The Web Server Engine},
+  titleaddon = {{Nitro} Documentation},
+  date       = {2026},
+  url        = {https://nitro.build/guide},
+  urldate    = {2026-05-18},
+  note       = {Official Nitro documentation; cited for server-side execution, API routes and the deployment environments compatible with Analog SSR.},
+  langid     = {english}
+}
+
+@online{postgresql,
+  author     = {{The PostgreSQL Global Development Group}},
+  title      = {Official {PostgreSQL} Documentation},
+  titleaddon = {{PostgreSQL} Documentation},
+  date       = {2026},
+  url        = {https://www.postgresql.org/docs/current/protocol.html},
+  urldate    = {2026-05-18},
+  note       = {Official PostgreSQL documentation; cited for the \emph{wire protocol} that \gls{cockroachdb} emulates for compatibility with the SQL tooling ecosystem.},
+  langid     = {english}
+}
+
+@online{vite,
+  author     = {{Vite Team}},
+  title      = {{Vite} Guide},
+  titleaddon = {{Vite} Documentation},
+  date       = {2026},
+  url        = {https://vitejs.dev/guide/why.html},
+  urldate    = {2026-05-18},
+  note       = {Official Vite documentation; cited for the build configuration shared by applications and libraries and for the integration with the Nx targets.},
+  langid     = {english}
+}
+
+@online{vitest,
+  author     = {{Vitest Team}},
+  title      = {{Vitest} Guide},
+  titleaddon = {{Vitest} Documentation},
+  date       = {2026},
+  url        = {https://vitest.dev/guide/workspace.html},
+  urldate    = {2026-05-18},
+  note       = {Official Vitest documentation; cited for the configuration and use of unit tests, used in the project since August 2025.},
+  langid     = {english}
+}
+
+@online{playwright,
+  author     = {{Microsoft Playwright Team}},
+  title      = {Testing with {Playwright} — Getting Started},
+  titleaddon = {{Playwright} Documentation},
+  date       = {2026},
+  url        = {https://playwright.dev/docs/test-global-setup-teardown},
+  urldate    = {2026-05-18},
+  note       = {Official Playwright documentation; cited for the end-to-end testing adopted in June–July 2025.},
+  langid     = {english}
+}
+
+@online{cockroachdb,
+  author     = {{Cockroach Labs}},
+  title      = {{CockroachDB} Documentation},
+  titleaddon = {{CockroachDB} Documentation},
+  date       = {2026},
+  url        = {https://www.cockroachlabs.com/docs/stable/postgresql-compatibility},
+  urldate    = {2026-05-18},
+  note       = {Official CockroachDB documentation; cited in the development plan for the analysis of horizontal scalability.},
+  langid     = {english}
+}
+
+@online{redis,
+  author     = {{Redis}},
+  title      = {{Redis} Documentation},
+  titleaddon = {{Redis} Documentation},
+  date       = {2026},
+  url        = {https://redis.io/docs/latest/},
+  urldate    = {2026-05-18},
+  note       = {Official Redis documentation; cited in the development plan for the caching and query-session management strategies.},
+  langid     = {english}
+}
+
+@online{zod,
+  author     = {{Zod Authors}},
+  title      = {{Zod} Documentation},
+  titleaddon = {{Zod} Documentation},
+  date       = {2026},
+  url        = {https://zod.dev/?id=objects},
+  urldate    = {2026-05-18},
+  note       = {Official Zod documentation; cited for the validation of the schemas used together with the types generated by Prisma.},
+  langid     = {english}
+}
+
+@online{pino,
+  author     = {{Pino Authors}},
+  title      = {{Pino} — Logger for {Node.js}},
+  titleaddon = {{Pino} Documentation},
+  date       = {2026},
+  url        = {https://getpino.io/#/docs/transports},
+  urldate    = {2026-05-18},
+  note       = {Official Pino documentation; cited for the centralized logging used in both the backend and the frontend.},
+  langid     = {english}
+}
+
+@online{sentry,
+  author     = {{Sentry Authors}},
+  title      = {{Sentry} — Application Error Monitoring},
+  titleaddon = {{Sentry} Documentation},
+  date       = {2026},
+  url        = {https://docs.sentry.io/},
+  urldate    = {2026-06-13},
+  note       = {Official Sentry documentation; cited for production error monitoring, integrated symmetrically on the client and the server.},
+  langid     = {english}
+}
+
+@online{prisma_zod_generator,
+  author     = {Omar Dulaimi and contributors},
+  title      = {{Prisma} {Zod} Generator},
+  titleaddon = {{GitHub} Repository},
+  date       = {2026},
+  url        = {https://github.com/omar-dulaimi/prisma-zod-generator},
+  urldate    = {2026-05-18},
+  note       = {Cited for the automatic generation of Zod validation schemas from the Prisma models.},
+  langid     = {english}
+}
+
+@online{vercel_cli,
+  author     = {{Vercel}},
+  title      = {{Vercel CLI} — Command Line Interface},
+  titleaddon = {{Vercel} Documentation},
+  date       = {2026},
+  url        = {https://vercel.com/docs/cli/env},
+  urldate    = {2026-05-18},
+  note       = {Official documentation for managing projects and environment variables in Vercel.},
+  langid     = {english}
+}
+
+% ===============================
+% Historical References
+% ===============================
+
+@online{karpovMean2013,
+  author     = {Karpov, Valeri},
+  title      = {The {MEAN} Stack: {MongoDB}, {ExpressJS}, {AngularJS} and {Node.js}},
+  titleaddon = {{MongoDB} Blog},
+  date       = {2013-04},
+  url        = {http://blog.mongodb.org/post/49262866911/the-mean-stack-mongodb-expressjs-angularjs-and},
+  urldate    = {2026-05-17},
+  note       = {The original article in which Valeri Karpov introduced the term “MEAN stack”; cited as a historical reference for the traditional architecture of the JavaScript ecosystem and for the conceptual parallel with the PAN architecture proposed in this thesis.},
+  langid     = {english}
+}
+
+% ===============================
+% Peer-reviewed / Academic
+% ===============================
+
+@inproceedings{gao2017type,
+  author    = {Gao, Zheng and Bird, Christian and Barr, Earl T.},
+  title     = {To Type or Not to Type: Quantifying Detectable Bugs in {JavaScript}},
+  booktitle = {Proceedings of the 39th International Conference on Software Engineering (ICSE)},
+  publisher = {IEEE},
+  date      = {2017},
+  pages     = {758--769},
+  doi       = {10.1109/ICSE.2017.75},
+  note      = {An empirical study that quantifies, on a sample of 400 public bugs from GitHub projects, the proportion detectable through static typing (Flow and TypeScript); cited for the empirical grounding of the advantages of typing and for the taxonomy of undetectable bugs.},
+  langid    = {english}
+}
+
+@article{schanes2018,
+  author  = {Schanes, Karin and Dobernig, Karin and Gözet, Burcu},
+  title   = {Food waste matters --- A systematic review of household food waste practices and their policy implications},
+  journal = {Journal of Cleaner Production},
+  volume  = {182},
+  pages   = {978--991},
+  date    = {2018},
+  doi     = {10.1016/j.jclepro.2018.02.030},
+  note    = {A systematic review (60 empirical studies) of household food waste practices; cited for the behavioral causes at consumer level and for the role of planning, inventory checks and digital applications in prevention.},
+  langid  = {english}
+}
+
+@article{parnas1972,
+  author  = {Parnas, David L.},
+  title   = {On the Criteria To Be Used in Decomposing Systems into Modules},
+  journal = {Communications of the ACM},
+  volume  = {15},
+  number  = {12},
+  pages   = {1053--1058},
+  date    = {1972},
+  doi     = {10.1145/361598.361623},
+  note    = {The founding article of the information hiding principle and of modular decomposition; cited for the acyclic “uses” relation, for the critique of flowchart-based decomposition and for hiding changeable design decisions.},
+  langid  = {english}
+}
+
+@article{soldani2018,
+  author  = {Soldani, Jacopo and Tamburri, Damian Andrew and Van Den Heuvel, Willem-Jan},
+  title   = {The Pains and Gains of Microservices: A Systematic Grey Literature Review},
+  journal = {Journal of Systems and Software},
+  volume  = {146},
+  pages   = {215--232},
+  date    = {2018},
+  doi     = {10.1016/j.jss.2018.09.082},
+  note    = {A systematic review of the industrial literature (51 studies) on the pains and gains of the microservices architecture; cited for positioning the PAN architecture as a modular monolith in the space of trade-offs.},
+  langid  = {english}
+}
+
+% ===============================
+% Statistics & Surveys
+% ===============================
+
+@online{unepFoodWaste2024,
+  author     = {{United Nations Environment Programme}},
+  title      = {Food Waste Index Report 2024},
+  titleaddon = {Official {UNEP} Report},
+  date       = {2024},
+  url        = {https://www.unep.org/resources/publication/food-waste-index-report-2024},
+  urldate    = {2026-05-17},
+  note       = {UNEP report, co-authored by WRAP; cited for global data on household food waste (60\% of total waste, 631 million tonnes in 2022) and for the SDG 12.3 target of halving food waste by 2030.},
+  langid     = {english}
+}
+
+@online{eurostatFoodWaste2024,
+  author     = {{Eurostat}},
+  title      = {Food waste: 132 kg per inhabitant in the {EU} in 2022},
+  titleaddon = {{Eurostat} News Release},
+  date       = {2024},
+  url        = {https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240927-2},
+  urldate    = {2026-05-17},
+  note       = {Official Eurostat news release; cited for data on food waste per inhabitant in the European Union (132 kg/inhabitant in 2022, 59.2 million tonnes in total) and for the share of households (54\%) in total waste.},
+  langid     = {english}
+}
+
+@online{europarlFoodWaste2025,
+  author     = {{European Parliament}},
+  title      = {Food waste in {Europe}: facts, {EU} policies and 2030 targets},
+  titleaddon = {European Parliament Topics},
+  date       = {2025},
+  url        = {https://www.europarl.europa.eu/topics/en/article/20240318STO19401/food-waste-in-europe-facts-eu-policies-and-2030-targets},
+  urldate    = {2026-05-17},
+  note       = {Official European Parliament overview; cited for the behavioral causes of food waste at consumer level (impulse buying, insufficient meal planning, poor inventory management) and for the 2030 targets.},
+  langid     = {english}
+}
+
+@online{stateOfJS2024,
+  author     = {{Devographics}},
+  title      = {State of {JavaScript} 2024},
+  titleaddon = {Annual Survey of the {JavaScript} Ecosystem},
+  date       = {2024},
+  url        = {https://2024.stateofjs.com/en-US/libraries/front-end-frameworks/},
+  urldate    = {2026-05-18},
+  note       = {Annual survey of the JavaScript community (over 22,000 respondents); cited for the usage patterns of SSR (59\%) and SSG (46\%), TypeScript adoption and the complexity of frontend frameworks.},
+  langid     = {english}
+}
+
+@online{jetbrainsJsSurvey2024,
+  author     = {{JetBrains}},
+  title      = {{JavaScript} and {TypeScript} Trends 2024},
+  titleaddon = {Insights From the Developer Ecosystem Survey},
+  date       = {2024},
+  url        = {https://blog.jetbrains.com/webstorm/2024/02/js-and-ts-trends-2024/},
+  urldate    = {2026-05-17},
+  note       = {Annual JetBrains survey; cited for the growth of TypeScript adoption (12\% in 2017, 35\% in 2024) and the share of predominantly TypeScript developers (67\%).},
+  langid     = {english}
+}
+
+% bibliography.bib ends here

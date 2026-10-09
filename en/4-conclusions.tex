@@ -1,0 +1,112 @@
+% 4-conclusions.tex starts here
+\section{Conclusions}\label{cap:concluzii}
+
+I proposed the \textbf{\gls{pan}} architecture and validated it by implementing \textit{\gls{kookio}}, a full-stack \gls{web} application built entirely within the \gls{typescript} ecosystem on this model.
+Starting from the preference for \gls{typescript} motivated in \capref{cap:preliminarii}, I translated this preference into a concrete stack: a single \gls{analog} application under \texttt{apps/web}, four groups of \gls{nx} libraries (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) with an acyclic topology enforced by \texttt{enforce-module-boundaries} in \acrshort{ci}, and an end-to-end \textit{\gls{analog}} \(\rightarrow\) \textit{\acrshort{trpc}} \(\rightarrow\) \textit{\gls{prisma}} flow described in \secref{subsec:flux-capcoada}.
+
+Adopting the \textbf{\gls{pan}} architecture made it possible to eliminate the classic adaptation layers between frontend and backend.
+The \acrshort{trpc} procedures call \texttt{ctx.prisma} directly, without a \textit{repository} layer (\secref{subsec:topologie-biblioteci}), and the \gls{zod} schemas consumed by \gls{angular} are derived from \texttt{schema.prisma} through \texttt{prisma-zod-generator} --- renaming a field propagates at compile time to all consumers.
+The public \texttt{@kookio/prisma-client} entry point is safe to run in the browser (it exports only types and \gls{zod} schemas), while the \texttt{PrismaClient} instance is isolated under the \texttt{@kookio/prisma-client/server} sub-path, blocked by a dedicated ESLint rule in frontend code.
+
+The combination of \textbf{\gls{angular}} and \textbf{\gls{analog}} delivered \acrshort{ssr} for all the application's routes, configured in a single place (\texttt{apps/web/vite.config.ts}).
+The application-level \acrshort{ssr} configuration is minimal --- \texttt{provideFileRouter()}, \texttt{provideHttpClient(\ldots)} and \texttt{provideClientHydration(\allowbreak withEventReplay())} ---, and the discipline identified in practice (\secref{subsec:angular-ssr-implementare}) is that every import added to \texttt{app.config.ts} carries an amplified cost on the critical path of every route, which is why the heavy Material components remain imported from the level of the page that uses them.
+
+At the persistence layer, \textbf{\gls{prisma}} on top of \textbf{\gls{cockroachdb}} provided benefits directly observable at the code level.
+Automatically generating the \gls{typescript} client and the \gls{zod} schemas from \texttt{schema.prisma} reduces the data contract to a single source of truth; the compound constraints declared as \texttt{@@unique} (\texttt{MealSlot} on \texttt{userId}--\texttt{date}--\texttt{slotType}, \texttt{PantryItem} on \texttt{userId}--\texttt{ingredientCatalogId}) are enforced at the database level, and the corresponding lookup queries use the automatically generated compound-key form.
+To tolerate the retries that \gls{cockroachdb} may require under the default \textit{serializable} isolation, the \gls{prisma} instance is extended with an automatic \textit{retry-on-conflict} for the codes \texttt{P2034}, \texttt{P2036} and \texttt{40001} (plus the \textit{restart transaction} message); all write operations (\texttt{create}, \texttt{update}, \texttt{upsert}, \texttt{delete} and the \texttt{*Many} variants) go through this \textit{wrapper}, declared only once.
+
+The testing process confirmed the value of combining two distinct levels.
+The \textbf{\gls{vitest}} suite (orchestrated by \texttt{vitest.workspace.ts} at the root of the repository) covers isolated logic through specification files co-located with the tested code, and \texttt{nx affected -t test} runs only the specs touched by the current change.
+The \textbf{\gls{playwright}} suite at \texttt{apps/web-e2e/} goes through the critical flows (authentication, \textit{onboarding}, pantry, planner) in Chromium and achieved a pass rate of \(100\,\%\) over the ten reference runs (\tabref{tab:rezultate}).
+Two practices consolidated from the concrete \acrshort{ci} cycles: warming up the routes in \texttt{global-setup.ts} before the first \textit{worker} process starts, and \texttt{waitUntil: 'commit'} for protected routes, in response to the \texttt{ERR\_ABORTED} error produced by \gls{angular} redirects during hydration.
+
+With respect to the objectives stated in \capref{cap:introducere}, I delivered a \acrlong{mvp} (\acrshort{mvp}) that covers the application's core flows: pantry management, daily meal planning, shopping list derivation and user \textit{onboarding}.
+The \gls{monorepo} structure based on vertical slices (\texttt{libs/feature/auth}, \texttt{onboarding}, \texttt{pantry}, \texttt{plan}, \texttt{recipes}\ldots), in which \texttt{libs/feature/X} cannot import from \texttt{libs/feature/Y} --- a rule checked in \acrshort{ci} by \texttt{enforce-module-boundaries} ---, allows extension with new flows as additional libraries, without structural changes to the existing application.
+
+Overall, \textit{\gls{kookio}} shows that the \textbf{\gls{pan}} architecture can work coherently for a real full-stack \gls{web} application: the latencies measured on the \texttt{/api/internal/bench-db} route (median over warm calls of \(1.71\)~ms for \gls{cockroachdb} and \(0.56\)~ms for \gls{redis} --- \tabref{tab:rezultate}), the front-end performance (a \gls{lighthouse} score of 93 on desktop and a reduction of about \(60\,\%\) in the image payload across the entire catalog), the \(73.2\,\%\) coverage of the library code and the \(100\,\%\) pass rate of the \acrshort{e2e} suite on Chromium support this model within the limits explained in \secref{subsec:discutie-limitari} --- the \textit{Preview} environment, the single \texttt{fra1} region, free tiers for \gls{cockroachdb} and \gls{redis}, the \textit{cross-browser} test matrix covered manually and the absence of concurrent traffic, with the reported latencies reflecting a sequential regime, not performance at scale.
+
+The main contribution of this thesis is the proposal and empirical validation of the \textbf{\gls{pan}} architecture as a coherent model for full-stack \gls{web} applications in the \gls{angular}/\gls{typescript} ecosystem, demonstrated through a working case study in the domain of reducing household food waste.
+
+\subsection{Architectural decisions}\label{subsec:decizii-arhitecturale}
+
+During the implementation, several initial decisions were refined, eliminated or reconfigured in response to implementation friction. The nine architectural decisions documented in the project's repository fall into three distinct categories, summarized in \tabref{tab:decizii-arhitecturale}: four \textit{simplifications} (eliminating systems that were built but had no real consumer), three \textit{unifications} (patterns discovered from friction and codified as rules, presented in detail in \secref{subsec:pan-patterns}) and two \textit{design decisions} (interface choices revised after implementation).
+
+\begin{table}[htbp]
+\centering
+\caption{The nine documented architectural decisions, organized by category.}
+\label{tab:decizii-arhitecturale}
+\small
+\begin{tabularx}{\textwidth}{lYY}
+\toprule
+\textbf{Category} & \textbf{Decision} & \textbf{Generalizable lesson} \\
+\midrule
+\multicolumn{3}{l}{\textit{Simplifications --- system built, zero real consumers, removal}} \\
+\quad 1 & Removing biometric authentication (\textit{WebAuthn}) & The system was built in response to an anticipated, not an observed, requirement; no interface actually consumed it. \\
+\quad 2 & Removing the role infrastructure (role-based access control) & The only consumer was a stub page for the administrator; the removal dropped the \texttt{Role} enum, the \texttt{User.role} column and the \texttt{roleProcedure} \textit{builder}. \\
+\quad 3 & Flattening the \texttt{MealPlan} aggregate & The intermediate aggregate had no real consumer; the \acrshort{ui} worked directly with \texttt{MealSlot} on \texttt{(userId, date, slotType)}. The removal reduced the number of models in the schema by one. \\
+\quad 4 & Removing the \texttt{core/} library group & The \textit{feature flags} subsystem and the configuration/security concerns were fully wired, but had no consumer (the router was not mounted, the \textit{guard} protected no route); the removal deleted the \texttt{core/config} and \texttt{core/security} libraries plus the \texttt{APP\_TRPC} token, and \texttt{core/logging} was absorbed into \texttt{server/logger} --- the taxonomy went from five to four groups. \\
+\midrule
+\multicolumn{3}{l}{\textit{Unifications --- implementation friction, codified lesson} (\secref{subsec:pan-patterns})} \\
+\quad 5 & \acrshort{ssr} loaders require client-side hydration of authenticated data & The Firebase \textit{Bearer token} is not propagated through \texttt{fetch} on client-side navigation; loaders call only public procedures. \\
+\quad 6 & Routes named semantically, not through numeric codes & The \gls{analog} file-based router silently falls through on \textit{all-numeric} segments; the solution: \texttt{/server-error} instead of \texttt{/500}. \\
+\quad 7 & A single heuristic for estimating quantities, two consumers & The offline cleaning pipeline and the runtime logic now consume the same \texttt{toGrams}/\texttt{fromGrams} pair (\secref{subsec:algoritm-grame}). \\
+\midrule
+\multicolumn{3}{l}{\textit{Design decisions --- initial proposal, validated through later use}} \\
+\quad 8 & \textit{Cook now} button moved from the \textit{FAB} \acrshort{ui} component to the topbar & The \textit{FAB} (\textit{floating action button}) component took up space without offering a visibility advantage over a button in the topbar. \\
+\quad 9 & \textit{Quick actions} widget removed from the home page & The proposed quick actions were redundant with the bottom navigation bar plus the \textit{Cook now} button; the removal reduced the visual noise of the home page. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+In the context of this bachelor's thesis, each decision represents an \textit{adjustment of the invariant} that the \gls{pan} architecture exposed when meeting a concrete use case. The simplifications (categories 1--4) show that a type-coherent stack makes it possible to quickly identify dead code by searching for \textit{consumer types}, not just import paths: if a \gls{trpc} procedure, a \textit{guard} or a \gls{prisma} model is not referenced anywhere in the frontend, removing it is safe at compile time. The unifications (categories 5--7) illustrate that the \gls{pan} architecture exposes friction that is not visible in the theoretical presentation of the stack (\secref{sec:cadrul-tehnologic}), but that arises from the interaction between components at runtime. The design decisions (categories 8--9) are independent of \gls{pan} as such, but show that the structural discipline of the stack does not prevent revising interface proposals --- the removed components were organized in their own libraries and could be taken out without touching the rest of the application.
+
+The reflective tone of these decisions --- refined or removed when meeting a concrete case --- has a direct precedent in the founding article on information hiding: in the section “\textit{Improvement in Circular Shift Module}”, Parnas analyzes his own module and finds that its interface revealed more information than necessary (it imposed an ordering of the shifts), needlessly restricting the class of possible implementations --- an error he explicitly classifies as a design error \cite{parnas1972}. Documenting one's own revised decisions is therefore not a sign of project immaturity, but a practice present in the very text that introduced the principle.
+
+\subsection{Limitations and trade-offs of the architecture}\label{subsec:pan-limitari}
+
+Adopting \gls{pan} as an architecture is not without trade-offs.
+This subsection lists them explicitly, so that a reader evaluating \gls{pan} for their own project can make an informed choice:
+
+\begin{itemize}
+  \item \textbf{The adoption curve.} \gls{pan} requires solid knowledge of \gls{angular} and of advanced \gls{typescript} (\textit{generics}, \textit{conditional types}, \textit{mapped types}). For a team without \gls{angular} experience, learning \gls{pan} costs significantly more than adopting a conventional \gls{nextjs}.
+
+  \item \textbf{\gls{analog} maturity.} At the time of writing, \gls{analog} is a project with a community of a few thousand users and no major adoption in the corporate environment. The risk that certain production problems have no documented answer is real. The mitigation used in this thesis was selecting components that are mature individually (\gls{angular}, \gls{nitro}) and explicitly accepting the risk for the \gls{analog} orchestration layer.
+
+  \item \textbf{Coupling to \gls{typescript}.} \gls{trpc} assumes that both ends of the communication are \gls{typescript}. \gls{pan} is not a viable option for applications that must expose a public API consumed by clients in other languages (Java, Go, Python). In such cases, GraphQL or OpenAPI remain more suitable choices.
+
+  \item \textbf{Moderate vendor dependency.} Although \gls{pan} can be deployed on any Node.js-compatible infrastructure (\gls{nitro} supports \gls{vercel}, Netlify, AWS, Cloudflare, Bun, Deno), the integration with \gls{vercel} is the most well-trodden. Migrating to another provider is possible, but not effortless.
+
+  \item \textbf{\gls{cockroachdb} at a small scale.} For applications under \(100{,}000\) requests per day, the operational complexity of \gls{cockroachdb} (the Raft consensus algorithm, the default \textit{serializable} isolation that requires retry logic) is disproportionate compared to standard \gls{postgresql}. \gls{pan} with classic \gls{postgresql} would be a simpler variant for applications that do not need real horizontal scaling.
+
+  \item \textbf{Limited learning resources.} Community content (Stack Overflow, blog posts, courses) for \gls{pan} as such does not exist --- it exists only for the individual components. A developer facing a problem specific to the \gls{analog} \(+\) \gls{trpc} \(+\) \gls{prisma} \(+\) \gls{nx} integration has to build their own solution from first principles.
+
+  \item \textbf{Gains given up by forgoing distribution.} The same review~\cite{soldani2018} identifies as major operational gains of microservices independent horizontal scalability (gain \#1, 31 studies), independent \textit{deployment} of components and the freedom to choose a distinct technology \textit{stack} for each service. \gls{pan} explicitly gives up the first two: the application is released as a single unit, and real scaling under concurrent traffic has not been characterized (\secref{subsec:discutie-limitari}). The third is the very negative of one of its founding principles --- end-to-end \gls{typescript} uniformity (\secref{subsec:pan-definitie}) is chosen precisely at the expense of per-component technological freedom. For a project that requires independent scaling of subsystems with divergent load profiles, or that must integrate services written in different languages, these trade-offs would tip the balance back towards a distributed architecture.
+\end{itemize}
+
+\gls{pan} is, therefore, not a universally applicable architecture.
+It is an architecture for small teams with solid \gls{angular} knowledge building modern, monolithic (in the sense of single-unit release) and data-centric \gls{typescript} applications.
+In this solution space, \gls{pan} offers a technological coherence and a structural discipline that React-based alternatives reach only through \textit{ad hoc} choices and conventions.
+
+\subsection{Future directions}\label{sec:directii-viitoare}
+
+The natural directions of evolution start from the limitations identified in \secref{subsec:discutie-limitari} and from the architectural trade-offs discussed in \secref{subsec:pan-limitari}.
+At the infrastructure level, promoting \gls{cockroachdb} and \gls{redis} to paid tiers, together with enabling a second region beyond \texttt{fra1} (\gls{cockroachdb} natively supports cross-zone replication, which can be enabled without changes to the application code), would make it possible to characterize the stack under concurrent traffic.
+In the area of testing, systematically including the Firefox and WebKit test matrices in \acrshort{ci} would strengthen confidence in \textit{cross-browser} compatibility beyond Chromium.
+In terms of functionality, the existing \gls{redis} infrastructure (used for now to mark bought items on the shopping list and to rate-limit the benchmark route --- \secref{subsec:rute-h3-redis}) can be extended with an application-level \textit{caching} layer for public pages. Recommending recipes based on the pantry inventory is already covered by progressive filtering (\secref{subsec:filtru-progresiv}), and leveraging the preferences from \textit{onboarding} is partially implemented --- optional filtering by the preferred categories and culinary areas. Dietary restrictions are already collected and persisted in the \textit{onboarding} flow (a dedicated step writes them into \texttt{UserDietaryRestriction}), but they do not yet take part in the recommendation: what remains to be added is labeling the recipes with the restrictions they satisfy --- a \texttt{Recipe}--\texttt{DietaryRestriction} relationship currently absent from the schema, derivable from each recipe's ingredients --- after which the filter would plug into the same optional mechanism used for categories and areas.
+Normalizing the ingredient catalog also contributes to matching accuracy: matching between recipe and pantry is done on the identity of the catalog ingredient, but some of the ingredients in the imported recipes use generic names (for example “flour” or “potatoes”) that have no direct counterpart in the catalog --- which contains only qualified variants, such as \textit{All purpose flour} or \textit{Plain Flour} --- so the recipes that call for them cannot reach the \textit{Alright} level starting from the pantry's contents. Extending the table of equivalences (\textit{aliases}) applied when importing the data (\secref{subsec:pipeline-date}) would reduce these mismatches and increase the proportion of fully covered recipes.
+Along the same axis, a module for tracking consumables would address the limitation identified in \secref{subsec:algoritm-grame}: the staple ingredients seasoned “to taste” (salt, oil, pepper), which are currently not quantified, would be tracked at the level of a state (\textit{in stock} / \textit{running low} / \textit{out of stock}) marked by the user, and the items flagged as out of stock would automatically feed the shopping list, without resorting to mass estimates for quantities intentionally left to the cook's discretion.
+
+Beyond the directions specific to the \textit{\gls{kookio}} product, the \gls{pan} architecture itself remains extensible along several axes not explored in the case study:
+
+\begin{itemize}
+  \item \textbf{Real-time communication.} \gls{trpc} supports \textit{subscriptions} over WebSocket or Server-Sent Events; a natural line of evolution is integration with a message broker (\gls{redis} Pub/Sub, NATS) for notifications to authenticated clients.
+
+  \item \textbf{Functions at the network edge (\textit{edge functions}).} \gls{nitro} allows partial deployment at the \textit{edge} (\gls{vercel} Edge Functions, Cloudflare Workers). \gls{trpc} procedures that do not require \gls{prisma} can be moved to the \textit{edge} to reduce geographical latency.
+
+  \item \textbf{Mobile applications.} The \gls{angular} stack supports native mobile applications through Capacitor or NativeScript; the \texttt{shared} and \texttt{prisma} libraries of a \gls{pan} project are directly reusable between a \gls{web} application and a mobile one.
+
+  \item \textbf{Internationalization.} \gls{angular} i18n combined with multilingual \gls{analog} routing (routes parameterized by a language prefix) covers the case of multilingual applications without architectural changes.
+\end{itemize}
+
+The acyclic topology of the \gls{monorepo} allows these extensions to be made incrementally: a new library in \texttt{libs/feature/} with its own \gls{trpc} router is added without touching the rest of the application.
+% 4-conclusions.tex ends here

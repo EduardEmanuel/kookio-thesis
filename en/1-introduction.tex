@@ -1,0 +1,48 @@
+% 1-introduction.tex starts here
+\section{Introduction}\label{cap:introducere}
+
+\subsection{Motivation}\label{sec:motivatia-intro}
+Food waste is a problem with a documented economic and social impact at both global and European level.
+According to the \textit{UNEP Food Waste Index 2024} report~\cite{unepFoodWaste2024}, households generated over 631 million tonnes of wasted food in 2022 --- the equivalent of more than one billion meals thrown away every day, accounting for \(60\,\%\) of total food waste worldwide.
+At the level of the European Union, Eurostat estimates that each inhabitant generated on average 132 kilograms of food waste in 2022, of which \(54\,\%\) came from households~\cite{eurostatFoodWaste2024}.
+The European Parliament identifies among the main causes of waste at consumer level: impulse buying, the lack of adequate meal planning and poor management of the household food inventory~\cite{europarlFoodWaste2025}.
+These behavioral causes are also confirmed by the academic literature: in a systematic review of 60 empirical studies on household food waste, Schanes et al.~\cite{schanes2018} identify shopping planning, checking the inventory before shopping and communication between household members as practices that play a decisive role in preventing over-purchasing.
+The same review reports that simply using a shopping list reduced per-capita waste by approximately \(20\,\%\), and explicitly classifies applications that list the food inventory and plan meals among the technological prevention measures.
+The authors stress, however, that the intention to reduce waste does not automatically translate into behavior (the attitude--behavior gap) and that some of the causes are structural, beyond individual control~\cite{schanes2018}; consequently, an application such as the one proposed in this thesis can help reduce redundant purchases without being a complete solution to the problem.
+
+In parallel, modern \gls{web} applications raise significant technical challenges, documented both in the academic literature and in the annual surveys of the developer community.
+The \textit{State of JavaScript 2024} survey identifies \emph{excessive complexity}, \emph{option overload} and \emph{breaking changes} as the main pain points reported by users of frontend frameworks~\cite{stateOfJS2024}.
+The same source indicates a growing adoption of server-side rendering (\acrshort{ssr}) --- \(59\,\%\) of respondents use it in 2024 --- and a consolidation of \gls{typescript} as the standard language for large-scale applications: according to the \textit{JetBrains Developer Ecosystem 2024} survey, \gls{typescript} adoption grew from \(12\,\%\) in 2017 to \(35\,\%\) in 2024, and \(67\,\%\) of developers write predominantly \gls{typescript}~\cite{jetbrainsJsSurvey2024}.
+These difficulties are amplified in full-stack applications, where poor integration of the layers leads to increased complexity and long-term maintenance costs.
+
+This thesis does not treat these two directions as a relationship of necessity --- the food waste problem does not impose a particular architecture ---, but uses the first as a vehicle domain for investigating the second: a household application for pantry management, meal planning and shopping lists provides a representative full-stack context (integrated flows, derived data, relational persistence) in which the \gls{pan} architecture can be implemented and evaluated empirically.
+
+\subsection{Purpose of the thesis}\label{sec:scop}
+I set out to define and evaluate the \textbf{\gls{pan}} architecture, a full-stack \gls{web} model based on the \gls{typescript} ecosystem, which integrates the frontend, the backend and the persistence layer into a unified development process.
+To investigate it empirically, I built \textit{\gls{kookio}}, a \gls{web} application that tackles the problem of household food waste.
+Functionally, the application covers pantry management, daily meal planning and automatic derivation of the shopping list for household users.
+Thus, \textit{\gls{kookio}} serves as a case study for evaluating the \gls{pan} architecture in a context representative of modern full-stack \gls{web} applications.
+
+To this end, the thesis aims at:
+\begin{itemize}
+  \item implementing an integrated functional flow for the pantry, the daily planner and the derived shopping list, with persistence in a relational database;
+  \item integrating the frontend and backend into a unified development process, with shared types and validation mechanisms;
+  \item analyzing the characteristics and structural properties of the \gls{pan} architecture with respect to modularity (acyclic topology between libraries) and application maintainability (absence of a \textit{repository} layer);
+  \item building a reusable \acrshort{cicd} pipeline, organized into \glspl{workflow} and \glspl{compositeaction}, aligned with the \gls{nx} targets;
+  \item validating the implementation through unit tests with \gls{vitest} and \acrlong{e2e} (\acrshort{e2e}) with \gls{playwright}, together with an empirical evaluation of the persistence-layer latencies, front-end performance and test coverage.
+\end{itemize}
+
+\subsection{Contributions of the thesis}\label{sec:contributii}
+\begin{enumerate}
+  \item \textbf{An implemented \gls{pan} architectural model:} \gls{analog} (\gls{angular} 21) with server-side rendering (\acrshort{ssr}) on top of \gls{nitro}, \acrshort{trpc} for a typed API and \gls{prisma} to \gls{cockroachdb}, organized as an \gls{nx} \gls{monorepo} with four library groups and an acyclic topology enforced in \acrshort{ci} by the \gls{nx} \texttt{enforce-module-boundaries} rule.
+  \item \textbf{The \textit{\gls{kookio}} application implemented as a \acrlong{mvp} (\acrshort{mvp}):} a working full-stack \gls{web} application for household users, which covers in an integrated way pantry management, daily meal planning, automatic derivation of the shopping list and the \textit{onboarding} flow (profile setup), with Firebase authentication, serving as a case study for the \gls{pan} architecture.
+  \item \textbf{Patterns for sharing data contracts from a single source of truth:} the \gls{zod} schemas are generated automatically from \texttt{schema.prisma} by the \texttt{prisma-zod-generator} library~\cite{prisma_zod_generator}, and the \gls{typescript} types are derived by composition (\texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()}, \texttt{z.infer<>}) from these schemas; the resulting contracts are reused in the user interface, in the server routes and in the tests, with no \textit{repository} layer between the \acrshort{trpc} procedures and the \gls{prisma} client.
+  \item \textbf{A modular automated \gls{cicd} flow:} based on reusable \glspl{workflow} and \textit{\glspl{compositeaction}} aligned with the \gls{nx} targets, so that checks run only for the projects affected by a change (\texttt{nx affected}).
+  \item \textbf{A testing methodology on two distinct levels:} unit testing with \gls{vitest} and \acrlong{e2e} (\acrshort{e2e}) with \gls{playwright}, together with concrete practices for the cold start of the \gls{vite} server (warm-up in \texttt{global-setup}) and for navigating to protected routes (\texttt{waitUntil: 'commit'}).
+  \item \textbf{An empirical evaluation of the implemented technology stack:} measurements of latency at the persistence layer (\gls{cockroachdb} and \gls{redis}), of front-end performance (\gls{lighthouse} and image optimization) and of test coverage, summarized in \tabref{tab:rezultate}.
+\end{enumerate}
+
+The application is implemented as a working \gls{mvp}: recommending recipes based on the pantry inventory is already operational through progressive filtering (\secref{subsec:filtru-progresiv}), while the identified extensions aim at refining this recommendation with the dietary restrictions collected during \textit{onboarding} and at a mechanism for tracking staple consumables.
+These extensions can strengthen the application's contribution to reducing food waste by cutting down redundant purchases.
+The implementation details are presented in \secref{cap:implementare}, the empirical evaluation in \secref{ch:evaluare}, and the concrete directions for future development in \secref{sec:directii-viitoare}.
+% 1-introduction.tex ends here

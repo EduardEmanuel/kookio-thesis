@@ -1,0 +1,251 @@
+% 6-glossary.tex starts here
+% Requires in the preamble: \usepackage{hyphenat}
+% ----------------------------------------------------------
+% ACRONYMS (used with \gls/\acr... rendered with \printglossary[type=\acronymtype])
+% ----------------------------------------------------------
+
+\newacronym{pan}{PAN}{Prisma–Analog–Nx}
+
+\newacronym{ssr}{SSR}{server-side rendering}
+\newacronym{ssg}{SSG}{static site generation}
+\newacronym{csr}{CSR}{client-side rendering}
+\newacronym{dsn}{DSN}{Data Source Name}
+
+\newacronym{trpc}{tRPC}{TypeScript remote procedure call}
+
+\newacronym[longplural={data transfer objects}, shortplural={DTOs}]
+  {dto}{DTO}{data transfer object}
+
+\newacronym[longplural={object–relational mappings}, shortplural={ORMs}]
+  {orm}{ORM}{object–relational mapping}
+
+
+\newacronym{e2e}{E2E}{end-to-end testing}
+
+\newacronym{ci}{CI}{continuous integration}
+\newacronym{cicd}{CI/CD}{continuous integration and continuous delivery/deployment}
+
+\newacronym{p50}{p50}{50th percentile (median)}
+\newacronym{p95}{p95}{95th percentile}
+
+\newacronym{lcp}{LCP}{Largest Contentful Paint}
+\newacronym{cls}{CLS}{Cumulative Layout Shift}
+\newacronym{fcp}{FCP}{First Contentful Paint}
+\newacronym{tbt}{TBT}{Total Blocking Time}
+\newacronym{avif}{AVIF}{image format based on the AV1 codec}
+
+\newacronym{csp}{CSP}{Content-Security-Policy}
+\newacronym{hsts}{HSTS}{HTTP Strict-Transport-Security}
+
+\newacronym[longplural={minimum viable products}, shortplural={MVPs}]
+  {mvp}{MVP}{minimum viable product}
+
+
+\newacronym[longplural={user interfaces}, shortplural={UIs}]
+  {ui}{UI}{user interface}
+
+
+\newacronym{mean}{MEAN}{MongoDB–Express–Angular–Node.js}
+
+
+\newacronym{spa}{SPA}{single-page application}
+\newacronym{seo}{SEO}{search engine optimization}
+\newacronym[longplural={pull requests}, shortplural={PRs}]
+  {pr}{PR}{pull request}
+
+
+% ----------------------------------------------------------
+% TERMS and NAMES (used with \gls rendered with \printglossary[title={Glossary of Terms}])
+% ----------------------------------------------------------
+
+\newglossaryentry{web}{
+  name={\NoHyphens{web}},
+  sort={web},
+  description={the ecosystem of \emph{hypertext} resources accessible over the Internet (World Wide Web); in this thesis, “web application” denotes an application accessed from the browser, with \glsxtrshort{ssr}/\glsxtrshort{ssg}/\glsxtrshort{csr} rendering},
+}
+
+\newglossaryentry{nx}{
+  name={\NoHyphens{Nx}},
+  description={build and orchestration system for JavaScript/TypeScript monorepos},
+}
+
+\newglossaryentry{prisma}{
+  name={\NoHyphens{Prisma}},
+  description={\glsxtrshort{orm} library for TypeScript/Node.js},
+}
+
+\newglossaryentry{lighthouse}{
+  name={\NoHyphens{Lighthouse}},
+  description={Google tool for automated performance auditing of \gls{web} pages, which reports \emph{Core Web Vitals} metrics (\glsxtrshort{lcp}, \glsxtrshort{cls}, \glsxtrshort{fcp}, \glsxtrshort{tbt})},
+}
+
+\newglossaryentry{analog}{
+  name={\NoHyphens{Analog}},
+  description={full-stack meta-framework for \gls{angular}, with \glsxtrshort{ssr} support and file-based routing; used for \gls{web} applications},
+}
+
+\newglossaryentry{angular}{
+  name={\NoHyphens{Angular}},
+  description={platform and framework for \gls{web} applications (SPA/\glsxtrshort{ssr})},
+}
+
+\newglossaryentry{nitro}{
+  name={\NoHyphens{Nitro}},
+  description={universal runtime (UnJS) for server routes and server-side rendering (\glsxtrshort{ssr})},
+}
+
+
+\newglossaryentry{zod}{
+  name={\NoHyphens{Zod}},
+  description={schema-based validation library for TypeScript/JavaScript},
+}
+
+\newglossaryentry{cockroachdb}{
+  name={\NoHyphens{CockroachDB}},
+  description={distributed (NewSQL) database management system, compatible at the protocol level with \gls{postgresql}, with automatic replication and partitioning for resilience and horizontal scaling},
+  sort={cockroachdb},
+}
+
+\newglossaryentry{postgresql}{
+  name={\NoHyphens{PostgreSQL}},
+  description={open-source relational database management system, with extensive support for the SQL standard, ACID transactions and extensibility through user-defined types and functions},
+  sort={postgresql},
+}
+
+
+\newglossaryentry{vercel}{
+  name={\NoHyphens{Vercel}},
+  description={cloud platform for building, previewing and deploying \gls{web} applications, with \glsxtrshort{cicd} integration, per-environment variables and support for \glsxtrshort{ssr}, \textit{serverless} functions and \textit{edge functions}},
+  sort={vercel},
+}
+
+\newglossaryentry{vitest}{
+  name={\NoHyphens{Vitest}},
+  description={fast testing framework for the Vite ecosystem, aimed at unit and integration tests, with an API largely compatible with Jest and native TypeScript support},
+  sort={vitest},
+}
+
+\newglossaryentry{playwright}{
+  name={\NoHyphens{Playwright}},
+  description={library for browser automation and \glsxtrshort{e2e} testing, with support for Chromium, Firefox and WebKit, headless/GUI execution and tools such as the trace viewer},
+  sort={playwright},
+}
+
+\newglossaryentry{hydration}{
+  name={\NoHyphens{hydration}},
+  description={the process by which client-side code attaches interactive behavior to the \emph{markup} generated through \glsxtrshort{ssr}; it allows the transition from the initial server-side rendering to \glsxtrshort{csr} interactions without reloading the page},
+  sort={hydration},
+}
+
+\newglossaryentry{monorepo}{
+  name={\NoHyphens{monorepo}},
+  description={a code organization strategy in which several applications and libraries coexist in a single repository, with unified orchestration of builds, tests and \glsxtrshort{cicd}; in the context of this thesis it is managed with Nx},
+  sort={monorepo},
+}
+
+\newglossaryentry{uses}{
+  name={\NoHyphens{USES}},
+  sort={uses},
+  description={a relation between modules defined by Parnas (1972): a module A is in the \textit{USES} relation with module B if the correct functioning of A depends on the presence of a correct version of B. Parnas writes it in capital letters as a formal term and requires this relation to be a loop-free (acyclic) partial ordering, a property that allows functional subsets of the system to be built by “cutting off” the upper levels},
+}
+
+
+\newglossaryentry{typescript}{
+  name={\NoHyphens{TypeScript}},
+  sort={typescript},
+  description={a typed superset of the JavaScript language that introduces static types and is transpiled to JavaScript},
+}
+
+\newglossaryentry{kookio}{
+  name={\NoHyphens{Kookio}},
+  sort={kookio},
+  description={full-stack \gls{web} application used as a case study in this thesis for pantry management, daily meal planning and automatic derivation of the shopping list, built on the \gls{pan} architecture},
+}
+
+
+\newglossaryentry{nextjs}{
+  name={\NoHyphens{Next.js}},
+  sort={nextjs},
+  description={React framework oriented towards hybrid rendering (\glsxtrshort{ssr}/\glsxtrshort{ssg}), often associated with JAMstack},
+}
+
+
+\newglossaryentry{vite}{
+  name={\NoHyphens{Vite}},
+  sort={vite},
+  description={build tool and development server for modern \gls{web} applications, based on ECMAScript modules, with very fast startup and \emph{hot module replacement} (HMR); it underpins \gls{vitest} and is used by \gls{analog} for \glsxtrshort{ssr} and builds},
+}
+
+\newglossaryentry{pino}{
+  name={\NoHyphens{Pino}},
+  sort={pino},
+  description={performance-oriented logging library for Node.js (JSON logs, low-overhead output)},
+}
+
+\newglossaryentry{sentry}{
+  name={\NoHyphens{Sentry}},
+  sort={sentry},
+  description={production error monitoring platform, which aggregates, groups and alerts on the exceptions captured from the client and the server},
+}
+
+
+\newglossaryentry{workflow}{
+  name={\NoHyphens{workflow}},
+  sort={workflow},
+  plural={\NoHyphens{workflows}},
+  description={a declarative configuration describing a sequence of automated steps (build, testing, lint, deploy) triggered by events (e.g. push, pull request, schedule). In ecosystems such as GitHub Actions and GitLab \glsxtrshort{ci}, a workflow is made up of jobs and steps, and can use matrices, caches, artifacts, secrets/variables and concurrency rules. In this project, the workflows orchestrate \glsxtrshort{cicd} and align execution with the \gls{nx} targets.},
+  see={[see also]{cicd,nx}},
+}
+
+\newglossaryentry{compositeaction}{
+  name={\NoHyphens{composite action}},
+  sort={compositeaction},
+  plural={\NoHyphens{composite actions}},
+  description={a type of reusable action in GitHub Actions that groups several steps (\texttt{run}/\texttt{uses}) into a single action; it is distributed as a directory with an \texttt{action.yml} file, accepts \textit{inputs}, \textit{outputs} and \textit{secrets} and can be called from a \gls{workflow} through \texttt{uses:}. Useful for eliminating duplication (DRY) in \glsxtrshort{cicd} pipelines; common limitations: they do not run in their own containers and cannot define \textit{services}.},
+  see={[see also]{workflow,cicd}},
+}
+
+
+\newglossaryentry{redis}{
+  name={\NoHyphens{Redis}},
+  sort={redis},
+  description={an \emph{in-memory} key–value data store, with advanced structures (lists, sets, hashes, sorted sets, \textit{streams}) and very low latency; frequently used for caching, session storage, queues/messaging (Pub/Sub, Streams), rate-limiting and \textit{leaderboards}. It supports optional persistence (RDB/AOF), replication and \textit{cluster} mode for partitioning and, as a rule, complements a primary SQL database in microservice and \textit{serverless} architectures.},
+}
+
+
+\newglossaryentry{metaframework}{
+  name={\NoHyphens{meta-framework}},
+  sort={metaframework},
+  description={a framework that extends a base framework with full-stack capabilities (e.g. file-based routing, \glsxtrshort{ssr}/\glsxtrshort{ssg}, integration with \glsxtrshort{trpc}). In this thesis, \gls{analog} extends \gls{angular} on top of the \gls{nitro} runtime.},
+  see={[see also]{analog,angular,nitro,ssr,ssg,trpc}},
+}
+
+
+\newglossaryentry{randare}{
+  name={\NoHyphens{rendering}},
+  sort={rendering},
+  description={the process by which an application generates HTML (and interface updates) from code and data. On the modern web it can take place on the server (\glsxtrshort{ssr}), at build time through \glsxtrshort{ssg}/prerendering, or in the browser (\glsxtrshort{csr}); as a rule, it is followed by \gls{hydration} for interactivity. In \gls{analog}, the rendering strategy can be chosen per route.},
+  see={[see also]{ssr,ssg,csr,hydration,analog}},
+}
+
+
+\newglossaryentry{logging}{
+  name={\NoHyphens{logging}},
+  sort={logging},
+  description={collecting and recording application events (structured messages by level, correlation through identifiers, export to aggregation systems) for debugging and observability},
+}
+
+
+% darwin-arm64 / rhel-openssl-3.0.x glossary entries removed: Prisma 7 is
+% Rust-free (no platform-specific query-engine binaries / binaryTargets), so
+% the terms no longer appear anywhere in the body. \glsaddall would otherwise
+% force-print them as orphaned entries describing a mechanism the project no
+% longer uses.
+\newglossaryentry{prismaclient}{
+  name={\NoHyphens{Prisma Client}},
+  sort={prismaclient},
+  description={\texttt{TypeScript} database client, generated automatically by \gls{prisma} from the \texttt{schema.prisma} file; it provides a typed API for SQL operations (CRUD, filters, relations, transactions) on the defined models. Starting with \gls{prisma} 7, the client runs entirely in JavaScript (without a native Rust engine): the connection goes through a \textit{driver adapter} (\texttt{@prisma/adapter-pg}), and regenerating with \texttt{npx prisma generate} produces only typed code, independent of the execution platform.},
+  see={[see also]{prisma,orm,cockroachdb,postgresql}},
+}
+
+% 6-glossary.tex ends here

@@ -1,0 +1,200 @@
+% 2-preliminaries.tex starts here
+\section{Preliminaries}\label{cap:preliminarii}
+
+This chapter presents the technological context of the thesis in three complementary subsections.
+\secref{sec:motivatia} sets out the motivation behind the technology choices that led to the formulation of the \textbf{\gls{pan}} architecture, \secref{subsec:pan-definitie} defines the \gls{pan} architecture and compares it with established alternatives, and \secref{sec:cadrul-tehnologic} describes each component of the stack technically, together with its role in the \textit{\gls{kookio}} application.
+
+\subsection{Motivation for the technology choices}\label{sec:motivatia}
+
+Starting from the advantages of static typing and from the consolidation of \gls{typescript} as the standard language for large-scale applications --- the \textit{JetBrains Developer Ecosystem 2024} survey shows adoption growing from \(12\,\%\) in 2017 to \(35\,\%\) in 2024, with \(67\,\%\) of developers writing predominantly \gls{typescript}~\cite{jetbrainsJsSurvey2024} ---, with \textit{\gls{kookio}} I explored the possibility of building a complete application, from one end to the other, exclusively in \gls{typescript}.
+In this thesis, this technology stack will be conventionally called the \textbf{\gls{pan}} (\acrlong{pan}) architecture.
+
+The advantages of static typing are not merely an engineering preference; they have been quantified empirically. The study by Gao et al.~\cite{gao2017type}, which evaluated the \textit{Flow} and \gls{typescript} type systems on a sample of 400 public bugs extracted from real GitHub projects, shows that static typing could have detected approximately \(15\,\%\) of them (confidence interval \([11.5\,\%,\ 18.5\,\%]\) at the \(95\,\%\) level). This value is, however, a deliberate underestimate: the authors measure only public bugs, those that survived testing and \textit{review}, and explicitly exclude the collateral benefits of typing --- documentation, autocompletion, code navigation and refactoring safety~\cite{gao2017type}. It is precisely these unmeasured benefits that constitute, in the \gls{pan} architecture, a central part of the value proposition: renaming a field in \texttt{schema.prisma} propagates, at compile time, to every consumer (\secref{subsec:gestionarea-datelor}).
+
+The same study also quantifies the cost of typing --- the \textit{annotation tax} --- at \(1.7\) and \(2.4\) tokens per bug for \textit{Flow} and \gls{typescript}, respectively~\cite{gao2017type} (a \textit{token} being a lexical unit of code --- an identifier, keyword or symbol). This low cost is, however, conditioned on the assumption of an already annotated code base, in which the developer incrementally adds only the annotations related to a single change. The \gls{pan} architecture shifts this trade-off: the type contracts at the data boundary are not annotated by hand, but generated from \texttt{schema.prisma} by \texttt{prisma-zod-generator}~\cite{prisma_zod_generator}. The base schemas are no longer written by hand, and the only remaining cost at this layer is deriving subsets by composition (\texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()}) --- a mechanical operation, requiring significantly less effort than manually annotating each contract. Thus, if the study shows that the benefit of typing holds even under a manual annotation cost, \gls{pan} largely eliminates that very cost.
+
+An architectural fork that precedes the individual stack choices is the one between an application distributed across microservices and a modular monolith delivered as a single unit. The systematic review of the industrial literature by Soldani et al.~\cite{soldani2018} finds, based on 51 studies, that the dominant pains of the microservices architecture are intrinsic to distribution: the consumption of network resources (reported by 17 studies as the primary operational pain, since microservices communicate through remote API calls rather than \textit{in-memory}), versioning of API contracts between services, data consistency and distributed transactions (21 and 18 studies, respectively), as well as locating, coordinating and monitoring instances at runtime. Since \textit{\gls{kookio}} is a data-centric application, intended for a small team and a single-unit release, I opted for a modular monolith in which these pains do not arise by construction: the \gls{analog} \(\rightarrow\) \gls{trpc} \(\rightarrow\) \gls{prisma} flow executes the calls to the persistence layer in-process, without a \textit{repository} layer and without network boundaries between components (\secref{subsec:topologie-biblioteci}). The \gls{pan} architecture does not reject microservices as an inferior model, but deliberately occupies a different point in the space of trade-offs.
+It is important to stress that the cited study does not present the pains of microservices as design flaws, but as intrinsic properties of the complexity of distribution, offset by real gains at large scale --- Amazon, Netflix and Spotify being the recurring examples. The present comparison does not establish a hierarchy of value between the two models, but delimits the space of applicability: \gls{pan} is optimal for data-centric applications, monolithic in the sense of single-unit release, developed by small teams --- exactly the context in which the pains of distribution outweigh its gains.
+
+Sharing type contracts between the two ends is not, in itself, a novelty: classic distributed systems have long achieved it through interface description languages (\textit{Interface Description Language}, IDL) such as \textit{Protocol Buffers} or \textit{gRPC}, which generate typed code for the client and the server from a common schema. The particularity of the \gls{web} ecosystem is that this coherence has historically been hard to achieve: the client and the server often ran in different languages, and the boundary between them --- JSON serialization over HTTP --- is untyped by nature, so a contract change on the server only surfaced on the client at runtime, as an error. What the \gls{pan} architecture leverages, therefore, is not the invention of type sharing, but the fact that a unified \gls{typescript} ecosystem --- with \acrshort{trpc}, which propagates procedure signatures without a separate IDL, and with \gls{zod} schemas generated from the same base schema --- brings this guarantee, already familiar from distributed systems, all the way to the client--server boundary of a web application and checks it at compile time.
+
+\subsubsection*{Choosing the database}
+
+A first conceptual challenge was choosing the database.
+Historically, \textit{MongoDB} was for many years the default favorite of developers in the JavaScript/\gls{typescript} ecosystem, thanks to its native JSON storage and its flexible schema that maps directly onto the application's objects.
+However, the data model of the \textit{\gls{kookio}} application is intrinsically relational: recipes, ingredients and users are distinct entities linked through many-to-many relationships, and compound queries --- data joins, referential integrity constraints and ACID transactions --- are essential for data consistency.
+This characteristic of the data model made a classic relational database the natural choice for the project.
+
+To abstract the database language I chose \gls{prisma}~\cite{prisma_orm} --- an object-relational mapping (\acrshort{orm}) that provides end-to-end type safety in \gls{typescript}, generating the access client directly from the declarative schema.
+As the concrete database service I turned to \gls{cockroachdb}~\cite{cockroachdb}, a distributed database compatible with the \gls{postgresql} wire protocol~\cite{postgresql} --- so that \gls{prisma} and the entire tooling ecosystem work unaltered.
+On top of \gls{postgresql}, \gls{cockroachdb} adds native horizontal scaling, strong consistency through the Raft consensus algorithm, and a serving tier without self-managed infrastructure (\textit{serverless}), suitable for an academic project that may evolve towards a production environment.
+
+\subsubsection*{The frontend framework and code organization}
+
+For the client interface, choosing the \gls{angular} framework came naturally, given the commitment to \gls{typescript}~\cite{angular_signals}.
+The next step was identifying a suitable option for the code that would run on the server.
+Here I had several valid options, most of them conceptual heirs of the well-known \textbf{MERN} architecture (\textit{MongoDB}, \textit{Express}, \textit{React}, \textit{Node.js}), which in recent years has naturally migrated towards stacks based on \gls{nextjs} and \textit{Turborepo} (a build system for \glspl{monorepo}) --- both developed by \gls{vercel}.
+However, this direction would have pushed me towards the \textit{React} ecosystem and the \textit{TSX} syntax, abandoning the initial decision to use \gls{angular}.
+
+During my research I discovered the \textbf{\gls{analog}} community~\cite{analog}, a \gls{metaframework} that extends \gls{angular} with server capabilities (server-side rendering, file-based routing, API endpoints) --- essentially, the \gls{angular} equivalent of \gls{nextjs}.
+\gls{analog} benefits from the direct support of the \textbf{\gls{nx}} community~\cite{nx}, a \gls{monorepo} management tool developed by the company Nrwl, founded by former engineers of the \gls{angular} team at Google.
+This lineage explains why \gls{nx} has, at its core, \gls{angular} DNA and why it offers first-class support for \gls{analog} projects: native generators, a distributed cache for build tasks and templates that speed up the creation of libraries dedicated to each core feature of the application.
+
+This is how a structural parallel with the \textbf{\gls{mean}} architecture (\textit{MongoDB}, \textit{Express}, \gls{angular}, \textit{Node.js})~\cite{karpovMean2013} took shape, with the \gls{pan} architecture reflecting the maturing of the ecosystem: \gls{analog} absorbs the roles that \gls{mean} distributed between \textit{Express} and \gls{angular}, and \gls{nx} addresses an architectural concern --- \gls{monorepo} organization with a distributed cache --- that, in the \gls{mean} era, was not yet a topic of discussion.
+This parallel, together with a detailed comparison against the modern \textit{React} stack (MERN + \gls{nextjs} + Turborepo), is presented in \secref{subsec:pan-comparatie}.
+
+It is worth noting that \gls{pan} does not answer the complexity pains reported in \secref{cap:introducere} by reducing the number of tools --- the stack remains a rich one ---, but by integrating them under a single language and by formalizing the boundaries between them. The pain point identified by the surveys is not the number of tools in itself, but the poor integration between layers; \gls{pan} targets exactly this integration, leaving the complexity structured and automatically checked, not eliminated.
+
+\subsection{The PAN architecture}\label{subsec:pan-definitie}
+
+\gls{pan} (\acrlong{pan}) is a modular monolithic full-stack architecture for \gls{web} applications built entirely within the \gls{typescript} ecosystem.
+Its three eponymous components --- \gls{prisma} as a declarative \gls{orm}, \gls{analog} as an \gls{angular} \gls{metaframework} with \acrshort{ssr} support and \gls{nx} as a \gls{monorepo} orchestrator --- are the building blocks around which a coherent stack is organized according to five fundamental principles:
+
+\begin{enumerate}
+  \item \textbf{A single language from end to end.} The entire application --- \acrshort{ui}, server, validation, persistence --- is written in \gls{typescript}. This decision eliminates the class of errors arising from contracts falling out of sync between different languages (for example, Java on the server and \gls{typescript} on the client) and allows types to be reused uniformly.
+
+  \item \textbf{A single source of truth for data contracts.} The database schema declared in \texttt{schema.prisma} is the primary source from which both the \gls{prisma} \gls{typescript} client and the \gls{zod} validation schemas (via \texttt{prisma-zod-generator}) are automatically derived. The application types are then composed from these schemas with the \texttt{.pick()}, \texttt{.omit()}, \texttt{.extend()} and \texttt{z.infer<>} operators. A change in \texttt{schema.prisma} propagates, at compile time, through all the layers.
+
+  \item \textbf{An acyclic modular topology, enforced in \acrshort{ci}.} The code is organized as an \gls{nx} \gls{monorepo} with four library groups (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared}) and a strictly acyclic dependency relationship. The \gls{nx} \texttt{enforce-module-boundaries} rule rejects in continuous integration any import that violates the topology, guaranteeing that the architectural structure does not degrade as the project evolves.
+
+  \item \textbf{No intermediate \textit{repository} layer.} The \gls{trpc} procedures call the \gls{prisma} client directly (\texttt{ctx.prisma}), without an intermediate object-oriented \textit{repository} layer. This decision reduces the number of adaptation layers and forces the business logic to be expressed in terms of the primitives exposed by \gls{prisma} --- an explicit trade-off between simplicity and abstraction.
+
+  \item \textbf{Server-side rendering as the default mode.} The \gls{angular} \(+\) \gls{analog} combination delivers \acrshort{ssr} as the default behavior for all routes. As a result, the user's first impression relies on HTML that is populated from the very first request, which matters both for \acrshort{seo} indexing and for perceived performance.
+\end{enumerate}
+
+\subsubsection{Comparison with the modern React stack}\label{subsec:pan-comparatie}
+
+The contemporary React stack (MERN + \gls{nextjs} + \textit{Turborepo}) occupies the same solution space as \gls{pan}, but in a different ecosystem.
+\figref{fig:mean-vs-pan} visually summarizes the maturing from \gls{mean} to \gls{pan}, and \tabref{tab:pan-vs-altele} extends the comparison to the modern React stack.
+
+\begin{figure}[htbp]
+  \centering
+  % The PNG carries ~5% baked-in white padding on each side (content occupies
+  % x[100..1898] of 2000px ≈ 89.9% width). Scaling to 1.11x makes the diagram's
+  % *content* span the text block; the padding overflows symmetrically into the
+  % 2.5cm page margin (~0.9cm each side, well within margin). \centering keeps
+  % the overflow balanced. Adjust the factor if the source PNG is re-exported
+  % with different padding.
+  \makebox[\textwidth]{\includegraphics[width=1.11\textwidth]{mean-vs-pan-en}}
+  \caption{Structural parallel between the \gls{mean} architecture (Karpov, 2013) and the \gls{pan} architecture proposed in this thesis. The diagram highlights the maturing of the ecosystem: \gls{analog} absorbs the roles distributed in \gls{mean} between \textit{Express} and \gls{angular}, and \gls{nx} addresses the concern of \gls{monorepo} organization which, in the \gls{mean} era, was not yet a topic of architectural discussion.}
+  \label{fig:mean-vs-pan}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison between \gls{mean} (2013), the modern React stack and the \gls{pan} architecture.}
+\label{tab:pan-vs-altele}
+\small
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+\textbf{Aspect} & \textbf{\gls{mean} (2013)} & \textbf{MERN + \gls{nextjs} + Turborepo} & \textbf{\gls{pan}} \\
+\midrule
+Frontend         & \gls{angular} (legacy)  & React                  & \gls{angular} 21 \\
+Meta-framework   & --- (Express)           & \gls{nextjs}           & \gls{analog} \\
+Server runtime   & Node.js + Express       & Node.js + \gls{nextjs} & \gls{nitro} \\
+API              & Manual REST             & API routes + optional \gls{trpc} & Mandatory \gls{trpc} \\
+Shared types     & No                      & Partial (App Router)   & Automatic end-to-end \\
+Database         & MongoDB                 & MongoDB or \gls{postgresql} & \gls{cockroachdb} \\
+\gls{orm}        & Mongoose                & \gls{prisma} or Drizzle & \gls{prisma} \\
+Monorepo         & ---                     & Turborepo              & \gls{nx} \\
+Language         & JavaScript              & Partial \gls{typescript} & Pure \gls{typescript} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The major differences between \gls{pan} and the modern React stack are:
+
+\begin{itemize}
+  \item \textbf{Community.} \gls{pan} is built on \gls{angular}, a framework with a smaller usage share than React (\(50.1\,\%\) versus \(81.1\,\%\), \textit{State of JavaScript 2024}~\cite{stateOfJS2024}). This difference is both a practical limitation (fewer available developers, fewer \textit{third-party} \acrshort{ui} libraries) and an invitation to discipline --- \gls{angular} imposes a more structured organization by default, through dependency injection and strictly typed \textit{standalone} components.
+
+  \item \textbf{Maturity.} \gls{nextjs} has almost a decade of evolution and extensive production adoption; \gls{analog} is under three years old and has a small community. \gls{pan} compensates by choosing \gls{angular} and \gls{nitro} (both mature individually) as base platforms, but accepts the community risk of \gls{analog}.
+
+  \item \textbf{End-to-end typing.} In \gls{pan}, \gls{trpc} is a mandatory component of the architecture, not an optional one. This decision makes \gls{pan} more restrictive than the modern React stack (where you can choose REST, GraphQL or \gls{trpc} ad hoc), but eliminates the class of contract desynchronization errors between client and server.
+\end{itemize}
+
+\subsection{Technological framework}\label{sec:cadrul-tehnologic}
+
+\subsubsection{Modern web architectures}\label{subsec:arhitecturi-web}
+
+For a cooking application in which the user's first impression depends on HTML populated from the very first visit, the client-side rendering (\acrshort{csr}) model of a classic \gls{angular} single-page application (\acrshort{spa}) was not enough.
+The requirements of fast display, \acrshort{seo} for public recipes and subsequent on-page interactivity led to an architecture that splits the \gls{randare} work between the server and the client~\cite{analog,nitro}.
+
+The \gls{randare} strategies relevant to the project are:
+\begin{itemize}
+  \item \textbf{\acrshort{csr}} (client-side rendering) --- used in \textit{\gls{kookio}} for the authenticated screens (planner, pantry), where interactivity comes first;
+  \item \textbf{\acrshort{ssr}} (server-side rendering) --- for public pages with dynamic content (recipe feed, profiles), where the initial HTML must be complete;
+  \item \textbf{\acrshort{ssg}} (static site generation) --- prerendering, at \textit{build} time, the pages whose content is completely stable; it is supported by \gls{analog}, but not used in the current version of the application, in which static pages are server-rendered as well;
+  \item \textbf{hybrid architectures} --- combining these strategies on different routes, depending on the nature of the content~\cite{analog}.
+\end{itemize}
+
+I chose a hybrid full-stack architecture in which the frontend and the backend run in the same \gls{typescript} code base.
+The decision is motivated practically: the types and validation schemas (\gls{trpc} with validation through \gls{zod} schemas) are shared at module level, and a single build step delivers both layers~\cite{trpc,zod}.
+
+\subsubsection{Angular and server-side rendering}\label{subsec:angular-ssr}
+
+I chose \gls{angular} as the frontend framework because its ecosystem natively provides the pieces I needed for \textit{\gls{kookio}}: strict typing, \textit{standalone} components, \gls{angular} Signals (reactive signals) and the \gls{angular} Material/CDK component set, consistent with respect to accessibility~\cite{angular_signals,angular_material}.
+
+\acrshort{ssr} support in \textit{\gls{kookio}} comes from \textbf{\gls{analog}}, a \gls{metaframework} that extends \gls{angular} with:
+\begin{itemize}
+  \item \acrfull{ssr} and \acrfull{ssg} configurable per route,
+  \item routing based on the file structure,
+  \item integration of the server logic (\gls{nitro}, \gls{trpc}) in the same project~\cite{analog,analog_routing,nitro}.
+\end{itemize}
+
+For a public recipe page, \acrshort{ssr} makes the difference between a minimal HTML document until \gls{hydration} and HTML that is populated from the very first request --- important both for the user and for the \acrshort{seo} indexing on which the organic distribution of the content relies~\cite{analog}.
+
+\subsubsection{Monorepo and orchestration with Nx}\label{subsec:monorepo-nx}
+
+I organized \textit{\gls{kookio}} as a \gls{monorepo} using \textbf{\gls{nx}}: a single application (\texttt{apps/web}) and a set of libraries segmented by responsibility (\texttt{feature}, \texttt{prisma}, \texttt{server}, \texttt{shared})~\cite{nx}.
+
+The libraries are grouped by role:
+\begin{itemize}
+  \item \texttt{feature/} --- user flows (\texttt{auth}, \texttt{shell}),
+  \item \texttt{prisma-client} --- the schema, the generated client, the \gls{zod} schemas,
+  \item \texttt{server/} --- the \gls{trpc} context, logging, middleware, server runtime utility functions,
+  \item \texttt{shared/} --- \acrshort{ui}, utilities, simulated (\textit{mock}) data.
+\end{itemize}
+
+On top of this structure, \gls{nx} provides two essential mechanisms used systematically in the project: \texttt{nx affected} runs only the tasks (\texttt{lint}, \texttt{test}, \texttt{build}) touched by the current changes, and the \texttt{enforce-module-boundaries} rule rejects in \acrshort{ci} the imports that violate the library topology~\cite{nx}.
+
+\subsubsection{tRPC and type sharing}\label{subsec:trpc}
+
+Client--server communication in \textit{\gls{kookio}} uses \textbf{\gls{trpc}} (\textit{TypeScript Remote Procedure Call} --- typed remote procedure calls for \gls{typescript}): the procedures are declared once, in \gls{typescript}, on the server, and the \gls{angular} client invokes them directly, without an additional layer of API definitions~\cite{trpc}.
+
+The concrete advantages I observed:
+\begin{itemize}
+  \item full \gls{typescript} inference eliminates the hand-written \glspl{dto} that appear in classic REST architectures,
+  \item input validation is done through \gls{zod} schemas generated automatically from the \gls{prisma} schema~\cite{zod,prisma_zod_generator},
+  \item refactorings that rename fields propagate instantly across both layers.
+\end{itemize}
+
+For \textit{\gls{kookio}}, in practice, this translated into the almost complete elimination of type checks at the client--server boundary: the contract is the compiler.
+
+The limits of pure static typing also motivate the runtime validation layer. The taxonomy of undetectable bugs in~\cite{gao2017type} ranks string-content errors (\textit{StringError} --- malformed URLs, malformed queries) second by frequency, since the \texttt{string} type is opaque to most static type systems. Validation through \gls{zod} schemas at the \gls{trpc} boundary covers precisely part of this gap, checking at runtime formats, enums and constraints that the \gls{typescript} compiler cannot express.
+
+\subsubsection{Persistence: Prisma and CockroachDB}\label{subsec:persistenta}
+
+For persistence I chose \textbf{\gls{cockroachdb}} as the database and \textbf{\gls{prisma}} as the \gls{orm}~\cite{prisma_orm,cockroachdb}.
+\gls{cockroachdb} is compatible with the \gls{postgresql} wire protocol, which means that the SQL tooling ecosystem (drivers, \texttt{psql} clients, \gls{prisma}) works without adaptations, while additionally offering native horizontal scaling capabilities.
+Standard \gls{postgresql} focuses on vertical replication, whereas \gls{cockroachdb} adds native horizontal scaling on top of the protocol~\cite{cockroachdb}.
+
+In the project, \gls{prisma} covers three responsibilities: declaring the schema in \texttt{schema.prisma}, generating a \gls{typescript} client with exact types for each model, and managing the versioned migrations applied at \texttt{deploy}~\cite{prisma_orm}.
+
+To generate the \gls{zod} schemas I use \texttt{prisma-zod-generator}, which exposes a validatable copy of each model --- the source of truth is the \gls{prisma} schema, and the API and \acrshort{ui} layers consume derivatives of it~\cite{prisma_zod_generator}.
+
+\subsubsection{Automated testing: Vitest and Playwright}\label{subsec:testare}
+
+The test suite of \textit{\gls{kookio}} has two distinct layers: unit tests with \textbf{\gls{vitest}} for isolated logic and \acrlong{e2e} (\acrshort{e2e}) with \textbf{\gls{playwright}} for complete scenarios through a real browser~\cite{vitest,playwright}.
+
+I chose \gls{vitest} because it already runs on \gls{vite} (the same bundler as the main application), which means there are no duplicated configurations or divergences between \texttt{nx test} and \texttt{nx build}~\cite{vitest,vite}.
+
+\gls{playwright} covers the critical flows: authentication, completing \textit{onboarding}, adding to the pantry, viewing the planner.
+The suite runs in \acrshort{ci} on every \acrshort{pr} targeting \texttt{test} before promotion to \texttt{main}~\cite{playwright}.
+
+\subsubsection{Configuration and environment management}\label{subsec:configuratie}
+
+Environment variables (Firebase keys, \gls{redis} URLs, \gls{vercel} secrets) are defined only once in the \gls{vercel} dashboard, separately per environment (\texttt{development}, \texttt{preview}, \texttt{production})~\cite{vercel_cli}.
+This centralization eliminates \texttt{.env} files accidentally added to the Git history and keeps all branches in sync.
+
+Locally, synchronization is done with \texttt{vercel env pull}, which writes a \texttt{.env.local} (excluded from version control through \texttt{.gitignore}) with the values of the current environment --- no secret is versioned in Git~\cite{vercel_cli}.
+% 2-preliminaries.tex ends here

@@ -1,0 +1,17 @@
+% 0-abstract.tex starts here
+\section*{Abstract}
+
+This thesis proposes and analyzes the \textbf{\gls{pan}} (\acrlong{pan}) architecture, a full-stack model for modern \gls{web} applications built entirely within the \gls{typescript} ecosystem, in which the application layers share types and validation schemas derived from a single source of truth.
+To validate this model, I designed and implemented \textit{\gls{kookio}}, a full-stack \gls{web} application that serves as a case study of the \gls{pan} architecture.
+\textit{\gls{kookio}} addresses a concrete driver of household food waste --- buying food without a meal plan --- through an integrated flow of pantry management, meal planning and automatic derivation of the shopping list, so that purchases are tied to the planned meals instead of accumulating redundantly.
+
+The architectural motivation stems from the need for \gls{web} stacks that ensure coherence between frontend and backend, as well as a unified development process.
+\gls{pan} answers this need not by reducing the number of tools, but by integrating them under a single language and by formalizing the boundaries between components.
+
+Concretely, each layer of this unified \gls{typescript} stack covers a distinct responsibility: server-side rendering (\acrshort{ssr}) is provided by \gls{angular} through the \gls{analog} meta-framework, typed client--server communication by \acrshort{trpc}, and data persistence by \gls{prisma} and \gls{cockroachdb}.
+Organizing the project as a \gls{monorepo} managed with \gls{nx} enforces an acyclic library topology, checked in continuous integration (\acrshort{ci}) by the \gls{nx} \texttt{enforce-module-boundaries} rule, and makes it possible to drop the \textit{repository} layer between the \acrshort{trpc} procedures and the \gls{prisma} client.
+
+The implementation is validated through unit tests with \gls{vitest} and \acrlong{e2e} (\acrshort{e2e}) with \gls{playwright}, together with an empirical evaluation of the persistence-layer latencies, front-end performance and test coverage.
+The measured median latency (warm calls) was 1.71\,ms for \gls{cockroachdb} and 0.56\,ms for \gls{redis}, while image optimization reduces the delivered payload by approximately \(60\,\%\) across the entire catalog.
+The evaluation shows that the implemented stack achieves performance suitable for a production environment; the coherence and extensibility of the \gls{pan} architecture, however, are structural properties --- supported by the acyclic topology checked in \acrshort{ci} and by deriving the contracts from a single source of truth ---, not consequences of these latency measurements.
+% 0-abstract.tex ends here

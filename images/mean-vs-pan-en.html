@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Source of images/mean-vs-pan-en.png (Figure 1 of the English edition,
+  en/2-preliminaries.tex).
+
+  Regenerate from the thesis root (1000x720 viewport at 2x = 2000x1440 PNG):
+    npx playwright screenshot --device="Desktop Chrome HiDPI" \
+      --viewport-size="1000, 720" \
+      "file://$PWD/images/mean-vs-pan-en.html" images/mean-vs-pan-en.png
+  The committed PNG was rendered with Playwright 1.60 (Chromium) on macOS;
+  fonts come from the system (Helvetica Neue), so other platforms may differ.
+
+  Keep the 50px side margins: 2-preliminaries.tex scales the figure to
+  1.11\textwidth assuming ~5% white padding on each side of the image.
+-->
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1000px; height: 720px; background: #fff; }
+  body { position: relative; font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; color: #1f2937; }
+  .abs { position: absolute; }
+  .title { left: 0; width: 1000px; top: 22px; text-align: center; font-size: 23px; font-weight: 700; color: #111827; }
+  .subtitle { left: 0; width: 1000px; top: 57px; text-align: center; font-size: 13.5px; color: #6b7280; }
+  .concern { left: 50px; top: 109px; font-size: 11px; font-weight: 700; letter-spacing: 1.6px; color: #9ca3af; }
+  .colhead { width: 190px; top: 104px; text-align: center; font-size: 15.5px; font-weight: 700; letter-spacing: 0.5px; padding-bottom: 7px; }
+  .colhead.mean { left: 380px; color: #1e4a6b; border-bottom: 2px solid #1e4a6b; }
+  .colhead.pan  { left: 680px; color: #b8521b; border-bottom: 2px solid #b8521b; }
+  .label { left: 50px; width: 300px; font-size: 13px; color: #374151; border-bottom: 1px solid #eceef1; padding-bottom: 13px; }
+  .box { width: 190px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .m { left: 380px; background: #eef5fb; border: 1.5px solid #1e4a6b; }
+  .p { left: 680px; background: #fdf0e6; border: 1.5px solid #c2541a; }
+  .name { font-size: 14px; font-weight: 700; color: #111827; }
+  .note { font-size: 10px; color: #6b7280; line-height: 1.2; margin-top: 3px; }
+  .note.it { font-style: italic; font-size: 11px; }
+  .ghost { left: 380px; background: #f9fafb; border: 1.5px dashed #6b7f95; }
+  .ghost .name { font-weight: 400; font-style: italic; color: #6b7280; font-size: 13.5px; }
+  .ghost2 { left: 380px; background: #fafafa; border: 1.5px dashed #d1d5db; }
+  .ghost2 .name { font-weight: 400; font-style: italic; color: #a1a7b0; font-size: 13px; }
+  .ghost2 .note { color: #a1a7b0; }
+  .bracket { left: 660px; top: 160px; width: 10px; height: 94px; border: 1.5px solid #d99a78; border-right: none; }
+  .divider { left: 50px; width: 900px; top: 554px; border-top: 1px solid #e5e7eb; }
+  .obs { left: 50px; top: 571px; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #111827; }
+  .bullets { left: 54px; top: 594px; width: 560px; list-style: none; font-size: 12px; line-height: 1.38; color: #374151; }
+  .bullets li { position: relative; padding-left: 18px; margin-bottom: 9px; }
+  .bullets li::before { content: ""; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; border-radius: 50%; background: #c2541a; }
+  .bullets b { color: #111827; }
+</style>
+</head>
+<body>
+  <div class="abs title">Architectural evolution: MEAN → PAN</div>
+  <div class="abs subtitle">Structural parallel between the traditional JavaScript stack (2013) and the proposed architecture (2026)</div>
+
+  <div class="abs concern">ARCHITECTURAL CONCERN</div>
+  <div class="abs colhead mean">MEAN (2013)</div>
+  <div class="abs colhead pan">PAN (proposed)</div>
+
+  <!-- row labels -->
+  <div class="abs label" style="top:166px">Frontend framework</div>
+  <div class="abs label" style="top:226px">Server framework</div>
+  <div class="abs label" style="top:286px">Execution runtime</div>
+  <div class="abs label" style="top:346px">Data access (ORM)</div>
+  <div class="abs label" style="top:406px">Database</div>
+  <div class="abs label" style="top:479px">Monorepo management</div>
+
+  <!-- MEAN column -->
+  <div class="abs box m" style="top:155px;height:44px"><div class="name">AngularJS</div></div>
+  <div class="abs box m" style="top:215px;height:44px"><div class="name">Express.js</div></div>
+  <div class="abs box m" style="top:275px;height:44px"><div class="name">Node.js</div></div>
+  <div class="abs box ghost" style="top:335px;height:44px"><div class="name">Mongoose</div><div class="note">optional · not in the acronym</div></div>
+  <div class="abs box m" style="top:395px;height:44px"><div class="name">MongoDB</div></div>
+  <div class="abs box ghost2" style="top:468px;height:44px"><div class="name">not a concern</div><div class="note">in the MEAN era</div></div>
+
+  <!-- PAN column -->
+  <div class="abs bracket"></div>
+  <div class="abs box p" style="top:155px;height:104px"><div class="name" style="font-size:15px">Analog</div><div class="note it" style="margin-top:9px;font-size:11px">unifies frontend + server</div><div class="note" style="margin-top:8px">(via Vite + Nitro)</div></div>
+  <div class="abs box p" style="top:275px;height:44px"><div class="name">Node.js</div></div>
+  <div class="abs box p" style="top:335px;height:44px"><div class="name">Prisma</div></div>
+  <div class="abs box p" style="top:395px;height:58px"><div class="name">CockroachDB</div><div class="note" style="margin-top:5px">compatible with the<br>PostgreSQL wire protocol</div></div>
+  <div class="abs box p" style="top:468px;height:44px"><div class="name">Nx</div></div>
+
+  <div class="abs divider"></div>
+  <div class="abs obs">OBSERVATIONS</div>
+  <ul class="abs bullets">
+    <li><b>Analog</b> absorbs the roles that MEAN distributed between Angular and Express, reflecting the architectural compression of modern meta-frameworks.</li>
+    <li><b>Nx</b> addresses a concern (monorepo management with a distributed cache) that was not a topic of discussion in the MEAN era.</li>
+    <li><b>Prisma + CockroachDB</b> replace MongoDB with a relational stack that keeps document-style flexibility through the JSONB type with GIN indexing.</li>
+  </ul>
+</body>
+</html>

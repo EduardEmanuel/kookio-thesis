@@ -1,0 +1,37 @@
+% 5-appendix-c.tex starts here
+% \raggedbottom for the appendix: the intro paragraph shares a page with no
+% float (the ER diagram is [p], on its own page), so \flushbottom from the body
+% would stretch that short paragraph's vertical glue into big gaps. Previously
+% set by the now-removed LaTeX-tooling and PAN-manifest appendices.
+\raggedbottom
+
+\section{The data model}\label{anexa:model-date}
+
+The complete database schema --- the 20 \gls{prisma} models --- is shown in
+\figref{fig:er-diagram} as an entity-relationship diagram. The diagram is
+generated automatically from \texttt{schema.prisma} (with
+\textit{prisma-dbml-generator}) and rendered with \textit{dbdocs.io}, so it
+stays in sync with the actual data model. Primary keys are marked with the key
+symbol, foreign keys with the link symbol, and the connectors between tables
+show the relationships between entities; the junction tables (for example
+\texttt{UserDietaryRestriction}, \texttt{RecipeCollectionEntry}) are placed next
+to the entities they link.
+
+\begin{figure}[p]
+  \centering
+  % Image is the dbdocs PDF export cropped to its content with `pdfcrop` ---
+  % the raw export carries a full-canvas white border that wastes ~1/3 of the
+  % page. Re-crop after any re-export. keepaspectratio + the height cap keep
+  % the diagram inside the text block.
+  \makebox[\textwidth]{%
+    \includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{kookio-er-diagram}}
+  \caption[Entity-relationship diagram of the database]{Entity-relationship
+    diagram of the data schema: the 20 models and the relationships between
+    them, generated from \texttt{schema.prisma} and published on
+    \textit{dbdocs.io}. The interactive, browsable version:
+    \url{https://dbdocs.io/dinea.eduard/kookio-db} (access password:
+    \texttt{FMI\_2026}).}
+  \label{fig:er-diagram}
+\end{figure}
+
+% 5-appendix-c.tex ends here

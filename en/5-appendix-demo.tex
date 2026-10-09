@@ -1,0 +1,121 @@
+% 5-appendix-demo.tex starts here
+% \raggedbottom for this appendix: the screenshot figures use [htbp] and the
+% walkthrough paragraphs are short, so \flushbottom from the body would stretch
+% inter-paragraph glue into gaps. Same rationale as the data-model appendix.
+\raggedbottom
+
+
+\section{Demonstration of the \textit{\gls{kookio}} application}\label{anexa:demo}
+
+This appendix documents the main functional flow of the \textit{\gls{kookio}} application, as evidence that the \acrlong{mvp} (\acrshort{mvp}) described in \secref{cap:implementare} is operational from end to end. The screenshots capture a real user's journey --- from the pantry inventory, through meal planning and the shopping list, to the cooking session that decrements the stock. The final section relocates here the implementation detail of the unit conversion pipeline, kept in the body of the thesis only at the level of the design decision (\secref{subsec:algoritm-grame}).
+
+\subsection{The main flow: from setup to cooking}\label{anexa:demo-flux}
+
+The demonstrated journey covers the application's value chain, from the initial account setup to the automatic stock update after cooking: the user sets their preferences, declares what they have in the pantry, sees what they can cook, plans their meals, derives the shopping list for what is missing and, after cooking, the pantry is decremented.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-onboarding}
+  \caption{Onboarding (\texttt{/onboarding}): the initial setup steps --- culinary preferences (categories and areas), dietary restrictions and available utensils --- persisted on completion and used later for filtering recipes.}
+  \label{fig:demo-onboarding}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-dashboard}
+  \caption{The dashboard (\texttt{/dashboard}): the entry point after authentication, with access to the application's flows and a summary of the current state.}
+  \label{fig:demo-dashboard}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-pantry}
+  \caption{The pantry (\texttt{/pantry}): the user's inventory, with each ingredient stored in its display unit. This is the starting point of the flow --- the source of truth for what is available at home.}
+  \label{fig:demo-pantry}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-match}
+  \caption{Progressive filtering (\texttt{/recipes/match}): the catalog partitioned by the degree of coverage from the pantry (\secref{subsec:filtru-progresiv}). The \textit{Alright} level lists the fully covered recipes, \textit{Almost} those missing one to three ingredients.}
+  \label{fig:demo-match}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-saved}
+  \caption{Saved recipes (\texttt{/recipes/saved}): the collection of recipes marked by the user for later access, independent of the degree of coverage from the pantry.}
+  \label{fig:demo-saved}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-plan}
+  \caption{The planner (\texttt{/plan}): recipes are assigned to \texttt{(date, meal type)} slots, modeled as \texttt{MealSlot} with the \texttt{@@unique} constraint described in \secref{subsec:gestionarea-datelor}.}
+  \label{fig:demo-plan}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-groceries}
+  \caption{The shopping list (\texttt{/groceries}): the set difference between the ingredients of the planned slots and the contents of the pantry (\secref{subsec:lista-cumparaturi}). Items checked as “bought” can be merged back into the pantry.}
+  \label{fig:demo-groceries}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{kookio-demo-cook}
+  \caption{The cooking session (\texttt{/cook/:recipeId}): at the end, the dialog offers the pre-filled consumed quantities, and the confirmation triggers the transactional decrementing of the pantry (\secref{subsec:sesiune-gatit}).}
+  \label{fig:demo-cook}
+\end{figure}
+
+\subsection{Details of the unit conversion pipeline}\label{anexa:grams-detail}
+
+The body of the thesis (\secref{subsec:algoritm-grame}) keeps the unit conversion pipeline at the level of the design decision --- the pair of pure functions \texttt{toGrams}/\texttt{fromGrams} as an application of information hiding. The concrete detail of the conversion rules is relocated here, being an implementation detail specific to the application, useful as a reference, but not necessary for the architectural argument.
+
+The pipeline handles four classes of units, each with an explicit rule:
+
+\begin{itemize}
+  \item \textbf{Weight} (\texttt{G}, \texttt{KG}, \texttt{OZ}, \texttt{LB}): direct conversion through constant factors.
+  \item \textbf{Volume} (\texttt{ML}, \texttt{L}, \texttt{TSP}, \texttt{TBSP}, \texttt{CUP}): conversion through the density of water (\texttt{1 ml} \(\approx\) \texttt{1 g}), an acceptable approximation for the ingredients commonly used in home cooking.
+  \item \textbf{Pieces} (\texttt{PIECE}, \texttt{SLICE}, \texttt{CLOVE}, \texttt{BUNCH}, \texttt{OTHER}): conversion through the optional \texttt{IngredientCatalog.\allowbreak pieceGrams} column (\texttt{Float?}), populated with 32 values (\texttt{egg: 60}, \texttt{garlic clove: 5}, \texttt{lemon: 100} etc.).
+  \item \textbf{Taste and garnish} (\texttt{TO\_TASTE}, \texttt{TO\_SERVE}, \texttt{GARNISH}): treated as \texttt{0 g} and excluded from the shopping list. The distinction from \texttt{PINCH} is not one of size, but of nature: \texttt{PINCH} is a quantity specified by the recipe's author (a pinch), whereas the taste and garnish units express an instruction --- “to taste”, “to serve” --- whose quantity is deliberately left to the discretion of whoever is cooking. The \texttt{0 g} value is therefore a consciously chosen modeling convention, not an unknown: it honors the author's intention (assigning a gram-equivalent would override a decision explicitly left open), avoids downstream noise (half a gram of salt decremented on every cooking session, or staple seasonings listed for shopping, are not useful information in an application focused on the waste of bulk food) and keeps a neutral position with respect to dietary intake, which the application is not in a position to prescribe. For \texttt{PINCH}, on the other hand, a convention sets \texttt{0.5 g} per unit --- a small but real mass, enough to allow sub-pinch rows to be deleted from the pantry.
+\end{itemize}
+
+For piece-type ingredients without a populated \texttt{pieceGrams} value, the function returns \texttt{null}, signaling to the caller that it cannot produce an estimate. An optional \texttt{allowDefault} parameter changes this behavior: when explicitly enabled, the function returns \texttt{DEFAULT\_PIECE\_GRAMS = 100} g per piece. The \(100\) g value is a rough approximation, chosen as a plausible order of magnitude for an arbitrary piece, not an empirically measured average; its role is that of a safety net, not of an exact estimate --- which is why it is not applied by default, but only at the caller's explicit request. This option protects the callers that prefer an explicit error (the cooking session, where an unfounded consumption would corrupt the inventory) from silently accepting unreliable estimates, while allowing the consumers that prefer graceful degradation (the shopping list, where an approximate estimate is preferable to a total failure) to continue processing.
+
+\lstref{lst:to-grams} presents the \texttt{toGrams} function. The complete implementation, together with the inverse \texttt{fromGrams}, is located in \texttt{libs/\allowbreak shared/\allowbreak utility/\allowbreak src/\allowbreak lib/\allowbreak labeling/\allowbreak measure-unit-labels.ts}.
+
+% Code listing — manual numbering via the codlista float counter
+% (\refstepcounter{codlista} + minipage + Verbatim from fancyvrb), keeping a
+% single listing style across the document.
+\refstepcounter{codlista}\label{lst:to-grams}
+\par\medskip
+\noindent\begin{minipage}{\linewidth}
+\textbf{Listing \thecodlista:} The \texttt{toGrams} function --- normalizing quantities to grams.
+\begin{Verbatim}[fontsize=\small]
+export const toGrams = (
+  amount: number,
+  unit: MeasureUnit,
+  pieceGrams: number | null = null,
+  opts: GramsConversionOptions = {},
+): number | null => {
+  if (FLAVOUR_ONLY_UNITS.has(unit)) return 0;
+
+  const fixed = UNIT_TO_GRAMS_FIXED[unit];
+  if (fixed !== undefined) return amount * fixed;
+
+  // Piece-class: PIECE, SLICE, CLOVE, BUNCH, OTHER.
+  const piece =
+    pieceGrams !== null && pieceGrams > 0
+      ? pieceGrams
+      : opts.allowDefault
+        ? DEFAULT_PIECE_GRAMS
+        : null;
+  if (piece === null) return null;
+  return amount * piece;
+};
+\end{Verbatim}
+\end{minipage}
+\par\medskip
+% 5-appendix-demo.tex ends here

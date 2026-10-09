@@ -67,6 +67,8 @@ tsx build.ts ro --delete
 
 The compiled PDF is written to `dist/kookio_thesis_ro.pdf`, with timestamped backups on subsequent builds.
 
+The English edition lives in `en/` and builds the same way — `tsx build.ts en` (or `npm run build:en`, `build:en:draft`, `build:en:delete`) — writing `dist/kookio_thesis_en.pdf`.
+
 ### Optional npm scripts
 
 If you prefer `npm run` shortcuts, add to `package.json`:
@@ -337,6 +339,7 @@ kookio-thesis/
 │   ├── 5-glosar.tex
 │   ├── bibliography.bib
 │   └── images/
+├── en/                      # English thesis sources (same structure, English file names)
 ├── dist/                    # Compiled PDFs (generated, not committed)
 └── research/
     └── the-meal-db/         # Data acquisition scripts (see Research Scripts above)
