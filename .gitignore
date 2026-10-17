@@ -29,7 +29,7 @@ _build/
 !images/*.pdf
 
 # Signed declarations stay local: they carry a handwritten signature
-dist/Declara*.pdf
+dist/signed_*.pdf
 
 # Ignore resources under the ```ignored/``` folder
 ignored/
